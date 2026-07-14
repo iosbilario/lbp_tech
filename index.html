@@ -1,628 +1,441 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Leandro Borges Pereira — Head of Data · São Paulo</title>
-<meta name="description" content="Head of Data com 12 anos em fintechs, saúde e seguros. Projetos open source, cases reais e consultoria via LBP Tech."/>
-<meta property="og:title" content="Leandro Borges Pereira — Head of Data"/>
-<meta property="og:description" content="Dados que movem negócios. Projetos, cases e consultoria."/>
-<meta property="og:type" content="website"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LBP Tecnologia — Dados, BI e automação que você pode auditar</title>
+<meta name="description" content="A LBP Tecnologia constrói pipelines de dados na AWS, painéis de BI, sistemas web e integrações de IA via MCP. Prova, não promessa: veja um pipeline nosso rodando ao vivo.">
+<meta property="og:title" content="LBP Tecnologia">
+<meta property="og:description" content="Dados, BI e automação que você pode auditar. Veja um pipeline nosso rodando ao vivo.">
+<meta property="og:url" content="https://lbptecnologia.com.br">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"%3E%3Crect width="96" height="96" rx="18" fill="%23122B3F"/%3E%3Cg transform="translate(13.5,13.5) scale(0.72)"%3E%3Cpath d="M18 10 h12 v56 h56 v12 H18 Z" fill="%23FFFFFF"/%3E%3Cpath d="M38 57 L52 48 L58 52 L72 22" fill="none" stroke="%23FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/%3E%3Ccircle cx="72" cy="22" r="9" fill="%23E08A1E"/%3E%3C/g%3E%3C/svg%3E'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  :root{
+    --papel:#F5F7F8;      /* fundo */
+    --nanquim:#122B3F;    /* tinta principal */
+    --meridiano:#1B5FAB;  /* azul de confiança */
+    --sinal:#E08A1E;      /* âmbar do dado vivo */
+    --grafite:#51636F;    /* texto secundário */
+    --traco:#D9E2E8;      /* linhas */
+    --branco:#FFFFFF;
+    --display:'Archivo',sans-serif;
+    --corpo:'IBM Plex Sans',sans-serif;
+    --mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    font-family:var(--corpo);color:var(--nanquim);background:var(--papel);
+    font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--meridiano)}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--sinal);outline-offset:2px;border-radius:2px}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
 
-:root{
-  --paper:#0a0a0c;
-  --paper2:#101014;
-  --ink:#f4f2ec;
-  --ink2:#96938a;
-  --ink3:#4a4842;
-  --line:rgba(244,242,236,0.09);
-  --line2:rgba(244,242,236,0.16);
-  --gold:#d8b465;
-  --gold2:#eacf8f;
-  --serif:'Fraunces',Georgia,serif;
-  --sans:'Plus Jakarta Sans',sans-serif;
-  --mono:'JetBrains Mono',monospace;
-}
+  /* ── topo ─────────────────────────── */
+  header.topo{
+    position:sticky;top:0;z-index:20;background:rgba(245,247,248,.92);
+    backdrop-filter:blur(6px);border-bottom:1px solid var(--traco);
+  }
+  .topo-inner{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .marca{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--nanquim)}
+  .marca svg{height:36px;width:auto;display:block}
+  .marca .nome{font-family:var(--display);font-weight:800;font-size:1.15rem;letter-spacing:.01em;line-height:1}
+  .marca .nome small{display:block;font-family:var(--corpo);font-weight:600;font-size:.62rem;letter-spacing:.28em;color:var(--meridiano)}
+  nav.principal{display:flex;align-items:center;gap:28px}
+  nav.principal a.link{font-size:.92rem;font-weight:500;color:var(--nanquim);text-decoration:none}
+  nav.principal a.link:hover{color:var(--meridiano)}
+  nav.principal a.btn-cheio{color:var(--branco)}
+  nav.principal a.btn-cheio:hover{color:var(--branco)}
+  .btn{
+    display:inline-block;font-family:var(--corpo);font-weight:600;font-size:.95rem;
+    padding:11px 22px;border-radius:6px;text-decoration:none;border:1.5px solid transparent;
+  }
+  .btn-cheio{background:var(--nanquim);color:var(--branco)}
+  .btn-cheio:hover{background:var(--meridiano)}
+  .btn-linha{border-color:var(--nanquim);color:var(--nanquim)}
+  .btn-linha:hover{border-color:var(--meridiano);color:var(--meridiano)}
+  @media(max-width:860px){nav.principal a.link{display:none}}
 
-::selection{background:var(--gold);color:var(--paper)}
-::-webkit-scrollbar{width:2px}
-::-webkit-scrollbar-thumb{background:var(--gold)}
+  /* ── herói ────────────────────────── */
+  .heroi{padding:72px 0 88px;border-bottom:1px solid var(--traco)}
+  .heroi-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  @media(max-width:900px){.heroi-grid{grid-template-columns:1fr;gap:40px}}
+  .eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;color:var(--meridiano);margin-bottom:18px}
+  h1{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,5vw,3.6rem);line-height:1.04;letter-spacing:-.015em}
+  h1 .risco{color:var(--meridiano)}
+  .heroi p.tese{margin:22px 0 30px;font-size:1.12rem;color:var(--grafite);max-width:34em}
+  .heroi .acoes{display:flex;gap:14px;flex-wrap:wrap}
 
-body{
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--sans);
-  font-size:16px;line-height:1.65;
-  overflow-x:hidden;
-}
+  /* painel de leituras — a assinatura */
+  .painel{
+    background:var(--branco);border:1px solid var(--traco);border-radius:10px;
+    box-shadow:0 1px 2px rgba(18,43,63,.06),0 12px 32px -18px rgba(18,43,63,.25);
+    overflow:hidden;
+  }
+  .painel-cab{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    padding:14px 20px;border-bottom:1px solid var(--traco);
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;color:var(--grafite);
+  }
+  .vivo{display:flex;align-items:center;gap:7px;color:var(--sinal);font-weight:500}
+  .vivo .ponto{width:8px;height:8px;border-radius:50%;background:var(--sinal);animation:pulsa 2s ease-in-out infinite}
+  @keyframes pulsa{0%,100%{opacity:1}50%{opacity:.25}}
+  .leitura{
+    display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+    padding:18px 20px;border-bottom:1px solid var(--traco);
+    opacity:0;transform:translateY(6px);animation:entra .5s ease forwards;
+  }
+  .leitura:nth-child(2){animation-delay:.1s}
+  .leitura:nth-child(3){animation-delay:.25s}
+  .leitura:nth-child(4){animation-delay:.4s}
+  @keyframes entra{to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){.leitura{opacity:1;transform:none}}
+  .leitura .rotulo{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;color:var(--grafite)}
+  .leitura .rotulo small{display:block;letter-spacing:.04em;margin-top:3px;color:#8798A3}
+  .leitura .valor{font-family:var(--display);font-weight:800;font-size:2rem;letter-spacing:-.01em;white-space:nowrap}
+  .leitura .valor sup{font-family:var(--corpo);font-weight:500;font-size:.85rem;color:var(--grafite);margin-left:4px}
+  .painel-pe{padding:12px 20px;font-family:var(--mono);font-size:.7rem;color:#8798A3}
+  .painel-pe a{color:var(--meridiano);text-decoration:none}
+  .painel-pe a:hover{text-decoration:underline}
 
-/* ═══ NAV ═══ */
-nav{
-  position:fixed;inset:0 0 auto 0;z-index:300;height:58px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 clamp(24px,5vw,64px);
-  background:rgba(10,10,12,0.82);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--line);
-}
-.n-logo{font-family:var(--serif);font-style:italic;font-size:17px;font-weight:400;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
-.n-logo b{font-style:normal;font-weight:700;color:var(--gold)}
-.n-links{display:flex;align-items:center;gap:28px;list-style:none}
-.n-links a{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);text-decoration:none;transition:color .18s}
-.n-links a:hover{color:var(--ink)}
-.n-gh{
-  display:flex;align-items:center;gap:8px;
-  font-family:var(--mono);font-size:11px;color:var(--ink);
-  text-decoration:none;border:1px solid var(--line2);
-  padding:7px 14px;border-radius:100px;
-  transition:border-color .2s,background .2s;
-}
-.n-gh:hover{border-color:var(--gold);background:rgba(216,180,101,0.06)}
-.n-gh svg{width:14px;height:14px;fill:currentColor}
+  /* ── seções ───────────────────────── */
+  section{padding:88px 0;border-bottom:1px solid var(--traco)}
+  .cabeca-secao{margin-bottom:48px;max-width:38em}
+  .cabeca-secao h2{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,3.4vw,2.3rem);letter-spacing:-.01em;line-height:1.15}
+  .cabeca-secao p{margin-top:12px;color:var(--grafite)}
 
-/* ═══ SHELL ═══ */
-.shell{max-width:1140px;margin:0 auto;padding:0 clamp(24px,5vw,64px)}
+  /* serviços — catálogo técnico */
+  .servico{
+    display:grid;grid-template-columns:200px 1fr;gap:24px;
+    padding:26px 0;border-top:1px solid var(--traco);
+  }
+  .servico:last-child{border-bottom:1px solid var(--traco)}
+  @media(max-width:700px){.servico{grid-template-columns:1fr;gap:8px}}
+  .servico .codigo{font-family:var(--mono);font-size:.78rem;letter-spacing:.1em;color:var(--meridiano);padding-top:5px}
+  .servico h3{font-family:var(--display);font-weight:700;font-size:1.25rem;margin-bottom:6px}
+  .servico p{color:var(--grafite);font-size:.98rem;max-width:52em}
+  .servico .entrega{margin-top:10px;font-family:var(--mono);font-size:.74rem;color:#8798A3;letter-spacing:.02em}
+  .servico .entrega b{color:var(--sinal);font-weight:500}
 
-/* ═══ REVEAL ═══ */
-.rv{opacity:0;transform:translateY(16px);transition:opacity .6s cubic-bezier(.2,.6,.2,1),transform .6s cubic-bezier(.2,.6,.2,1)}
-.rv.on{opacity:1;transform:none}
-.dd1{transition-delay:.05s}.dd2{transition-delay:.1s}.dd3{transition-delay:.15s}.dd4{transition-delay:.2s}
+  /* case — moldura escura do observatório */
+  .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  @media(max-width:900px){.case-grid{grid-template-columns:1fr;gap:36px}}
+  .navegador{
+    background:#0E1210;border-radius:10px;overflow:hidden;
+    box-shadow:0 20px 48px -20px rgba(14,18,16,.55);border:1px solid #24302A;
+  }
+  .navegador .barra{
+    display:flex;align-items:center;gap:8px;padding:11px 14px;background:#161B18;border-bottom:1px solid #24302A;
+  }
+  .navegador .barra i{width:10px;height:10px;border-radius:50%;background:#2C3833;display:block}
+  .navegador .barra .url{
+    flex:1;text-align:center;font-family:var(--mono);font-size:.7rem;color:#7C8B84;
+    background:#0E1210;border-radius:4px;padding:4px 10px;margin-left:6px;
+  }
+  .navegador .tela{padding:26px 26px 30px;color:#D7E2DC}
+  .navegador .tela .titulo-obs{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;color:#7C8B84;margin-bottom:18px}
+  .fita{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px dashed #24302A;font-family:var(--mono);font-size:.8rem}
+  .fita:last-of-type{border-bottom:none}
+  .fita .n{color:#FFFFFF;font-weight:500}
+  .fita .n.alta{color:#E08A1E}
+  .navegador .tela .carimbo{
+    margin-top:18px;font-family:var(--mono);font-size:.66rem;color:#5E6E66;line-height:1.7;
+  }
+  .case-texto .selo{font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;color:var(--sinal);margin-bottom:14px}
+  .case-texto h2{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,3.2vw,2.2rem);letter-spacing:-.01em;line-height:1.15;margin-bottom:16px}
+  .case-texto p{color:var(--grafite);margin-bottom:14px}
+  .case-texto ul{list-style:none;margin:18px 0 26px}
+  .case-texto li{
+    padding:9px 0 9px 26px;position:relative;font-size:.97rem;border-top:1px solid var(--traco);
+  }
+  .case-texto li::before{
+    content:"";position:absolute;left:4px;top:17px;width:8px;height:8px;border-radius:50%;
+    background:var(--sinal);
+  }
 
-/* ═══════════ HERO ═══════════ */
-#hero{
-  min-height:100svh;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  padding:120px 0 64px;
-  position:relative;
-}
-.h-kicker{
-  font-family:var(--mono);font-size:11px;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--gold);
-  margin-bottom:28px;display:flex;align-items:center;gap:14px;
-  animation:rise .7s ease both;
-}
-.h-kicker::after{content:'';height:1px;width:64px;background:var(--gold);opacity:.4}
+  /* método — sequência real */
+  .metodo{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--traco);border-radius:10px;overflow:hidden;background:var(--branco)}
+  @media(max-width:900px){.metodo{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.metodo{grid-template-columns:1fr}}
+  .etapa{padding:28px 24px;border-right:1px solid var(--traco);border-bottom:1px solid var(--traco)}
+  .etapa .num{font-family:var(--mono);font-size:.75rem;color:var(--sinal);letter-spacing:.1em}
+  .etapa h3{font-family:var(--display);font-weight:700;font-size:1.1rem;margin:10px 0 8px}
+  .etapa p{font-size:.92rem;color:var(--grafite)}
 
-h1{
-  font-family:var(--serif);
-  font-weight:300;
-  font-size:clamp(44px,8.6vw,118px);
-  line-height:1.02;
-  letter-spacing:-.035em;
-  color:var(--ink);
-  max-width:15ch;
-  animation:rise .7s .08s ease both;
-}
-h1 em{font-style:italic;font-weight:400;color:var(--gold2)}
-h1 strong{font-weight:700}
+  /* contato */
+  .contato{padding:96px 0;border-bottom:none;text-align:left}
+  .contato-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:center}
+  @media(max-width:800px){.contato-grid{grid-template-columns:1fr}}
+  .contato h2{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,4vw,2.7rem);letter-spacing:-.015em;line-height:1.1}
+  .contato p{margin:16px 0 28px;color:var(--grafite);max-width:32em}
+  .cartao-contato{
+    background:var(--nanquim);color:var(--branco);border-radius:10px;padding:30px;
+  }
+  .cartao-contato .rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:#9FC2E8;margin-bottom:8px}
+  .cartao-contato .linha{margin-bottom:20px}
+  .cartao-contato a{color:var(--branco);text-decoration:none;font-weight:600;font-size:1.05rem}
+  .cartao-contato a:hover{color:#9FC2E8}
 
-.h-row{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  gap:48px;margin-top:56px;
-  animation:rise .7s .16s ease both;
-}
-.h-bio{font-size:16px;font-weight:300;color:var(--ink2);max-width:44ch;line-height:1.8}
-.h-bio strong{color:var(--ink);font-weight:600}
-.h-cta{display:flex;gap:12px;flex-shrink:0;flex-wrap:wrap}
-.b1{
-  font-size:13px;font-weight:700;letter-spacing:.02em;
-  background:var(--ink);color:var(--paper);
-  padding:13px 26px;border-radius:100px;text-decoration:none;
-  transition:background .2s,transform .2s;
-}
-.b1:hover{background:var(--gold2);transform:translateY(-2px)}
-.b2{
-  font-size:13px;font-weight:600;color:var(--ink2);
-  padding:13px 26px;border-radius:100px;text-decoration:none;
-  border:1px solid var(--line2);
-  transition:color .2s,border-color .2s,transform .2s;
-}
-.b2:hover{color:var(--ink);border-color:var(--gold);transform:translateY(-2px)}
-
-/* proof bar */
-.proof{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  border-top:1px solid var(--line);
-  margin-top:72px;
-  animation:rise .7s .24s ease both;
-}
-.pf{padding:28px 28px 0 0;border-right:1px solid var(--line)}
-.pf:last-child{border-right:none}
-.pf+.pf{padding-left:28px}
-.pf-n{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(28px,3.4vw,42px);color:var(--ink);line-height:1;margin-bottom:8px}
-.pf-n span{color:var(--gold2)}
-.pf-l{font-size:11.5px;font-weight:500;color:var(--ink3);line-height:1.5;letter-spacing:.02em}
-
-/* ═══════════ SECTION HEADS ═══════════ */
-.sec{padding:110px 0}
-.sec-head{
-  display:flex;align-items:baseline;justify-content:space-between;
-  border-bottom:1px solid var(--line);
-  padding-bottom:22px;margin-bottom:0;
-}
-.sec-title{
-  font-family:var(--serif);font-weight:300;
-  font-size:clamp(30px,4vw,46px);
-  letter-spacing:-.02em;color:var(--ink);
-}
-.sec-title em{font-style:italic;color:var(--gold2)}
-.sec-meta{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink3);text-transform:uppercase}
-
-/* ═══════════ PROJECTS (editorial index) ═══════════ */
-#work{padding-top:0}
-
-.p-item{
-  display:grid;
-  grid-template-columns:56px 1.5fr 1fr auto;
-  gap:32px;align-items:center;
-  padding:34px 0;
-  border-bottom:1px solid var(--line);
-  text-decoration:none;
-  position:relative;
-  transition:padding-left .25s cubic-bezier(.2,.6,.2,1);
-}
-a.p-item:hover{padding-left:12px}
-a.p-item:hover .p-title{color:var(--gold2)}
-a.p-item:hover .p-go{opacity:1;transform:translate(0,0)}
-
-.p-idx{font-family:var(--mono);font-size:11px;color:var(--ink3);letter-spacing:.08em}
-
-.p-main{}
-.p-kind{
-  font-family:var(--mono);font-size:10px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:block;
-}
-.p-title{
-  font-family:var(--serif);font-weight:600;
-  font-size:clamp(20px,2.4vw,27px);
-  letter-spacing:-.015em;color:var(--ink);line-height:1.15;
-  transition:color .2s;
-}
-.p-sub{font-size:13.5px;font-weight:300;color:var(--ink2);margin-top:8px;line-height:1.65;max-width:52ch}
-
-.p-side{display:flex;flex-direction:column;gap:10px}
-.p-stack{font-family:var(--mono);font-size:11px;color:var(--ink3);line-height:1.7}
-.p-impact{
-  font-family:var(--serif);font-style:italic;font-size:17px;color:var(--gold2);
-}
-
-.p-go{
-  width:44px;height:44px;border-radius:50%;
-  border:1px solid var(--line2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;color:var(--ink);
-  opacity:.5;transform:translate(-4px,4px);
-  transition:opacity .25s,transform .25s,border-color .25s;
-}
-a.p-item:hover .p-go{border-color:var(--gold)}
-
-.p-note{
-  font-family:var(--mono);font-size:11px;color:var(--ink3);
-  padding:20px 0 0;letter-spacing:.03em;
-}
-.p-note a{color:var(--gold2);text-decoration:none}
-.p-note a:hover{text-decoration:underline}
-
-/* ═══════════ SOBRE ═══════════ */
-#sobre{background:var(--paper2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.ab-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:clamp(48px,7vw,110px);align-items:start}
-
-.ab-lede{
-  font-family:var(--serif);font-weight:300;
-  font-size:clamp(22px,2.6vw,30px);
-  line-height:1.45;letter-spacing:-.01em;
-  color:var(--ink);margin-bottom:32px;
-}
-.ab-lede em{font-style:italic;color:var(--gold2)}
-.ab-p{font-size:15px;font-weight:300;color:var(--ink2);line-height:1.85;margin-bottom:18px;max-width:58ch}
-.ab-p strong{color:var(--ink);font-weight:600}
-
-/* experience — micro list */
-.xp{margin-top:44px}
-.xp-h{
-  font-family:var(--mono);font-size:10px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--ink3);
-  padding-bottom:14px;border-bottom:1px solid var(--line);
-}
-.xp-r{
-  display:grid;grid-template-columns:92px 1fr auto;gap:18px;
-  padding:13px 0;border-bottom:1px solid var(--line);
-  align-items:baseline;font-size:13.5px;
-}
-.xp-r:last-child{border:none}
-.xp-y{font-family:var(--mono);font-size:11px;color:var(--ink3)}
-.xp-role{font-weight:600;color:var(--ink)}
-.xp-co{color:var(--ink3);font-weight:400;font-size:12.5px;margin-top:1px}
-.xp-now{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
-
-/* aside card */
-.aside{position:sticky;top:84px}
-.card{
-  border:1px solid var(--line2);border-radius:18px;
-  overflow:hidden;background:var(--paper);
-}
-.card-head{padding:30px 28px 24px;border-bottom:1px solid var(--line);text-align:left}
-.card-name{font-family:var(--serif);font-weight:600;font-size:21px;color:var(--ink);letter-spacing:-.01em}
-.card-role{font-size:12.5px;color:var(--ink2);margin-top:6px;font-weight:400}
-.card-role b{color:var(--gold2);font-weight:600}
-.card-rows{padding:6px 0}
-.card-r{
-  display:flex;justify-content:space-between;align-items:center;gap:16px;
-  padding:13px 28px;border-bottom:1px solid var(--line);
-  font-size:13px;text-decoration:none;
-  transition:background .15s;
-}
-.card-r:last-child{border:none}
-a.card-r:hover{background:rgba(216,180,101,0.04)}
-.card-k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
-.card-v{color:var(--ink);font-weight:500;text-align:right}
-a.card-r .card-v{color:var(--gold2)}
-.dot-live{display:inline-flex;align-items:center;gap:6px;color:var(--gold2);font-weight:600;font-size:12px}
-.dot-live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 2.2s infinite}
-
-/* edu strip inside aside */
-.edu-mini{margin-top:16px;border:1px solid var(--line);border-radius:18px;overflow:hidden}
-.edu-mini-h{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);padding:16px 28px;border-bottom:1px solid var(--line)}
-.em-r{display:flex;justify-content:space-between;gap:14px;padding:13px 28px;border-bottom:1px solid var(--line);font-size:12.5px}
-.em-r:last-child{border:none}
-.em-deg{color:var(--ink);font-weight:500}
-.em-inst{color:var(--ink3);font-family:var(--mono);font-size:10.5px;white-space:nowrap;padding-top:2px}
-
-/* ═══════════ STACK ═══════════ */
-#stack{}
-.stk{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:20px;overflow:hidden}
-.stk-col{padding:32px 28px;border-right:1px solid var(--line)}
-.stk-col:last-child{border-right:none}
-.stk-h{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
-.stk-list{list-style:none;display:flex;flex-direction:column;gap:11px}
-.stk-list li{font-size:14px;font-weight:400;color:var(--ink2);transition:color .15s;cursor:default}
-.stk-list li:hover{color:var(--ink)}
-.stk-list li b{color:var(--ink);font-weight:600}
-
-/* ═══════════ CONTACT ═══════════ */
-#contato{padding-bottom:70px}
-.ct{
-  display:flex;flex-direction:column;align-items:flex-start;
-  padding-top:8px;
-}
-.ct-big{
-  font-family:var(--serif);font-weight:300;
-  font-size:clamp(42px,7.5vw,96px);
-  letter-spacing:-.03em;line-height:1.02;
-  color:var(--ink);margin-bottom:40px;
-}
-.ct-big em{font-style:italic;color:var(--gold2)}
-.ct-mail{
-  font-family:var(--mono);
-  font-size:clamp(15px,2.2vw,21px);
-  color:var(--ink);text-decoration:none;
-  border-bottom:1px solid var(--line2);
-  padding-bottom:6px;
-  transition:color .2s,border-color .2s;
-}
-.ct-mail:hover{color:var(--gold2);border-color:var(--gold)}
-.ct-alt{display:flex;gap:28px;margin-top:36px;flex-wrap:wrap}
-.ct-alt a{
-  font-size:13px;font-weight:600;color:var(--ink2);text-decoration:none;
-  display:inline-flex;align-items:center;gap:7px;
-  transition:color .2s;
-}
-.ct-alt a:hover{color:var(--ink)}
-.ct-alt a span{color:var(--gold);font-family:var(--mono);font-size:11px}
-
-/* FOOTER */
-footer{border-top:1px solid var(--line);padding:26px 0}
-.ft{
-  display:flex;justify-content:space-between;align-items:center;gap:16px;
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:var(--ink3);
-}
-.ft b{color:var(--ink2);font-weight:500}
-
-@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-
-/* ═══ RESPONSIVE ═══ */
-@media(max-width:980px){
-  .ab-grid{grid-template-columns:1fr;gap:52px}
-  .aside{position:static}
-  .stk{grid-template-columns:repeat(2,1fr)}
-  .stk-col:nth-child(2){border-right:none}
-  .stk-col:nth-child(-n+2){border-bottom:1px solid var(--line)}
-  .proof{grid-template-columns:repeat(2,1fr)}
-  .pf{padding:24px 20px 0 0}
-  .pf:nth-child(2){border-right:none}
-  .pf:nth-child(-n+2){padding-bottom:20px}
-  .p-item{grid-template-columns:40px 1fr auto;gap:20px}
-  .p-side{display:none}
-}
-@media(max-width:640px){
-  .sec{padding:78px 0}
-  .n-links{display:none}
-  .h-row{flex-direction:column;align-items:flex-start;gap:32px}
-  .proof{grid-template-columns:1fr 1fr}
-  .p-item{grid-template-columns:1fr auto;gap:16px}
-  .p-idx{display:none}
-  .stk{grid-template-columns:1fr}
-  .stk-col{border-right:none;border-bottom:1px solid var(--line)}
-  .stk-col:last-child{border-bottom:none}
-  .ft{flex-direction:column;text-align:center}
-}
+  footer{padding:28px 0 40px}
+  .pe{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;font-size:.85rem;color:var(--grafite)}
+  .pe a{color:var(--grafite);text-decoration:none}
+  .pe a:hover{color:var(--meridiano)}
+  .pe .mono{font-family:var(--mono);font-size:.75rem}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a class="n-logo" href="#">leandro <b>bp</b></a>
-  <ul class="n-links">
-    <li><a href="#work">Projetos</a></li>
-    <li><a href="#sobre">Sobre</a></li>
-    <li><a href="#stack">Stack</a></li>
-    <li><a href="#contato">Contato</a></li>
-  </ul>
-  <a class="n-gh" href="https://github.com/iosbilario" target="_blank" rel="noopener">
-    <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-    iosbilario
-  </a>
-</nav>
-
-<!-- ═══════════ HERO ═══════════ -->
-<header id="hero">
-  <div class="shell">
-    <p class="h-kicker">Head of Data · MBA FGV · São Paulo</p>
-    <h1>Dados que <em>movem</em> <strong>negócios.</strong></h1>
-    <div class="h-row">
-      <p class="h-bio">
-        Sou <strong>Leandro Borges Pereira</strong> — 12 anos construindo plataformas de dados
-        em fintechs, saúde e seguros. Lidero times, desenho arquiteturas e sigo
-        colocando a mão no código. Fundador da <strong>LBP Tech</strong>.
-      </p>
-      <div class="h-cta">
-        <a class="b1" href="#work">Ver projetos</a>
-        <a class="b2" href="#contato">Trabalhar juntos</a>
-      </div>
-    </div>
-
-    <div class="proof">
-      <div class="pf"><div class="pf-n"><span>↓90%</span></div><div class="pf-l">hotfixes em People Analytics — fintech Série D+</div></div>
-      <div class="pf"><div class="pf-n">99,9%</div><div class="pf-l">disponibilidade nos pipelines serverless entregues</div></div>
-      <div class="pf"><div class="pf-n"><span>↓30%</span></div><div class="pf-l">incidentes em Loan Accounting</div></div>
-      <div class="pf"><div class="pf-n">7</div><div class="pf-l">pessoas lideradas no squad de Data Products</div></div>
-    </div>
+<header class="topo">
+  <div class="wrap topo-inner">
+    <a class="marca" href="#" aria-label="LBP Tecnologia — início">
+      <svg viewBox="0 0 96 96" role="img" aria-hidden="true">
+        <path d="M18 10 h12 v56 h56 v12 H18 Z" fill="#122B3F"/>
+        <path d="M38 57 L52 48 L58 52 L72 22" fill="none" stroke="#122B3F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="72" cy="22" r="9" fill="#E08A1E"/>
+      </svg>
+      <span class="nome">LBP<small>TECNOLOGIA</small></span>
+    </a>
+    <nav class="principal" aria-label="Navegação principal">
+      <a class="link" href="#servicos">Serviços</a>
+      <a class="link" href="#case">Case</a>
+      <a class="link" href="#metodo">Método</a>
+      <a class="btn btn-cheio" href="#contato">Fale com a LBP</a>
+    </nav>
   </div>
 </header>
 
-<!-- ═══════════ PROJETOS ═══════════ -->
-<section class="sec" id="work">
-  <div class="shell">
-    <div class="sec-head rv">
-      <h2 class="sec-title">Projetos <em>&amp; código aberto</em></h2>
-      <span class="sec-meta">GitHub · demos reais</span>
-    </div>
-
-    <!-- Open source, clicáveis -->
-    <a class="p-item rv" href="https://github.com/iosbilario/lakehouse-roi-calculator" target="_blank" rel="noopener">
-      <span class="p-idx">/01</span>
-      <div class="p-main">
-        <span class="p-kind">Open Source · Python</span>
-        <div class="p-title">Lakehouse ROI Calculator</div>
-        <p class="p-sub">Calculadora de ROI para migração a Lakehouse na AWS — traduz decisão de arquitetura em números que o CFO entende.</p>
-      </div>
-      <div class="p-side">
-        <span class="p-stack">Python · AWS · FinOps</span>
-        <span class="p-impact">arquitetura → R$</span>
-      </div>
-      <span class="p-go">↗</span>
-    </a>
-
-    <a class="p-item rv dd1" href="https://github.com/iosbilario/salary-genai-dashboard" target="_blank" rel="noopener">
-      <span class="p-idx">/02</span>
-      <div class="p-main">
-        <span class="p-kind">Open Source · Streamlit</span>
-        <div class="p-title">Salary GenAI Dashboard</div>
-        <p class="p-sub">Dashboard interativo que mede o prêmio salarial de quem usa GenAI — dados do State of Data Brazil 2024/25.</p>
-      </div>
-      <div class="p-side">
-        <span class="p-stack">Python · Streamlit · Analytics</span>
-        <span class="p-impact">dados públicos → insight</span>
-      </div>
-      <span class="p-go">↗</span>
-    </a>
-
-    <a class="p-item rv dd2" href="https://github.com/iosbilario/nebula" target="_blank" rel="noopener">
-      <span class="p-idx">/03</span>
-      <div class="p-main">
-        <span class="p-kind">Open Source · Creative Coding</span>
-        <div class="p-title">Nebula</div>
-        <p class="p-sub">Arte generativa no navegador — milhares de partículas em campo de fluxo, 6 paletas, zero dependências. Porque engenharia também é estética.</p>
-      </div>
-      <div class="p-side">
-        <span class="p-stack">HTML · Canvas · JS puro</span>
-        <span class="p-impact">1 arquivo, 0 deps</span>
-      </div>
-      <span class="p-go">↗</span>
-    </a>
-
-    <!-- Cases profissionais -->
-    <div class="p-item rv dd2">
-      <span class="p-idx">/04</span>
-      <div class="p-main">
-        <span class="p-kind">Case Profissional · Fintech de Crédito Série D+</span>
-        <div class="p-title">Governança de dados sem time dedicado</div>
-        <p class="p-sub">Único a implantar OpenMetadata em escala na empresa. Primeiros Data Hubs (Loan Accounting, Cobrança), pipelines serverless Glue 4 + Athena v3.</p>
-      </div>
-      <div class="p-side">
-        <span class="p-stack">OpenMetadata · Glue · Athena · Airflow</span>
-        <span class="p-impact">↓90% hotfixes · 99,9% uptime</span>
-      </div>
-      <span class="p-go" style="opacity:.25">■</span>
-    </div>
-
-    <div class="p-item rv dd3">
-      <span class="p-idx">/05</span>
-      <div class="p-main">
-        <span class="p-kind">Case Profissional · Fintech de Crédito Série D+</span>
-        <div class="p-title">IA Generativa aplicada a pipelines</div>
-        <p class="p-sub">PoCs pioneiras com LLMs, DuckDB e Lambda em fluxos analíticos — menos tempo de desenvolvimento, menos custo de operação.</p>
-      </div>
-      <div class="p-side">
-        <span class="p-stack">LLMs · DuckDB · Lambda</span>
-        <span class="p-impact">dev mais rápido, custo menor</span>
-      </div>
-      <span class="p-go" style="opacity:.25">■</span>
-    </div>
-
-    <div class="p-item rv dd4">
-      <span class="p-idx">/06</span>
-      <div class="p-main">
-        <span class="p-kind">Case Profissional · Insurtech líder de mercado</span>
-        <div class="p-title">Plataforma de analytics do zero</div>
-        <p class="p-sub">Estruturação da área de BI com SQL, Python e R — dashboards que sustentaram decisão estratégica em escala.</p>
-      </div>
-      <div class="p-side">
-        <span class="p-stack">Power BI · SQL · Python · R</span>
-        <span class="p-impact">BI estruturado</span>
-      </div>
-      <span class="p-go" style="opacity:.25">■</span>
-    </div>
-
-    <p class="p-note rv">↗ = repositório aberto no GitHub &nbsp;·&nbsp; ■ = case corporativo (detalhes sob NDA — <a href="#contato">pergunte-me sobre eles</a>)</p>
-  </div>
-</section>
-
-<!-- ═══════════ SOBRE ═══════════ -->
-<section class="sec" id="sobre">
-  <div class="shell">
-    <div class="ab-grid">
-
-      <div class="rv">
-        <p class="ab-lede">Aprendi cedo que <em>dado sem contexto de negócio</em> não vale nada — e construí uma carreira provando o contrário.</p>
-        <p class="ab-p">Comecei em 2011 num dos maiores grupos hospitalares do Brasil, passei por uma multinacional de saúde Fortune 500, pela insurtech líder do mercado e por uma fintech de crédito Série D+ — onde liderei o squad de Data Products e implantei governança em escala.</p>
-        <p class="ab-p">Hoje sou <strong>Head of Data Management em uma fintech</strong> e atendo projetos selecionados pela <strong>LBP Tech</strong>, minha consultoria. Sigo programando: os repositórios lá em cima são a prova.</p>
-
-        <div class="xp">
-          <div class="xp-h">Trajetória</div>
-          <div class="xp-r"><span class="xp-y">2025 →</span><span><span class="xp-role">Head of Data Management</span><div class="xp-co">Fintech — São Paulo, SP</div></span><span class="xp-now">● atual</span></div>
-          <div class="xp-r"><span class="xp-y">2025 →</span><span><span class="xp-role">Fundador &amp; Consultor</span><div class="xp-co">LBP Tech · Consultoria em TI</div></span><span class="xp-now">● atual</span></div>
-          <div class="xp-r"><span class="xp-y">2021–25</span><span><span class="xp-role">Data Engineer Lead</span><div class="xp-co">Fintech de Crédito · Série D+</div></span><span></span></div>
-          <div class="xp-r"><span class="xp-y">2019–21</span><span><span class="xp-role">Especialista em BI</span><div class="xp-co">Insurtech · Líder de Mercado</div></span><span></span></div>
-          <div class="xp-r"><span class="xp-y">2018–19</span><span><span class="xp-role">Analista de Informações Sr</span><div class="xp-co">Multinacional de Saúde · Fortune 500</div></span><span></span></div>
-          <div class="xp-r"><span class="xp-y">2011–18</span><span><span class="xp-role">Analista de Informações Gerenciais</span><div class="xp-co">Grupo Hospitalar · Top 5 Brasil</div></span><span></span></div>
+<main>
+  <!-- ── HERÓI ─────────────────────────────────────────── -->
+  <div class="heroi">
+    <div class="wrap heroi-grid">
+      <div>
+        <p class="eyebrow">ENGENHARIA DE DADOS · BI · SISTEMAS · IA</p>
+        <h1>Prova,<br>não <span class="risco">promessa</span>.</h1>
+        <p class="tese">
+          A LBP Tecnologia constrói pipelines de dados, painéis e integrações com IA.
+          O painel ao lado não é ilustração: são leituras reais do Banco Central,
+          entregues por um pipeline nosso — do mesmo tipo que construímos para clientes.
+        </p>
+        <div class="acoes">
+          <a class="btn btn-cheio" href="#servicos">O que construímos</a>
+          <a class="btn btn-linha" href="https://observatoriodetaxas.tec.br" target="_blank" rel="noopener">Ver o pipeline ao vivo</a>
         </div>
       </div>
 
-      <div class="rv dd2">
-        <div class="aside">
-          <div class="card">
-            <div class="card-head">
-              <div class="card-name">Leandro Borges Pereira</div>
-              <div class="card-role">Head of Data · <b>MBA Big Data FGV</b></div>
-            </div>
-            <div class="card-rows">
-              <a class="card-r" href="mailto:lbptech@icloud.com"><span class="card-k">E-mail</span><span class="card-v">lbptech@icloud.com</span></a>
-              <a class="card-r" href="https://linkedin.com/in/lepereira31" target="_blank" rel="noopener"><span class="card-k">LinkedIn</span><span class="card-v">/in/lepereira31</span></a>
-              <a class="card-r" href="https://github.com/iosbilario" target="_blank" rel="noopener"><span class="card-k">GitHub</span><span class="card-v">@iosbilario</span></a>
-              <a class="card-r" href="https://wa.me/5511991461197" target="_blank" rel="noopener"><span class="card-k">WhatsApp</span><span class="card-v">+55 11 99146-1197</span></a>
-              <div class="card-r"><span class="card-k">Base</span><span class="card-v">São Paulo, SP</span></div>
-              <div class="card-r"><span class="card-k">Status</span><span class="dot-live">aberto a projetos</span></div>
-            </div>
-          </div>
+      <div class="painel" role="figure" aria-label="Leituras de indicadores econômicos do Banco Central">
+        <div class="painel-cab">
+          <span>LEITURAS · SGS/BACEN</span>
+          <span class="vivo"><span class="ponto" aria-hidden="true"></span><span id="estado-leitura">ÚLTIMA LEITURA</span></span>
+        </div>
+        <div class="leitura">
+          <span class="rotulo">SELIC META<small id="ref-selic">ref. 13/07/2026</small></span>
+          <span class="valor"><span id="v-selic">14,25</span><sup>% a.a.</sup></span>
+        </div>
+        <div class="leitura">
+          <span class="rotulo">IPCA 12 MESES<small id="ref-ipca">ref. jun/2026</small></span>
+          <span class="valor"><span id="v-ipca">4,64</span><sup>%</sup></span>
+        </div>
+        <div class="leitura">
+          <span class="rotulo">DÓLAR · VENDA<small id="ref-dolar">ref. 13/07/2026</small></span>
+          <span class="valor">R$ <span id="v-dolar">5,1183</span></span>
+        </div>
+        <div class="painel-pe">
+          fonte: api.bcb.gov.br · pipeline: <a href="https://observatoriodetaxas.tec.br" target="_blank" rel="noopener">observatoriodetaxas.tec.br</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-          <div class="edu-mini">
-            <div class="edu-mini-h">Formação</div>
-            <div class="em-r"><span class="em-deg">MBA Business Analytics &amp; Big Data</span><span class="em-inst">FGV · 2020</span></div>
-            <div class="em-r"><span class="em-deg">Data Engineering · BI &amp; Big Data</span><span class="em-inst">FIAP · 2022</span></div>
-            <div class="em-r"><span class="em-deg">Gestão da TI</span><span class="em-inst">Estácio · 2015</span></div>
-            <div class="em-r"><span class="em-deg">Técnico em TI</span><span class="em-inst">ETEC · 2012</span></div>
-          </div>
+  <!-- ── SERVIÇOS ──────────────────────────────────────── -->
+  <section id="servicos">
+    <div class="wrap">
+      <div class="cabeca-secao">
+        <h2>O que construímos</h2>
+        <p>Cinco frentes, um mesmo padrão: tudo que entregamos tem regra de cálculo explícita, código versionado e dono claro.</p>
+      </div>
+
+      <div class="servico">
+        <span class="codigo">DAT — DADOS &amp; ANALYTICS</span>
+        <div>
+          <h3>Plataforma de dados na AWS</h3>
+          <p>Arquitetura de dados de ponta a ponta: ingestão, lakehouse, transformação e governança — dimensionada para o seu volume e o seu bolso, não para o organograma de um banco.</p>
+          <p class="entrega"><b>entrega:</b> pipelines em produção · catálogo de dados · custo monitorado</p>
         </div>
       </div>
 
-    </div>
-  </div>
-</section>
+      <div class="servico">
+        <span class="codigo">BI — INDICADORES</span>
+        <div>
+          <h3>BI &amp; painéis executivos</h3>
+          <p>Indicadores com definição escrita e auditável — cada número do painel tem fonte, regra e data de referência. Observatórios públicos ou painéis internos de gestão.</p>
+          <p class="entrega"><b>entrega:</b> painel em produção · dicionário de indicadores · alertas</p>
+        </div>
+      </div>
 
-<!-- ═══════════ STACK ═══════════ -->
-<section class="sec" id="stack">
-  <div class="shell">
-    <div class="sec-head rv" style="margin-bottom:44px">
-      <h2 class="sec-title">Stack <em>do dia a dia</em></h2>
-      <span class="sec-meta">o que eu realmente uso</span>
-    </div>
-    <div class="stk rv dd1">
-      <div class="stk-col">
-        <div class="stk-h">Cloud &amp; Infra</div>
-        <ul class="stk-list">
-          <li><b>AWS Glue 4</b></li>
-          <li><b>Athena v3</b></li>
-          <li>S3 · Lambda</li>
-          <li>EventBridge</li>
-        </ul>
+      <div class="servico">
+        <span class="codigo">DEV — SISTEMAS</span>
+        <div>
+          <h3>Desenvolvimento web &amp; APIs</h3>
+          <p>Sites institucionais, sistemas sob medida e APIs que conectam o que hoje vive em planilhas separadas. Do protótipo ao deploy.</p>
+          <p class="entrega"><b>entrega:</b> aplicação em produção · documentação · repositório seu</p>
+        </div>
       </div>
-      <div class="stk-col">
-        <div class="stk-h">Engenharia</div>
-        <ul class="stk-list">
-          <li><b>Python</b> · SQL</li>
-          <li>dbt · Airflow</li>
-          <li><b>DuckDB</b></li>
-          <li>Presto</li>
-        </ul>
-      </div>
-      <div class="stk-col">
-        <div class="stk-h">Governança</div>
-        <ul class="stk-list">
-          <li><b>OpenMetadata</b></li>
-          <li>Data Catalog</li>
-          <li>Linhagem</li>
-          <li>LGPD</li>
-        </ul>
-      </div>
-      <div class="stk-col">
-        <div class="stk-h">Analytics &amp; IA</div>
-        <ul class="stk-list">
-          <li><b>Power BI</b> · R</li>
-          <li>Data Products</li>
-          <li><b>IA Generativa</b></li>
-          <li>LLMs em pipelines</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ═══════════ CONTATO ═══════════ -->
-<section class="sec" id="contato">
-  <div class="shell">
-    <div class="ct rv">
-      <h2 class="ct-big">Vamos construir<br/><em>algo com dados?</em></h2>
-      <a class="ct-mail" href="mailto:lbptech@icloud.com">lbptech@icloud.com</a>
-      <div class="ct-alt">
-        <a href="https://linkedin.com/in/lepereira31" target="_blank" rel="noopener"><span>in/</span>lepereira31</a>
-        <a href="https://github.com/iosbilario" target="_blank" rel="noopener"><span>gh/</span>iosbilario</a>
-        <a href="https://wa.me/5511991461197" target="_blank" rel="noopener"><span>wa/</span>+55 11 99146-1197</a>
+      <div class="servico">
+        <span class="codigo">AUT — AUTOMAÇÃO</span>
+        <div>
+          <h3>Consultoria &amp; automação de rotinas</h3>
+          <p>Diagnóstico do processo, depois automação do que é repetitivo: relatórios que se geram sozinhos, conciliações sem retrabalho, integrações entre sistemas que não se falam.</p>
+          <p class="entrega"><b>entrega:</b> rotina automatizada · runbook · horas devolvidas ao time</p>
+        </div>
+      </div>
+
+      <div class="servico">
+        <span class="codigo">MCP — INTEGRAÇÃO DE IA</span>
+        <div>
+          <h3>Servidores MCP: sua empresa conectada à IA</h3>
+          <p>Construímos servidores MCP (Model Context Protocol) que conectam assistentes de IA aos seus dados e sistemas — com permissões, trilha de auditoria e escopo definido. A IA responde com os seus números, não com achismo.</p>
+          <p class="entrega"><b>entrega:</b> servidor MCP em produção · política de acesso · treinamento do time</p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- ── CASE ──────────────────────────────────────────── -->
+  <section id="case">
+    <div class="wrap case-grid">
+      <div class="navegador" role="figure" aria-label="Prévia do site Observatório de Taxas">
+        <div class="barra">
+          <i></i><i></i><i></i>
+          <span class="url">observatoriodetaxas.tec.br</span>
+        </div>
+        <div class="tela">
+          <p class="titulo-obs">OBSERVATÓRIO DE TAXAS — A PÁGINA QUE SE REESCREVE SOZINHA</p>
+          <div class="fita"><span>SELIC META</span><span class="n">14,25% a.a.</span></div>
+          <div class="fita"><span>IPCA 12M</span><span class="n">4,64%</span></div>
+          <div class="fita"><span>DÓLAR VENDA</span><span class="n alta">R$ 5,1183</span></div>
+          <div class="fita"><span>IGP-M MÊS</span><span class="n">−0,50%</span></div>
+          <div class="fita"><span>DESEMPREGO</span><span class="n">5,6%</span></div>
+          <p class="carimbo">
+            ✓ dado assinado: sgs/bacen · série 432<br>
+            ✓ commit: histórico completo desde 2015<br>
+            ✓ recibo verificável por qualquer pessoa
+          </p>
+        </div>
+      </div>
+
+      <div class="case-texto">
+        <p class="selo">CASE · PRODUTO PRÓPRIO</p>
+        <h2>Observatório de Taxas</h2>
+        <p>
+          Um portal público que acompanha Selic, IPCA, dólar, IGP-M e desemprego
+          direto da API do Banco Central — sem intermediário e sem opinião.
+          Cada atualização vira um commit: dá para <em>rebobinar</em> o tempo e ver
+          os indicadores de qualquer mês desde 2015.
+        </p>
+        <ul>
+          <li>Verificação de afirmações com recibo auditável: regra de cálculo + commits exatos</li>
+          <li>Calculadora de reajuste de contratos por IPCA, IGP-M, INPC e IGP-DI</li>
+          <li>Embeds para redações, newsletters e sites de terceiros</li>
+        </ul>
+        <a class="btn btn-cheio" href="https://observatoriodetaxas.tec.br" target="_blank" rel="noopener">Visitar o observatório</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MÉTODO ────────────────────────────────────────── -->
+  <section id="metodo">
+    <div class="wrap">
+      <div class="cabeca-secao">
+        <h2>Como um projeto anda aqui</h2>
+        <p>Quatro etapas, sempre nesta ordem. Você sabe em qual está e o que sai de cada uma.</p>
+      </div>
+      <div class="metodo">
+        <div class="etapa">
+          <span class="num">01</span>
+          <h3>Diagnóstico</h3>
+          <p>Mapeamos fontes, processos e o que hoje é feito na mão. Sai um documento curto com o problema escrito do jeito certo.</p>
+        </div>
+        <div class="etapa">
+          <span class="num">02</span>
+          <h3>Arquitetura</h3>
+          <p>Desenho da solução com escolhas justificadas — serviços, custos e trade-offs registrados em decisão escrita (ADR).</p>
+        </div>
+        <div class="etapa">
+          <span class="num">03</span>
+          <h3>Construção</h3>
+          <p>Entregas semanais em repositório seu. Nada de caixa-preta: código versionado e documentado desde o primeiro commit.</p>
+        </div>
+        <div class="etapa">
+          <span class="num">04</span>
+          <h3>Operação</h3>
+          <p>Monitoramento, alertas e evolução. O sistema roda sozinho — e avisa quando algo foge da régua.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTATO ───────────────────────────────────────── -->
+  <section id="contato" class="contato">
+    <div class="wrap contato-grid">
+      <div>
+        <h2>Conte o problema.<br>A gente desenha a solução.</h2>
+        <p>Uma conversa de 30 minutos costuma bastar para dizermos se conseguimos ajudar — e por onde começaríamos.</p>
+        <a class="btn btn-cheio" href="mailto:iosbilario@gmail.com?subject=Contato%20via%20lbptecnologia.com.br">Escrever para a LBP</a>
+      </div>
+      <div class="cartao-contato">
+        <p class="rotulo">E-MAIL</p>
+        <p class="linha"><a href="mailto:iosbilario@gmail.com">iosbilario@gmail.com</a></p>
+        <p class="rotulo">LINKEDIN</p>
+        <p class="linha"><a href="https://www.linkedin.com/company/lbptech" target="_blank" rel="noopener">linkedin.com/company/lbptech</a></p>
+        <p class="rotulo">PRODUTO PÚBLICO</p>
+        <p class="linha"><a href="https://observatoriodetaxas.tec.br" target="_blank" rel="noopener">observatoriodetaxas.tec.br</a></p>
+      </div>
+    </div>
+  </section>
+</main>
 
 <footer>
-  <div class="shell">
-    <div class="ft">
-      <span><b>Leandro BP</b> · LBP Tech</span>
-      <span>CNPJ 60.776.636/0001-51</span>
-      <span>São Paulo · © 2025</span>
-    </div>
+  <div class="wrap pe">
+    <span>© 2026 LBP Tecnologia</span>
+    <span class="mono">dados do painel: Banco Central do Brasil (SGS) · conteúdo informativo, sem recomendação financeira</span>
   </div>
 </footer>
 
 <script>
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.08,rootMargin:'0px 0px -24px 0px'});
-document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+/* Painel de leituras: tenta a API pública do BACEN; se falhar, mantém a última leitura conhecida (13/07/2026). */
+(function(){
+  const fmt = (v, casas) => Number(v).toLocaleString('pt-BR', {minimumFractionDigits: casas, maximumFractionDigits: casas});
+  const series = [
+    {id:432,   el:'v-selic', ref:'ref-selic', casas:2},
+    {id:13522, el:'v-ipca',  ref:'ref-ipca',  casas:2},
+    {id:1,     el:'v-dolar', ref:'ref-dolar', casas:4}
+  ];
+  let vivas = 0;
+  Promise.all(series.map(s =>
+    fetch(`https://api.bcb.gov.br/dados/serie/bcdata.sgs.${s.id}/dados/ultimos/1?formato=json`)
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(d => {
+        const u = d[d.length-1];
+        document.getElementById(s.el).textContent = fmt(u.valor, s.casas);
+        document.getElementById(s.ref).textContent = 'ref. ' + u.data;
+        vivas++;
+      })
+      .catch(() => {})
+  )).then(() => {
+    const estado = document.getElementById('estado-leitura');
+    if (vivas > 0) estado.textContent = 'AO VIVO';
+  });
+})();
 </script>
 </body>
 </html>

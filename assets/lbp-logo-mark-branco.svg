@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="LBP Tecnologia">
+  <path d="M18 10 h12 v56 h56 v12 H18 Z" fill="#FFFFFF"/>
+  <path d="M38 57 L52 48 L58 52 L72 22" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="72" cy="22" r="9" fill="#E08A1E"/>
+</svg>
