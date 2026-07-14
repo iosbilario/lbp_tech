@@ -76,7 +76,7 @@
   }
   a{color:var(--meridiano)}
   /* foco visível: nanquim em superfícies claras (14,5:1), âmbar no cartão escuro (7:1) */
-  a:focus-visible,button:focus-visible{outline:3px solid var(--nanquim);outline-offset:2px;border-radius:2px}
+  a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--nanquim);outline-offset:2px;border-radius:2px}
   .cartao-contato a:focus-visible{outline-color:var(--sinal)}
   .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
   .vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -222,6 +222,26 @@
   .etapa h3{font-family:var(--display);font-weight:700;font-size:1.1rem;margin:10px 0 8px}
   .etapa p{font-size:.92rem;color:var(--grafite)}
 
+  /* faq — mesmas linhas e tipografia do catálogo */
+  .faq{border-top:1px solid var(--traco)}
+  .faq-item{border-bottom:1px solid var(--traco)}
+  .faq-item summary{
+    list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:24px;
+    padding:22px 0;font-family:var(--display);font-weight:700;font-size:1.15rem;line-height:1.3;color:var(--nanquim);
+  }
+  .faq-item summary::-webkit-details-marker{display:none}
+  .faq-item summary:hover{color:var(--meridiano)}
+  .faq-item .seta{
+    flex:0 0 auto;width:11px;height:11px;margin-right:4px;
+    border-right:2px solid var(--grafite);border-bottom:2px solid var(--grafite);
+    transform:rotate(45deg);transition:transform .2s ease;
+  }
+  .faq-item[open] .seta{transform:rotate(-135deg)}
+  .faq-item summary:hover .seta{border-color:var(--meridiano)}
+  @media (prefers-reduced-motion: reduce){.faq-item .seta{transition:none}}
+  .faq-item .resposta{padding:0 0 24px;max-width:60em}
+  .faq-item .resposta p{color:var(--grafite)}
+
   /* contato */
   .contato{padding:96px 0;border-bottom:none;text-align:left}
   .contato-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:center}
@@ -326,6 +346,43 @@
       "provider": { "@id": "https://lbptecnologia.com.br/#organizacao" },
       "areaServed": { "@type": "Country", "name": "Brasil" },
       "description": "Servidores MCP (Model Context Protocol) que conectam assistentes de IA aos seus dados e sistemas — com permissões, trilha de auditoria e escopo definido. A IA responde com os seus números, não com achismo. Entrega: servidor MCP em produção, política de acesso e treinamento do time."
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://lbptecnologia.com.br/#faq",
+      "isPartOf": { "@id": "https://lbptecnologia.com.br/#site" },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "A LBP atende pessoa física?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Não. Trabalhamos exclusivamente com empresas (PJ)." }
+        },
+        {
+          "@type": "Question",
+          "name": "O que significa “Prova, não promessa”?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Toda entrega tem regra de cálculo explícita, código versionado e dono claro — dá para auditar, não só confiar. O painel do topo é um exemplo: leituras reais do Banco Central, servidas por um pipeline nosso." }
+        },
+        {
+          "@type": "Question",
+          "name": "Vocês trabalham só com AWS?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A AWS é o nosso padrão para plataforma de dados, mas a arquitetura é decidida caso a caso e registrada em ADR, com os trade-offs de custo e operação escritos." }
+        },
+        {
+          "@type": "Question",
+          "name": "O que é um servidor MCP?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Um servidor Model Context Protocol conecta assistentes de IA aos seus dados e sistemas — com permissões, trilha de auditoria e escopo definido. A IA responde com os seus números, não com achismo." }
+        },
+        {
+          "@type": "Question",
+          "name": "Como começa um projeto?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Por uma conversa de 30 minutos. Se fizer sentido, seguimos em quatro etapas: Diagnóstico, Arquitetura, Construção e Operação." }
+        },
+        {
+          "@type": "Question",
+          "name": "De quem fica o código?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Seu. As entregas são semanais no seu repositório, com código versionado e documentado desde o primeiro commit." }
+        }
+      ]
     }
   ]
 }
@@ -349,6 +406,7 @@
       <a class="link" href="#servicos">Serviços</a>
       <a class="link" href="#case">Case</a>
       <a class="link" href="#metodo">Método</a>
+      <a class="link" href="#faq">FAQ</a>
       <a class="btn btn-cheio" href="#contato">Fale com a LBP</a>
     </nav>
   </div>
@@ -523,6 +581,42 @@
           <h3>Operação</h3>
           <p>Monitoramento, alertas e evolução. O sistema roda sozinho — e avisa quando algo foge da régua.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ───────────────────────────────────────────── -->
+  <section id="faq" aria-label="Perguntas frequentes">
+    <div class="wrap">
+      <div class="cabeca-secao">
+        <h2>Perguntas frequentes</h2>
+        <p>O básico, direto — do jeito que a gente responderia numa conversa.</p>
+      </div>
+      <div class="faq">
+        <details class="faq-item">
+          <summary>A LBP atende pessoa física?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>Não. Trabalhamos exclusivamente com empresas (PJ).</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>O que significa “Prova, não promessa”?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>Toda entrega tem regra de cálculo explícita, código versionado e dono claro — dá para auditar, não só confiar. O painel do topo é um exemplo: leituras reais do Banco Central, servidas por um pipeline nosso.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Vocês trabalham só com AWS?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>A AWS é o nosso padrão para plataforma de dados, mas a arquitetura é decidida caso a caso e registrada em ADR, com os trade-offs de custo e operação escritos.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>O que é um servidor MCP?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>Um servidor Model Context Protocol conecta assistentes de IA aos seus dados e sistemas — com permissões, trilha de auditoria e escopo definido. A IA responde com os seus números, não com achismo.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Como começa um projeto?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>Por uma conversa de 30 minutos. Se fizer sentido, seguimos em quatro etapas: Diagnóstico, Arquitetura, Construção e Operação.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>De quem fica o código?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>Seu. As entregas são semanais no seu repositório, com código versionado e documentado desde o primeiro commit.</p></div>
+        </details>
       </div>
     </div>
   </section>
