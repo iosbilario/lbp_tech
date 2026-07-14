@@ -1,0 +1,19 @@
+{
+  "name": "LBP Tecnologia",
+  "short_name": "LBP",
+  "description": "Engenharia de dados na AWS, BI, sistemas e integrações de IA via MCP. Prova, não promessa.",
+  "lang": "pt-BR",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#F5F7F8",
+  "theme_color": "#F5F7F8",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

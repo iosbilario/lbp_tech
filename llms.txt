@@ -1,0 +1,35 @@
+# LBP Tecnologia
+
+> Consultoria de tecnologia (São Paulo, Brasil) especializada em engenharia de dados na AWS, BI, desenvolvimento de sistemas web e integrações de IA via servidores MCP. Tese: "Prova, não promessa" — tudo que entregamos tem regra de cálculo explícita, código versionado e dono claro.
+
+LBP Tecnologia atende empresas (PJ) que precisam transformar dados em decisão auditável. O site institucional exibe, na primeira dobra, um painel com leituras reais do Banco Central (Selic, IPCA e dólar) servidas por um pipeline próprio — a mesma engenharia que entregamos para clientes. Não é ilustração: é prova em produção.
+
+- **Empresa:** LBP Tecnologia
+- **Localização:** São Paulo, Brasil (atendimento remoto para todo o Brasil)
+- **Contato:** iosbilario@gmail.com
+- **LinkedIn:** https://www.linkedin.com/company/lbptech
+- **Site:** https://lbptecnologia.com.br
+
+## Serviços
+
+- [Plataforma de dados na AWS (DAT)](https://lbptecnologia.com.br/#servicos): arquitetura de ponta a ponta — ingestão, lakehouse, transformação e governança, dimensionada para o volume e o orçamento do cliente. Entrega: pipelines em produção, catálogo de dados, custo monitorado.
+- [BI & painéis executivos (BI)](https://lbptecnologia.com.br/#servicos): indicadores com definição escrita e auditável — cada número tem fonte, regra e data de referência. Observatórios públicos ou painéis internos. Entrega: painel em produção, dicionário de indicadores, alertas.
+- [Desenvolvimento web & APIs (DEV)](https://lbptecnologia.com.br/#servicos): sites institucionais, sistemas sob medida e APIs que integram o que hoje vive em planilhas separadas. Entrega: aplicação em produção, documentação, repositório do cliente.
+- [Consultoria & automação de rotinas (AUT)](https://lbptecnologia.com.br/#servicos): diagnóstico do processo e automação do repetitivo — relatórios automáticos, conciliações sem retrabalho, integrações entre sistemas. Entrega: rotina automatizada, runbook, horas devolvidas ao time.
+- [Servidores MCP: IA conectada à empresa (MCP)](https://lbptecnologia.com.br/#servicos): servidores Model Context Protocol que conectam assistentes de IA aos dados e sistemas do cliente, com permissões, trilha de auditoria e escopo definido. A IA responde com os números do cliente, não com achismo. Entrega: servidor MCP em produção, política de acesso, treinamento do time.
+
+## Case
+
+- [Observatório de Taxas](https://observatoriodetaxas.tec.br): produto público próprio que acompanha Selic, IPCA, dólar, IGP-M e desemprego direto da API do Banco Central. Cada atualização vira um commit — é possível rebobinar e ver os indicadores de qualquer mês desde 2015. Inclui verificação de afirmações com recibo auditável, calculadora de reajuste de contratos (IPCA, IGP-M, INPC, IGP-DI) e embeds para redações e sites de terceiros.
+
+## Como trabalhamos
+
+1. **Diagnóstico** — mapeamento de fontes e processos; sai um documento curto com o problema bem definido.
+2. **Arquitetura** — desenho da solução com escolhas justificadas (serviços, custos, trade-offs) registradas em ADR.
+3. **Construção** — entregas semanais em repositório do cliente, código versionado e documentado desde o primeiro commit.
+4. **Operação** — monitoramento, alertas e evolução contínua.
+
+## Observações
+
+- Modelo de atuação: exclusivamente PJ (empresa para empresa).
+- Os dados do painel vêm do Banco Central do Brasil (SGS). Conteúdo informativo, sem recomendação financeira.

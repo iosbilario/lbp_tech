@@ -1,4 +1,19 @@
+# LBP Tecnologia — https://lbptecnologia.com.br
 User-agent: *
+Allow: /
+
+# Mecanismos de resposta por IA são bem-vindos (GEO)
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
 Allow: /
 
 Sitemap: https://lbptecnologia.com.br/sitemap.xml
