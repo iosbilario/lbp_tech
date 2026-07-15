@@ -267,55 +267,61 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://lbptecnologia.com.br/#organization",
+  "name": "LBP Tecnologia",
+  "legalName": "LEANDRO BORGES PEREIRA TECNOLOGIA DA INFORMAÇÃO LTDA",
+  "taxID": "60.776.636/0001-51",
+  "foundingDate": "2025-05-12",
+  "url": "https://lbptecnologia.com.br/",
+  "logo": "https://lbptecnologia.com.br/assets/og-image.png",
+  "image": "https://lbptecnologia.com.br/assets/og-image.png",
+  "email": "contato@lbptecnologia.com.br",
+  "slogan": "Prova, não promessa.",
+  "description": "Consultoria de tecnologia especializada em engenharia de dados na AWS, BI e painéis executivos, desenvolvimento de sistemas web e APIs, automação de rotinas e integrações de IA via servidores MCP. Entregas auditáveis: regra de cálculo explícita, código versionado e dono claro.",
+  "founder": { "@type": "Person", "name": "Leandro Borges Pereira" },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "São Paulo",
+    "addressRegion": "SP",
+    "addressCountry": "BR"
+  },
+  "areaServed": { "@type": "Country", "name": "Brasil" },
+  "sameAs": [
+    "https://www.linkedin.com/company/lbptech",
+    "https://github.com/iosbilario",
+    "https://observatoriodetaxas.tec.br"
+  ],
+  "knowsAbout": [
+    "Engenharia de dados",
+    "Business Intelligence",
+    "Amazon Web Services",
+    "Lakehouse",
+    "Model Context Protocol",
+    "Automação de processos",
+    "Desenvolvimento web",
+    "APIs"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": ["ProfessionalService", "Organization"],
-      "@id": "https://lbptecnologia.com.br/#organizacao",
-      "name": "LBP Tecnologia",
-      "legalName": "LEANDRO BORGES PEREIRA TECNOLOGIA DA INFORMAÇÃO LTDA",
-      "taxID": "60.776.636/0001-51",
-      "foundingDate": "2025-05-12",
-      "url": "https://lbptecnologia.com.br/",
-      "email": "contato@lbptecnologia.com.br",
-      "slogan": "Prova, não promessa.",
-      "description": "Consultoria de tecnologia especializada em engenharia de dados na AWS, BI e painéis executivos, desenvolvimento de sistemas web e APIs, automação de rotinas e integrações de IA via servidores MCP. Entregas auditáveis: regra de cálculo explícita, código versionado e dono claro.",
-      "logo": "https://lbptecnologia.com.br/assets/lbp-logo-mark.svg",
-      "image": "https://lbptecnologia.com.br/assets/og-image.png",
-      "areaServed": { "@type": "Country", "name": "Brasil" },
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "São Paulo",
-        "addressRegion": "SP",
-        "addressCountry": "BR"
-      },
-      "sameAs": [
-        "https://www.linkedin.com/company/lbptech",
-        "https://observatoriodetaxas.tec.br"
-      ],
-      "knowsAbout": [
-        "Engenharia de dados",
-        "Business Intelligence",
-        "Amazon Web Services",
-        "Lakehouse",
-        "Model Context Protocol",
-        "Automação de processos",
-        "Desenvolvimento web",
-        "APIs"
-      ]
-    },
     {
       "@type": "WebSite",
       "@id": "https://lbptecnologia.com.br/#site",
       "name": "LBP Tecnologia",
       "url": "https://lbptecnologia.com.br/",
       "inLanguage": "pt-BR",
-      "publisher": { "@id": "https://lbptecnologia.com.br/#organizacao" }
+      "publisher": { "@id": "https://lbptecnologia.com.br/#organization" }
     },
     {
       "@type": "Service",
       "name": "Plataforma de dados na AWS",
       "serviceType": "Engenharia e plataforma de dados",
-      "provider": { "@id": "https://lbptecnologia.com.br/#organizacao" },
+      "provider": { "@id": "https://lbptecnologia.com.br/#organization" },
       "areaServed": { "@type": "Country", "name": "Brasil" },
       "description": "Arquitetura de dados de ponta a ponta: ingestão, lakehouse, transformação e governança — dimensionada para o seu volume e o seu bolso. Entrega: pipelines em produção, catálogo de dados e custo monitorado."
     },
@@ -323,7 +329,7 @@
       "@type": "Service",
       "name": "BI & painéis executivos",
       "serviceType": "Business Intelligence",
-      "provider": { "@id": "https://lbptecnologia.com.br/#organizacao" },
+      "provider": { "@id": "https://lbptecnologia.com.br/#organization" },
       "areaServed": { "@type": "Country", "name": "Brasil" },
       "description": "Indicadores com definição escrita e auditável — cada número tem fonte, regra e data de referência. Observatórios públicos ou painéis internos de gestão. Entrega: painel em produção, dicionário de indicadores e alertas."
     },
@@ -331,7 +337,7 @@
       "@type": "Service",
       "name": "Desenvolvimento web & APIs",
       "serviceType": "Desenvolvimento de sistemas",
-      "provider": { "@id": "https://lbptecnologia.com.br/#organizacao" },
+      "provider": { "@id": "https://lbptecnologia.com.br/#organization" },
       "areaServed": { "@type": "Country", "name": "Brasil" },
       "description": "Sites institucionais, sistemas sob medida e APIs que conectam o que hoje vive em planilhas separadas. Do protótipo ao deploy. Entrega: aplicação em produção, documentação e repositório seu."
     },
@@ -339,7 +345,7 @@
       "@type": "Service",
       "name": "Consultoria & automação de rotinas",
       "serviceType": "Automação de processos",
-      "provider": { "@id": "https://lbptecnologia.com.br/#organizacao" },
+      "provider": { "@id": "https://lbptecnologia.com.br/#organization" },
       "areaServed": { "@type": "Country", "name": "Brasil" },
       "description": "Diagnóstico do processo e automação do que é repetitivo: relatórios que se geram sozinhos, conciliações sem retrabalho e integrações entre sistemas que não se falam. Entrega: rotina automatizada, runbook e horas devolvidas ao time."
     },
@@ -347,7 +353,7 @@
       "@type": "Service",
       "name": "Servidores MCP: sua empresa conectada à IA",
       "serviceType": "Integração de IA (Model Context Protocol)",
-      "provider": { "@id": "https://lbptecnologia.com.br/#organizacao" },
+      "provider": { "@id": "https://lbptecnologia.com.br/#organization" },
       "areaServed": { "@type": "Country", "name": "Brasil" },
       "description": "Servidores MCP (Model Context Protocol) que conectam assistentes de IA aos seus dados e sistemas — com permissões, trilha de auditoria e escopo definido. A IA responde com os seus números, não com achismo. Entrega: servidor MCP em produção, política de acesso e treinamento do time."
     },
