@@ -258,6 +258,11 @@
   .cartao-contato a:hover{color:#9FC2E8}
 
   footer{padding:28px 0 40px}
+  /* selo de auditoria — recibo público (Selo Vivo) */
+  .selo-area{padding:4px 0 26px;margin-bottom:26px;border-bottom:1px solid var(--traco)}
+  .selo-area .selo-rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--sutil);margin-bottom:12px}
+  .selo-area a{display:inline-block;line-height:0;border-radius:6px}
+  .selo-area img{border:0;display:block;max-width:100%;height:auto}
   .pe{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;font-size:.85rem;color:var(--grafite)}
   .pe a{color:var(--grafite);text-decoration:none}
   .pe a:hover{color:var(--meridiano)}
@@ -654,10 +659,16 @@
 </main>
 
 <footer>
-  <div class="wrap pe">
-    <span>© 2026 LBP Tecnologia · São Paulo, Brasil</span>
-    <span class="mono">dados do painel: Banco Central do Brasil (SGS) · conteúdo informativo, sem recomendação financeira</span>
-    <span class="legal">LEANDRO BORGES PEREIRA TECNOLOGIA DA INFORMAÇÃO LTDA · CNPJ 60.776.636/0001-51</span>
+  <div class="wrap">
+    <div class="selo-area">
+      <p class="selo-rotulo">AUDITORIA TÉCNICA · RECIBO PÚBLICO</p>
+      <a href="https://selovivo.vercel.app/v/35767202ac8e6d5fa297c667a09efb00" target="_blank" rel="noopener" title="Ver o recibo público desta auditoria"><img src="https://selovivo.vercel.app/api/selo/35767202ac8e6d5fa297c667a09efb00.svg" alt="Selo de qualidade técnica — clique para ler o recibo público da auditoria" width="348" height="118" loading="lazy" decoding="async"><span class="vh"> (abre em nova aba)</span></a>
+    </div>
+    <div class="pe">
+      <span>© 2026 LBP Tecnologia · São Paulo, Brasil</span>
+      <span class="mono">dados do painel: Banco Central do Brasil (SGS) · conteúdo informativo, sem recomendação financeira</span>
+      <span class="legal">LEANDRO BORGES PEREIRA TECNOLOGIA DA INFORMAÇÃO LTDA · CNPJ 60.776.636/0001-51</span>
+    </div>
   </div>
 </footer>
 
