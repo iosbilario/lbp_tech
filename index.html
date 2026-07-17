@@ -213,6 +213,18 @@
     content:"";position:absolute;left:4px;top:17px;width:8px;height:8px;border-radius:50%;
     background:var(--sinal);
   }
+  /* segundo produto (Carimbo) — mesmo palco do Observatório */
+  .produto-2{margin-top:64px;padding-top:64px;border-top:1px solid var(--traco)}
+  .vitrine{
+    background:var(--nanquim);border-radius:10px;padding:44px 28px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    box-shadow:0 20px 48px -20px rgba(18,43,63,.35);
+  }
+  .vitrine a{display:inline-block;line-height:0;border-radius:6px}
+  .vitrine a:focus-visible{outline-color:var(--sinal)}
+  .vitrine img{max-width:100%;height:auto;display:block;border:0}
+  .vitrine-nota{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:#9FC2E8;text-align:center;margin:0}
+  .remate-meta{margin-top:16px;font-family:var(--mono);font-size:.72rem;color:var(--sutil);letter-spacing:.02em}
 
   /* método — sequência real */
   .metodo{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--traco);border-radius:10px;overflow:hidden;background:var(--branco)}
@@ -299,6 +311,14 @@
     "https://github.com/iosbilario",
     "https://observatoriodetaxas.tec.br"
   ],
+  "owns": {
+    "@type": "SoftwareApplication",
+    "name": "Carimbo",
+    "url": "https://carimbo.tec.br",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "Auditoria técnica de sites (performance, acessibilidade e SEO) que gera um selo público embedável com recibo verificável e reauditoria contínua."
+  },
   "knowsAbout": [
     "Engenharia de dados",
     "Business Intelligence",
@@ -421,7 +441,7 @@
     </a>
     <nav class="principal" aria-label="Navegação principal">
       <a class="link" href="#servicos">Serviços</a>
-      <a class="link" href="#case">Case</a>
+      <a class="link" href="#produtos">Produtos</a>
       <a class="link" href="#metodo">Método</a>
       <a class="link" href="#faq">FAQ</a>
       <a class="btn btn-cheio" href="#contato">Fale com a LBP</a>
@@ -529,7 +549,7 @@
   </section>
 
   <!-- ── CASE ──────────────────────────────────────────── -->
-  <section id="case" aria-label="Case: Observatório de Taxas">
+  <section id="produtos" aria-label="Produtos públicos da LBP">
     <div class="wrap case-grid">
       <div class="navegador" role="figure" aria-label="Prévia do site Observatório de Taxas">
         <div class="barra">
@@ -566,6 +586,25 @@
           <li>Embeds para redações, newsletters e sites de terceiros</li>
         </ul>
         <a class="btn btn-cheio" href="https://observatoriodetaxas.tec.br" target="_blank" rel="noopener">Visitar o observatório<span class="vh"> (abre em nova aba)</span></a>
+      </div>
+    </div>
+
+    <div class="wrap case-grid produto-2">
+      <div class="case-texto">
+        <p class="selo">PRODUTO PRÓPRIO · SAAS</p>
+        <h2>Carimbo</h2>
+        <p>Uma auditoria técnica de site que vira selo público — com recibo verificável. Performance, acessibilidade e SEO viram uma nota assinada e rastreável, que qualquer visitante confere.</p>
+        <ul>
+          <li>Selo embedável — etiqueta, compacto ou carimbo, claro ou escuro</li>
+          <li>Recibo público com a metodologia, a nota e a data da auditoria</li>
+          <li>Reauditoria contínua: a nota reflete o site de hoje, não uma foto antiga</li>
+        </ul>
+        <a class="btn btn-cheio" href="https://carimbo.tec.br" target="_blank" rel="noopener">Conhecer o Carimbo<span class="vh"> (abre em nova aba)</span></a>
+        <p class="remate-meta">↳ é o mesmo carimbo do rodapé desta página.</p>
+      </div>
+      <div class="vitrine" role="figure" aria-label="Selo público do Carimbo, formato etiqueta">
+        <a href="https://carimbo.tec.br/v/35767202ac8e6d5fa297c667a09efb00" target="_blank" rel="noopener" title="Ver o recibo público desta auditoria"><img src="https://carimbo.tec.br/api/selo/35767202ac8e6d5fa297c667a09efb00.svg" alt="Carimbo de qualidade técnica — nota 92,5 de 100, válido" width="348" height="118" loading="lazy" decoding="async"><span class="vh"> (abre em nova aba)</span></a>
+        <p class="vitrine-nota">selo público desta página · reauditado continuamente</p>
       </div>
     </div>
   </section>
