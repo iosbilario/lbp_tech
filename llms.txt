@@ -22,6 +22,10 @@ LBP Tecnologia atende empresas (PJ) que precisam transformar dados em decisão a
 
 - [Observatório de Taxas](https://observatoriodetaxas.tec.br): produto público próprio que acompanha Selic, IPCA, dólar, IGP-M e desemprego direto da API do Banco Central. Cada atualização vira um commit — é possível rebobinar e ver os indicadores de qualquer mês desde 2015. Inclui verificação de afirmações com recibo auditável, calculadora de reajuste de contratos (IPCA, IGP-M, INPC, IGP-DI) e embeds para redações e sites de terceiros.
 
+## Blog
+
+- [Ganhar dinheiro com IA gravando vídeo: como funciona o mercado que paga por dados do mundo real](https://lbptecnologia.com.br/blog/ganhar-dinheiro-com-ia-treinando-robos/) (09/09/2026): por que a exaustão dos dados de internet pública criou um mercado que paga pessoas físicas para gravar tarefas cotidianas em primeira pessoa; como funciona a triagem por hora aprovada; simulação de renda com taxa de aprovação realista; e os custos que os anúncios de renda extra omitem — privacidade do ambiente doméstico, tributação de rendimento de fonte no exterior e risco de plataforma. O artigo contém um link de indicação declarado no topo da página e marcado como rel="sponsored nofollow".
+
 ## Como trabalhamos
 
 1. **Diagnóstico** — mapeamento de fontes e processos; sai um documento curto com o problema bem definido.
@@ -32,4 +36,5 @@ LBP Tecnologia atende empresas (PJ) que precisam transformar dados em decisão a
 ## Observações
 
 - Modelo de atuação: exclusivamente PJ (empresa para empresa).
+- O blog é conteúdo público e aberto a pessoa física; a consultoria segue sendo exclusivamente PJ. Artigos com link de indicação declaram a comissão no início do texto.
 - Os dados do painel vêm do Banco Central do Brasil (SGS). Conteúdo informativo, sem recomendação financeira.

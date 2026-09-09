@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blog — LBP Tecnologia</title>
+<meta name="description" content="Textos sobre dados, inteligência artificial e trabalho — escritos por quem constrói pipeline em produção. Prova, não promessa.">
+<link rel="canonical" href="https://lbptecnologia.com.br/blog/">
+<meta name="theme-color" content="#F5F7F8">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LBP Tecnologia">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Blog — LBP Tecnologia">
+<meta property="og:description" content="Textos sobre dados, inteligência artificial e trabalho — escritos por quem constrói pipeline em produção.">
+<meta property="og:url" content="https://lbptecnologia.com.br/blog/">
+<meta property="og:image" content="https://lbptecnologia.com.br/assets/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LBP Tecnologia — Prova, não promessa.">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Blog — LBP Tecnologia">
+<meta name="twitter:description" content="Textos sobre dados, inteligência artificial e trabalho — escritos por quem constrói pipeline em produção.">
+<meta name="twitter:image" content="https://lbptecnologia.com.br/assets/og-image.png">
+<meta name="twitter:image:alt" content="LBP Tecnologia — Prova, não promessa.">
+
+<link rel="icon" type="image/png" sizes="96x96" href="../assets/favicon.png">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"%3E%3Crect width="96" height="96" rx="18" fill="%23122B3F"/%3E%3Cg transform="translate(13.5,13.5) scale(0.72)"%3E%3Cpath d="M18 10 h12 v56 h56 v12 H18 Z" fill="%23FFFFFF"/%3E%3Cpath d="M38 57 L52 48 L58 52 L72 22" fill="none" stroke="%23FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/%3E%3Ccircle cx="72" cy="22" r="9" fill="%23E08A1E"/%3E%3C/g%3E%3C/svg%3E'>
+<link rel="manifest" href="../manifest.webmanifest">
+
+<link rel="preload" href="../fonts/archivo-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/plex-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+
+<style>
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:700;font-display:swap;src:url('../fonts/archivo-700.woff2') format('woff2')}
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:800;font-display:swap;src:url('../fonts/archivo-800.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/plex-sans-400.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url('../fonts/plex-sans-500.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url('../fonts/plex-sans-600.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/plex-mono-400.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('../fonts/plex-mono-500.woff2') format('woff2')}
+
+  @font-face{font-family:'Archivo Fallback';src:local('Arial');size-adjust:111.84%;ascent-override:78.50%;descent-override:18.78%;line-gap-override:0%}
+  @font-face{font-family:'Plex Sans Fallback';src:local('Arial');size-adjust:101.69%;ascent-override:100.80%;descent-override:27.04%;line-gap-override:0%}
+  @font-face{font-family:'Plex Mono Fallback';src:local('Courier New');size-adjust:99.93%;ascent-override:102.57%;descent-override:27.52%;line-gap-override:0%}
+
+  :root{
+    --papel:#F5F7F8;--nanquim:#122B3F;--meridiano:#1B5FAB;--sinal:#E08A1E;--sinal-texto:#9A5E0B;
+    --grafite:#51636F;--sutil:#5E7280;--traco:#D9E2E8;--branco:#FFFFFF;
+    --display:'Archivo','Archivo Fallback',Arial,sans-serif;
+    --corpo:'IBM Plex Sans','Plex Sans Fallback',Arial,sans-serif;
+    --mono:'IBM Plex Mono','Plex Mono Fallback','Courier New',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+  body{font-family:var(--corpo);color:var(--nanquim);background:var(--papel);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--meridiano)}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--nanquim);outline-offset:2px;border-radius:2px}
+  .cartao-contato a:focus-visible{outline-color:var(--sinal)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  .pular{position:absolute;left:12px;top:-60px;z-index:60;background:var(--nanquim);color:var(--branco);padding:12px 18px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.95rem;transition:top .15s ease}
+  .pular:focus{top:12px}
+
+  header.topo{position:sticky;top:0;z-index:20;background:rgba(245,247,248,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--traco)}
+  @media(max-width:860px){header.topo{backdrop-filter:none;background:rgba(245,247,248,.98)}}
+  .topo-inner{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .marca{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--nanquim)}
+  .marca svg{height:36px;width:auto;display:block}
+  .marca .nome{font-family:var(--display);font-weight:800;font-size:1.15rem;letter-spacing:.01em;line-height:1}
+  .marca .nome small{display:block;font-family:var(--corpo);font-weight:600;font-size:.62rem;letter-spacing:.28em;color:var(--meridiano)}
+  nav.principal{display:flex;align-items:center;gap:28px}
+  nav.principal a.link{font-size:.92rem;font-weight:500;color:var(--nanquim);text-decoration:none}
+  nav.principal a.link:hover{color:var(--meridiano)}
+  nav.principal a.btn-cheio{color:var(--branco)}
+  nav.principal a.btn-cheio:hover{color:var(--branco)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;font-family:var(--corpo);font-weight:600;font-size:.95rem;padding:10px 22px;border-radius:6px;text-decoration:none;border:1.5px solid transparent}
+  .btn-cheio{background:var(--nanquim);color:var(--branco)}
+  .btn-cheio:hover{background:var(--meridiano)}
+  @media(max-width:860px){nav.principal a.link{display:none}}
+
+  .blog-topo{padding:72px 0 56px;border-bottom:1px solid var(--traco)}
+  .eyebrow{font-family:var(--mono);font-size:.76rem;letter-spacing:.18em;color:var(--sinal-texto);margin-bottom:18px}
+  .blog-topo h1{font-family:var(--display);font-weight:800;font-size:clamp(2.1rem,5vw,3.2rem);letter-spacing:-.02em;line-height:1.05}
+  .blog-topo p{margin-top:18px;color:var(--grafite);max-width:38em;font-size:1.08rem}
+
+  .lista{padding:20px 0 88px}
+  .post{display:grid;grid-template-columns:200px 1fr;gap:32px;padding:36px 0;border-bottom:1px solid var(--traco)}
+  @media(max-width:760px){.post{grid-template-columns:1fr;gap:10px}}
+  .post .meta{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;color:var(--sutil);padding-top:7px;line-height:1.8}
+  .post .meta b{display:block;color:var(--meridiano);font-weight:500;letter-spacing:.1em}
+  .post h2{font-family:var(--display);font-weight:800;font-size:clamp(1.4rem,2.6vw,1.75rem);letter-spacing:-.01em;line-height:1.2;margin-bottom:10px}
+  .post h2 a{color:var(--nanquim);text-decoration:none}
+  .post h2 a:hover{color:var(--meridiano)}
+  .post p{color:var(--grafite);font-size:.98rem;max-width:46em}
+  .post .marcadores{margin-top:14px;font-family:var(--mono);font-size:.72rem;color:var(--sutil);letter-spacing:.02em}
+  .vazio{padding:36px 0 0;font-family:var(--mono);font-size:.8rem;color:var(--sutil)}
+
+  .contato{padding:88px 0;border-top:1px solid var(--traco)}
+  .contato-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:center}
+  @media(max-width:800px){.contato-grid{grid-template-columns:1fr}}
+  .contato h2{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,4vw,2.7rem);letter-spacing:-.015em;line-height:1.1}
+  .contato p{margin:16px 0 28px;color:var(--grafite);max-width:32em}
+  .cartao-contato{background:var(--nanquim);color:var(--branco);border-radius:10px;padding:30px}
+  .cartao-contato .rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:#9FC2E8;margin-bottom:8px}
+  .cartao-contato .linha{margin-bottom:20px}
+  .cartao-contato .linha:last-child{margin-bottom:0}
+  .cartao-contato a{color:var(--branco);text-decoration:none;font-weight:600;font-size:1.05rem}
+  .cartao-contato a:hover{color:#9FC2E8}
+
+  footer{padding:28px 0 40px;border-top:1px solid var(--traco)}
+  .pe{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;font-size:.85rem;color:var(--grafite)}
+  .pe a{color:var(--grafite);text-decoration:none}
+  .pe a:hover{color:var(--meridiano)}
+  .pe .mono{font-family:var(--mono);font-size:.75rem}
+  .pe .legal{flex:0 0 100%;font-family:var(--mono);font-size:.72rem;color:var(--grafite);letter-spacing:.01em}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Blog",
+      "@id": "https://lbptecnologia.com.br/blog/#blog",
+      "name": "Blog da LBP Tecnologia",
+      "description": "Textos sobre dados, inteligência artificial e trabalho — escritos por quem constrói pipeline em produção.",
+      "url": "https://lbptecnologia.com.br/blog/",
+      "inLanguage": "pt-BR",
+      "publisher": { "@id": "https://lbptecnologia.com.br/#organization" },
+      "blogPost": [
+        {
+          "@type": "BlogPosting",
+          "@id": "https://lbptecnologia.com.br/blog/ganhar-dinheiro-com-ia-treinando-robos/#artigo",
+          "headline": "Ganhar dinheiro com IA gravando vídeo: como funciona o mercado que paga por dados do mundo real",
+          "url": "https://lbptecnologia.com.br/blog/ganhar-dinheiro-com-ia-treinando-robos/",
+          "datePublished": "2026-09-09",
+          "dateModified": "2026-09-09",
+          "author": { "@type": "Person", "name": "Leandro Borges Pereira" }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://lbptecnologia.com.br/" },
+        { "@type": "ListItem", "position": 2, "name": "Blog" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topo">
+  <div class="wrap topo-inner">
+    <a class="marca" href="../" aria-label="LBP Tecnologia — início">
+      <svg viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+        <path d="M18 10 h12 v56 h56 v12 H18 Z" fill="#122B3F"/>
+        <path d="M38 57 L52 48 L58 52 L72 22" fill="none" stroke="#122B3F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="72" cy="22" r="9" fill="#E08A1E"/>
+      </svg>
+      <span class="nome">LBP<small>TECNOLOGIA</small></span>
+    </a>
+    <nav class="principal" aria-label="Navegação principal">
+      <a class="link" href="../#servicos">Serviços</a>
+      <a class="link" href="../#produtos">Produtos</a>
+      <a class="link" href="../#metodo">Método</a>
+      <a class="btn btn-cheio" href="../#contato">Fale com a LBP</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo">
+
+  <div class="blog-topo">
+    <div class="wrap">
+      <p class="eyebrow">BLOG · LBP TECNOLOGIA</p>
+      <h1>O que a gente aprende<br>construindo.</h1>
+      <p>
+        Textos sobre dados, inteligência artificial e trabalho, escritos por quem mantém
+        pipeline em produção. A mesma regra do resto do site vale aqui: número com fonte,
+        conta explícita e ressalva escrita quando existe.
+      </p>
+    </div>
+  </div>
+
+  <div class="wrap lista">
+
+    <article class="post">
+      <p class="meta">
+        <b>IA &amp; TRABALHO</b>
+        <time datetime="2026-09-09">09 SET 2026</time>
+        LEITURA ~9 MIN
+      </p>
+      <div>
+        <h2><a href="ganhar-dinheiro-com-ia-treinando-robos/">Ganhar dinheiro com IA gravando vídeo: como funciona o mercado que paga por dados do mundo real</a></h2>
+        <p>
+          A internet pública acabou como fonte de treinamento e os laboratórios passaram a comprar
+          gravação do mundo físico. Este texto explica a engenharia por trás desse mercado, faz a conta
+          honesta de quanto rende por hora e lista os custos que os anúncios de renda extra não mencionam
+          — privacidade, imposto e risco de plataforma.
+        </p>
+        <p class="marcadores">ganhar dinheiro com IA · renda extra · trabalhar de casa · dados de treinamento</p>
+      </div>
+    </article>
+
+    <p class="vazio">— fim da lista · 1 artigo publicado</p>
+
+  </div>
+
+  <section class="contato" aria-label="Contato">
+    <div class="wrap contato-grid">
+      <div>
+        <h2>Conte o problema.<br>A gente desenha a solução.</h2>
+        <p>
+          A LBP Tecnologia atende empresas (PJ) que precisam transformar dados em decisão auditável.
+          Uma conversa de 30 minutos costuma bastar para dizermos se conseguimos ajudar.
+        </p>
+        <a class="btn btn-cheio" href="mailto:contato@lbptecnologia.com.br?subject=Contato%20via%20blog%20da%20LBP">Escrever para a LBP</a>
+      </div>
+      <div class="cartao-contato">
+        <p class="rotulo">E-MAIL</p>
+        <p class="linha"><a href="mailto:contato@lbptecnologia.com.br">contato@lbptecnologia.com.br</a></p>
+        <p class="rotulo">LINKEDIN</p>
+        <p class="linha"><a href="https://www.linkedin.com/company/lbptech" target="_blank" rel="noopener">linkedin.com/company/lbptech<span class="vh"> (abre em nova aba)</span></a></p>
+        <p class="rotulo">PRODUTO PÚBLICO</p>
+        <p class="linha"><a href="https://observatoriodetaxas.tec.br" target="_blank" rel="noopener">observatoriodetaxas.tec.br<span class="vh"> (abre em nova aba)</span></a></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="pe">
+      <span>© 2026 LBP Tecnologia · São Paulo, Brasil · <a href="../">Início</a></span>
+      <span class="mono">conteúdo informativo · não é recomendação financeira nem de investimento</span>
+      <span class="legal">LEANDRO BORGES PEREIRA TECNOLOGIA DA INFORMAÇÃO LTDA · CNPJ 60.776.636/0001-51</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
