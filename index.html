@@ -226,6 +226,13 @@
   .vitrine-nota{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:#9FC2E8;text-align:center;margin:0}
   .remate-meta{margin-top:16px;font-family:var(--mono);font-size:.72rem;color:var(--sutil);letter-spacing:.02em}
 
+  .navegador .tela.imagem{padding:0;background:#FBF7F2}
+  .navegador .tela.imagem img{display:block;width:100%;height:auto}
+  .produto-3 .navegador{background:#EAF0F3;border-color:var(--traco)}
+  .produto-3 .navegador .barra{background:#EAF0F3;border-bottom-color:var(--traco)}
+  .produto-3 .navegador .barra i{background:#C5D2DA}
+  .produto-3 .navegador .barra .url{background:var(--branco);color:var(--sutil)}
+
   /* método — sequência real */
   .metodo{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--traco);border-radius:10px;overflow:hidden;background:var(--branco)}
   @media(max-width:900px){.metodo{grid-template-columns:1fr 1fr}}
@@ -606,6 +613,30 @@
       <div class="vitrine" role="figure" aria-label="Selo público do Carimbo, formato etiqueta">
         <a href="https://carimbo.tec.br/v/35767202ac8e6d5fa297c667a09efb00" target="_blank" rel="noopener" title="Ver o recibo público desta auditoria"><img src="https://carimbo.tec.br/api/selo/35767202ac8e6d5fa297c667a09efb00.svg" alt="Carimbo de qualidade técnica — nota 92,5 de 100, válido" width="348" height="118" loading="lazy" decoding="async"><span class="vh"> (abre em nova aba)</span></a>
         <p class="vitrine-nota">selo público desta página · reauditado continuamente</p>
+      </div>
+    </div>
+
+    <div class="wrap case-grid produto-2 produto-3">
+      <div class="navegador" role="figure" aria-label="Prévia do site Confere">
+        <div class="barra">
+          <i aria-hidden="true"></i><i aria-hidden="true"></i><i aria-hidden="true"></i>
+          <span class="url">meuconfere.com.br</span>
+        </div>
+        <div class="tela imagem">
+          <img src="assets/confere-landing.png" alt="Página inicial do Confere: Cobrança entrou. Recebimento bateu." width="1400" height="833" loading="lazy" decoding="async">
+        </div>
+      </div>
+      <div class="case-texto">
+        <p class="selo">PRODUTO PRÓPRIO · NO AR</p>
+        <h2>Confere</h2>
+        <p>Conciliação financeira sem planilha cruzada na mão. Você importa as cobranças e os recebimentos em CSV, o Confere casa os dois por identificador e valor exato e mostra só o que precisa de revisão.</p>
+        <ul>
+          <li>Prévia e erros por linha antes de gravar, com bloqueio de arquivo repetido</li>
+          <li>Fila de divergências com responsável, comentário, justificativa e histórico</li>
+          <li>Login por link seguro e dados separados por empresa</li>
+        </ul>
+        <a class="btn btn-cheio" href="https://meuconfere.com.br" target="_blank" rel="noopener">Conhecer o Confere<span class="vh"> (abre em nova aba)</span></a>
+        <p class="remate-meta">↳ interface feita com o Refy Design: <a href="blog/refy-design-meuconfere/">leia o relato no blog</a>.</p>
       </div>
     </div>
   </section>
