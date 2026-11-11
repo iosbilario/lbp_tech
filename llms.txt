@@ -21,6 +21,7 @@ LBP Tecnologia atende empresas (PJ) que precisam transformar dados em decisão a
 ## Case
 
 - [Observatório de Taxas](https://observatoriodetaxas.tec.br): produto público próprio que acompanha Selic, IPCA, dólar, IGP-M e desemprego direto da API do Banco Central. Cada atualização vira um commit — é possível rebobinar e ver os indicadores de qualquer mês desde 2015. Inclui verificação de afirmações com recibo auditável, calculadora de reajuste de contratos (IPCA, IGP-M, INPC, IGP-DI) e embeds para redações e sites de terceiros.
+- [Confere](https://meuconfere.com.br): produto próprio de conciliação financeira. Importa cobranças e recebimentos em CSV, casa por identificador único e valor exato e separa as divergências para revisão, com responsável, comentário, justificativa e histórico. Login por link seguro e dados separados por empresa. Interface construída com o Refy Design.
 
 ## Blog
 
