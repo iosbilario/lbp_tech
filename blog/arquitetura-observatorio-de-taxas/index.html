@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Como construímos o Observatório de Taxas: Python, Git e dados públicos</title>
+<meta name="description" content="Como o Observatório de Taxas coleta 15 séries do SGS do Banco Central com Python, versiona cada mudança no Git, gera páginas estáticas no GitHub Actions e permite conferir qualquer número até o commit de origem.">
+<link rel="canonical" href="https://lbptecnologia.com.br/blog/arquitetura-observatorio-de-taxas/">
+<meta name="theme-color" content="#F5F7F8">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="author" content="LBP Tecnologia">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="LBP Tecnologia">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Como construímos um observatório econômico usando Python, Git e dados públicos">
+<meta property="og:description" content="Python, API do Banco Central, JSON, Git e GitHub Actions: a arquitetura do Observatório de Taxas e como conferir cada número até o commit.">
+<meta property="og:url" content="https://lbptecnologia.com.br/blog/arquitetura-observatorio-de-taxas/">
+<meta property="og:image" content="https://lbptecnologia.com.br/blog/arquitetura-observatorio-de-taxas/img/og-observatorio.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Painel do Observatório de Taxas em fundo escuro, com Meta Selic, IPCA 12 meses, dólar, IGP-M e desemprego.">
+<meta property="article:published_time" content="2026-11-11">
+<meta property="article:modified_time" content="2026-11-11">
+<meta property="article:author" content="LBP Tecnologia">
+<meta property="article:section" content="Engenharia de dados">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Como construímos um observatório econômico usando Python, Git e dados públicos">
+<meta name="twitter:description" content="A arquitetura do Observatório de Taxas e como conferir cada número até o commit de origem.">
+<meta name="twitter:image" content="https://lbptecnologia.com.br/blog/arquitetura-observatorio-de-taxas/img/og-observatorio.png">
+<meta name="twitter:image:alt" content="Painel do Observatório de Taxas em fundo escuro, com Meta Selic, IPCA 12 meses, dólar, IGP-M e desemprego.">
+
+<link rel="icon" type="image/png" sizes="96x96" href="../../assets/favicon.png">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"%3E%3Crect width="96" height="96" rx="18" fill="%23122B3F"/%3E%3Cg transform="translate(13.5,13.5) scale(0.72)"%3E%3Cpath d="M18 10 h12 v56 h56 v12 H18 Z" fill="%23FFFFFF"/%3E%3Cpath d="M38 57 L52 48 L58 52 L72 22" fill="none" stroke="%23FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/%3E%3Ccircle cx="72" cy="22" r="9" fill="%23E08A1E"/%3E%3C/g%3E%3C/svg%3E'>
+<link rel="manifest" href="../../manifest.webmanifest">
+
+<link rel="preload" href="../../fonts/archivo-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/plex-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+
+<style>
+  /* ── Fontes reais (WOFF2 latin, self-host) ─────────── */
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:700;font-display:swap;src:url('../../fonts/archivo-700.woff2') format('woff2')}
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:800;font-display:swap;src:url('../../fonts/archivo-800.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url('../../fonts/plex-sans-400.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url('../../fonts/plex-sans-500.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url('../../fonts/plex-sans-600.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url('../../fonts/plex-mono-400.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('../../fonts/plex-mono-500.woff2') format('woff2')}
+
+  /* ── Fallbacks metric-matched (CLS zero na troca) ──── */
+  @font-face{font-family:'Archivo Fallback';src:local('Arial');size-adjust:111.84%;ascent-override:78.50%;descent-override:18.78%;line-gap-override:0%}
+  @font-face{font-family:'Plex Sans Fallback';src:local('Arial');size-adjust:101.69%;ascent-override:100.80%;descent-override:27.04%;line-gap-override:0%}
+  @font-face{font-family:'Plex Mono Fallback';src:local('Courier New');size-adjust:99.93%;ascent-override:102.57%;descent-override:27.52%;line-gap-override:0%}
+
+  :root{
+    --papel:#F5F7F8;
+    --nanquim:#122B3F;
+    --meridiano:#1B5FAB;
+    --sinal:#E08A1E;
+    --sinal-texto:#9A5E0B;
+    --grafite:#51636F;
+    --sutil:#5E7280;
+    --traco:#D9E2E8;
+    --branco:#FFFFFF;
+    --display:'Archivo','Archivo Fallback',Arial,sans-serif;
+    --corpo:'IBM Plex Sans','Plex Sans Fallback',Arial,sans-serif;
+    --mono:'IBM Plex Mono','Plex Mono Fallback','Courier New',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    font-family:var(--corpo);color:var(--nanquim);background:var(--papel);
+    font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--meridiano)}
+  a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--nanquim);outline-offset:2px;border-radius:2px}
+  .cartao-contato a:focus-visible{outline-color:var(--sinal)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+  .pular{
+    position:absolute;left:12px;top:-60px;z-index:60;background:var(--nanquim);color:var(--branco);
+    padding:12px 18px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.95rem;
+    transition:top .15s ease;
+  }
+  .pular:focus{top:12px}
+
+  /* ── topo ─────────────────────────── */
+  header.topo{
+    position:sticky;top:0;z-index:20;background:rgba(245,247,248,.92);
+    backdrop-filter:blur(6px);border-bottom:1px solid var(--traco);
+  }
+  @media(max-width:860px){header.topo{backdrop-filter:none;background:rgba(245,247,248,.98)}}
+  .topo-inner{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .marca{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--nanquim)}
+  .marca svg{height:36px;width:auto;display:block}
+  .marca .nome{font-family:var(--display);font-weight:800;font-size:1.15rem;letter-spacing:.01em;line-height:1}
+  .marca .nome small{display:block;font-family:var(--corpo);font-weight:600;font-size:.62rem;letter-spacing:.28em;color:var(--meridiano)}
+  nav.principal{display:flex;align-items:center;gap:28px}
+  nav.principal a.link{font-size:.92rem;font-weight:500;color:var(--nanquim);text-decoration:none}
+  nav.principal a.link:hover{color:var(--meridiano)}
+  nav.principal a.btn-cheio{color:var(--branco)}
+  nav.principal a.btn-cheio:hover{color:var(--branco)}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;min-height:44px;
+    font-family:var(--corpo);font-weight:600;font-size:.95rem;
+    padding:10px 22px;border-radius:6px;text-decoration:none;border:1.5px solid transparent;
+  }
+  .btn-cheio{background:var(--nanquim);color:var(--branco)}
+  .btn-cheio:hover{background:var(--meridiano)}
+  .btn-linha{border-color:var(--nanquim);color:var(--nanquim)}
+  .btn-linha:hover{border-color:var(--meridiano);color:var(--meridiano)}
+  @media(max-width:860px){nav.principal a.link{display:none}}
+
+  /* ── artigo ───────────────────────── */
+  .artigo-topo{padding:56px 0 40px;border-bottom:1px solid var(--traco)}
+  .migalhas{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;color:var(--sutil);margin-bottom:22px}
+  .migalhas a{color:var(--sutil);text-decoration:none}
+  .migalhas a:hover{color:var(--meridiano)}
+  .migalhas span[aria-current]{color:var(--nanquim)}
+  .artigo-topo h1{
+    font-family:var(--display);font-weight:800;font-size:clamp(2rem,4.6vw,3.05rem);
+    letter-spacing:-.02em;line-height:1.08;max-width:16em;
+  }
+  .subtitulo{margin-top:18px;font-size:1.12rem;color:var(--grafite);max-width:38em}
+  .assinatura{
+    margin-top:28px;padding-top:18px;border-top:1px solid var(--traco);
+    display:flex;flex-wrap:wrap;gap:8px 26px;font-family:var(--mono);font-size:.74rem;
+    letter-spacing:.04em;color:var(--sutil);
+  }
+  .assinatura b{color:var(--nanquim);font-weight:500}
+
+  .artigo-grid{display:grid;grid-template-columns:1fr 260px;gap:64px;align-items:start;padding:56px 0 88px}
+  @media(max-width:940px){.artigo-grid{grid-template-columns:1fr;gap:0}}
+
+  /* sumário lateral */
+  .sumario{position:sticky;top:96px;border-left:2px solid var(--traco);padding-left:20px}
+  @media(max-width:940px){
+    .sumario{position:static;border-left:none;border-top:1px solid var(--traco);border-bottom:1px solid var(--traco);
+      padding:24px 0;margin-bottom:40px}
+  }
+  .sumario p.rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--sutil);margin-bottom:14px}
+  .sumario ol{list-style:none;counter-reset:s}
+  .sumario li{counter-increment:s;margin-bottom:10px;font-size:.88rem;line-height:1.4}
+  .sumario li::before{content:counter(s,decimal-leading-zero) " ";font-family:var(--mono);font-size:.72rem;color:var(--sinal-texto)}
+  .sumario a{color:var(--grafite);text-decoration:none}
+  .sumario a:hover{color:var(--meridiano)}
+
+  /* corpo do texto */
+  .prosa{max-width:38em}
+  .prosa h2{
+    font-family:var(--display);font-weight:800;font-size:clamp(1.45rem,2.8vw,1.9rem);
+    letter-spacing:-.01em;line-height:1.18;margin:56px 0 16px;scroll-margin-top:96px;
+  }
+  .prosa h2:first-child{margin-top:0}
+  .prosa h3{font-family:var(--display);font-weight:700;font-size:1.16rem;margin:32px 0 10px;scroll-margin-top:96px}
+  .prosa p{margin-bottom:18px}
+  .prosa p.destaque{font-size:1.1rem;color:var(--nanquim)}
+  .prosa ul,.prosa ol{margin:0 0 22px;padding-left:0;list-style:none}
+  .prosa li{position:relative;padding:9px 0 9px 26px;border-top:1px solid var(--traco);font-size:.98rem}
+  .prosa li:last-child{border-bottom:1px solid var(--traco)}
+  .prosa li::before{content:"";position:absolute;left:4px;top:18px;width:8px;height:8px;border-radius:50%;background:var(--sinal)}
+  .prosa li b{font-weight:600}
+  .prosa strong{font-weight:600}
+  .prosa em{font-style:italic}
+  .prosa a{color:var(--meridiano)}
+  .prosa figure{margin:0 0 22px}
+  .prosa figcaption{font-family:var(--mono);font-size:.72rem;color:var(--sutil);margin-top:10px;line-height:1.6}
+
+  /* aviso de indicação */
+  .aviso{
+    border:1px solid var(--traco);border-left:3px solid var(--sinal);background:var(--branco);
+    border-radius:6px;padding:20px 22px;margin-bottom:36px;
+  }
+  .aviso p.rotulo{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;color:var(--sinal-texto);margin-bottom:8px}
+  .aviso p{font-size:.93rem;color:var(--grafite);margin:0}
+
+  /* resumo executivo */
+  .resumo{
+    background:var(--nanquim);color:var(--branco);border-radius:10px;padding:30px 30px 26px;margin-bottom:40px;
+  }
+  .resumo p.rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:#9FC2E8;margin-bottom:16px}
+  .resumo ul{list-style:none;margin:0}
+  .resumo li{
+    position:relative;padding:11px 0 11px 22px;border-top:1px solid rgba(255,255,255,.14);
+    font-size:.96rem;line-height:1.55;
+  }
+  .resumo li:first-of-type{border-top:none;padding-top:0}
+  .resumo li::before{content:"";position:absolute;left:2px;top:20px;width:7px;height:7px;border-radius:50%;background:var(--sinal)}
+  .resumo li:first-of-type::before{top:9px}
+  .resumo b{font-weight:600}
+  .resumo a{color:#9FC2E8}
+
+  /* tabela de números */
+  .tabela-borda{overflow-x:auto;margin:0 0 12px;border:1px solid var(--traco);border-radius:8px;background:var(--branco)}
+  table{border-collapse:collapse;width:100%;min-width:440px;font-size:.93rem}
+  caption{text-align:left;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--sutil);padding:14px 16px 0}
+  th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--traco);vertical-align:top}
+  thead th{
+    font-family:var(--mono);font-weight:500;font-size:.72rem;letter-spacing:.08em;
+    color:var(--sutil);border-bottom:1px solid var(--traco);
+  }
+  tbody tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.num b{color:var(--nanquim);font-weight:500}
+  .nota-tabela{font-family:var(--mono);font-size:.72rem;color:var(--sutil);line-height:1.7;margin-bottom:22px}
+
+  /* chamada para o link */
+  .chamada{
+    border:1px solid var(--traco);background:var(--branco);border-radius:10px;
+    padding:30px;margin:40px 0;
+  }
+  .chamada p.rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--sinal-texto);margin-bottom:10px}
+  .chamada h3{font-family:var(--display);font-weight:800;font-size:1.35rem;line-height:1.2;margin:0 0 12px}
+  .chamada p{color:var(--grafite);font-size:.97rem;margin-bottom:20px}
+  .chamada .codigo{
+    display:inline-block;font-family:var(--mono);font-size:.9rem;letter-spacing:.16em;
+    background:var(--papel);border:1px dashed var(--traco);border-radius:6px;padding:9px 14px;margin-left:12px;
+    color:var(--nanquim);
+  }
+  @media(max-width:520px){.chamada .codigo{display:block;margin:14px 0 0;text-align:center}}
+  .chamada .rodape{font-family:var(--mono);font-size:.72rem;color:var(--sutil);margin:18px 0 0;line-height:1.7}
+
+  /* faq */
+  .faq{border-top:1px solid var(--traco);margin-top:20px}
+  .faq-item{border-bottom:1px solid var(--traco)}
+  .faq-item summary{
+    list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:24px;
+    padding:20px 0;font-family:var(--display);font-weight:700;font-size:1.05rem;line-height:1.3;color:var(--nanquim);
+  }
+  .faq-item summary::-webkit-details-marker{display:none}
+  .faq-item summary:hover{color:var(--meridiano)}
+  .faq-item .seta{
+    flex:0 0 auto;width:11px;height:11px;margin-right:4px;
+    border-right:2px solid var(--grafite);border-bottom:2px solid var(--grafite);
+    transform:rotate(45deg);transition:transform .2s ease;
+  }
+  .faq-item[open] .seta{transform:rotate(-135deg)}
+  .faq-item summary:hover .seta{border-color:var(--meridiano)}
+  @media (prefers-reduced-motion: reduce){.faq-item .seta{transition:none}}
+  .faq-item .resposta{padding:0 0 22px;max-width:60em}
+  .faq-item .resposta p{color:var(--grafite);font-size:.96rem;margin-bottom:12px}
+  .faq-item .resposta p:last-child{margin-bottom:0}
+
+  /* assinatura do autor */
+  .autor{
+    margin-top:56px;padding-top:32px;border-top:1px solid var(--traco);
+    display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;
+  }
+  @media(max-width:560px){.autor{grid-template-columns:1fr}}
+  .autor .selo-autor{
+    width:56px;height:56px;border-radius:8px;background:var(--nanquim);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .autor .selo-autor svg{width:34px;height:34px;display:block}
+  .autor p.rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--sutil);margin-bottom:8px}
+  .autor h2{font-family:var(--display);font-weight:700;font-size:1.1rem;margin:0 0 8px}
+  .autor p{color:var(--grafite);font-size:.94rem;margin-bottom:10px}
+
+  /* contato */
+  .contato{padding:88px 0;border-top:1px solid var(--traco)}
+  .contato-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:center}
+  @media(max-width:800px){.contato-grid{grid-template-columns:1fr}}
+  .contato h2{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,4vw,2.7rem);letter-spacing:-.015em;line-height:1.1}
+  .contato p{margin:16px 0 28px;color:var(--grafite);max-width:32em}
+  .cartao-contato{background:var(--nanquim);color:var(--branco);border-radius:10px;padding:30px}
+  .cartao-contato .rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:#9FC2E8;margin-bottom:8px}
+  .cartao-contato .linha{margin-bottom:20px}
+  .cartao-contato .linha:last-child{margin-bottom:0}
+  .cartao-contato a{color:var(--branco);text-decoration:none;font-weight:600;font-size:1.05rem}
+  .cartao-contato a:hover{color:#9FC2E8}
+
+  footer{padding:28px 0 40px;border-top:1px solid var(--traco)}
+  .pe{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;font-size:.85rem;color:var(--grafite)}
+  .pe a{color:var(--grafite);text-decoration:none}
+  .pe a:hover{color:var(--meridiano)}
+  .pe .mono{font-family:var(--mono);font-size:.75rem}
+  .pe .legal{flex:0 0 100%;font-family:var(--mono);font-size:.72rem;color:var(--grafite);letter-spacing:.01em}
+
+  /* ── recursos visuais do artigo Refy ───────────────── */
+  .artigo-grid .prosa{max-width:none;min-width:0}
+  .prosa > p, .prosa > ul, .prosa > ol, .prosa > h2, .prosa > h3, .prosa > .aviso, .prosa > details, .prosa > pre.cod, .prosa > .nota-tabela{max-width:38em}
+  .prosa > .resumo{max-width:38em}
+  .larga{max-width:none}
+  .quadro{margin:0 0 30px}
+  .quadro .moldura{border:1px solid var(--traco);border-radius:10px;overflow:hidden;background:var(--branco);box-shadow:0 18px 40px -26px rgba(18,43,63,.45)}
+  .quadro .barra{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#EAF0F3;border-bottom:1px solid var(--traco)}
+  .quadro .barra i{width:10px;height:10px;border-radius:50%;background:#C5D2DA;display:block}
+  .quadro .barra span{margin-left:10px;font-family:var(--mono);font-size:.7rem;color:var(--sutil);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .quadro img{display:block;width:100%;height:auto}
+  .quadro figcaption{font-family:var(--mono);font-size:.72rem;color:var(--sutil);margin-top:12px;line-height:1.6}
+  .quadro figcaption b{color:var(--nanquim);font-weight:500}
+  .par{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 0 30px}
+  @media(max-width:760px){.par{grid-template-columns:1fr}}
+  .par .quadro{margin:0}
+  .rotulo-par{display:inline-block;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;padding:4px 9px;border-radius:4px;margin-bottom:10px}
+  .rotulo-par.antes{background:#E1ECE8;color:#1E5A47}
+  .rotulo-par.depois{background:#F7E1D6;color:#8F3216}
+  .tira{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 12px}
+  @media(max-width:700px){.tira{grid-template-columns:1fr}}
+  .tira .quadro{margin:0}
+  .tira .quadro .passo{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--sinal-texto);margin-bottom:8px;display:block}
+
+  /* números em destaque */
+  .placar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 34px}
+  @media(max-width:820px){.placar{grid-template-columns:repeat(2,1fr)}}
+  .placar div{background:var(--branco);border:1px solid var(--traco);border-radius:10px;padding:18px 18px 16px;position:relative;overflow:hidden}
+  .placar div::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--sinal)}
+  .placar b{display:block;font-family:var(--display);font-weight:800;font-size:2.15rem;letter-spacing:-.02em;line-height:1;color:var(--nanquim)}
+  .placar span{display:block;margin-top:8px;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--sutil);line-height:1.5}
+
+  /* gráfico de barras em CSS */
+  .grafico{background:var(--branco);border:1px solid var(--traco);border-radius:10px;padding:22px 22px 16px;margin:0 0 12px}
+  .grafico h3{margin:0 0 4px!important;font-size:1.05rem!important}
+  .grafico .sub{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--sutil);margin-bottom:18px}
+  .linha-g{display:grid;grid-template-columns:118px 1fr 40px;gap:12px;align-items:center;margin-bottom:9px;font-size:.88rem}
+  .linha-g code{font-family:var(--mono);font-size:.78rem;color:var(--nanquim)}
+  .linha-g .trilho{height:14px;background:#EAF0F3;border-radius:3px;overflow:hidden}
+  .linha-g .trilho i{display:block;height:100%;background:var(--meridiano);border-radius:3px;width:0;animation:cresce 1s cubic-bezier(.2,.7,.2,1) forwards}
+  .linha-g .trilho i.sinal{background:var(--sinal)}
+  .linha-g .n{font-family:var(--mono);font-size:.8rem;text-align:right;font-variant-numeric:tabular-nums}
+  @keyframes cresce{from{width:0}to{width:var(--w)}}
+  @media(max-width:520px){.linha-g{grid-template-columns:96px 1fr 32px}}
+
+  /* linha do tempo */
+  .tempo{list-style:none;margin:0 0 30px!important;padding:0!important;position:relative}
+  .tempo::before{content:"";position:absolute;left:78px;top:8px;bottom:8px;width:2px;background:var(--traco)}
+  .tempo li{display:grid!important;grid-template-columns:70px 1fr;gap:26px;padding:10px 0!important;border:none!important;position:relative;font-size:.95rem}
+  .tempo li::before{content:""!important;position:absolute;left:73px!important;top:17px!important;width:12px!important;height:12px!important;border-radius:50%;background:var(--branco)!important;border:3px solid var(--meridiano)}
+  .tempo li.marco::before{border-color:var(--sinal)!important;background:var(--sinal)!important}
+  .tempo time{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;color:var(--sutil);padding-top:6px;text-align:right;line-height:1.35}
+  .tempo li div{padding-left:14px}
+  .tempo li b{display:block;font-weight:600}
+  .tempo li span{color:var(--grafite);font-size:.9rem}
+
+  /* paleta */
+  .paletas{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 12px}
+  @media(max-width:700px){.paletas{grid-template-columns:1fr}}
+  .paleta{border-radius:10px;padding:18px;border:1px solid var(--traco)}
+  .paleta.claro{background:#fbf7f2;color:#2b1912}
+  .paleta.escuro{background:#1d1714;color:#f3e8e0;border-color:#44352e}
+  .paleta p.t{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;margin-bottom:12px;opacity:.8}
+  .paleta .amostras{display:flex;gap:8px;margin-bottom:12px}
+  .paleta .amostras i{flex:1;height:46px;border-radius:6px;border:1px solid rgba(128,128,128,.28);display:block}
+  .paleta .leg{display:flex;gap:8px;font-family:var(--mono);font-size:.64rem;opacity:.85}
+  .paleta .leg span{flex:1}
+  .paleta .exemplo{font-family:'IBM Plex Serif',Georgia,serif;font-size:1.28rem;line-height:1.15;margin-top:14px}
+  .paleta.claro .exemplo em{color:#b9431d;font-style:normal}
+  .paleta.escuro .exemplo em{color:#ed7f58;font-style:normal}
+
+  pre.cod{max-width:none!important;background:var(--nanquim);color:#DCE7F0;border-radius:10px;padding:20px 22px;overflow-x:auto;font-family:var(--mono);font-size:.78rem;line-height:1.7;margin:0 0 12px}
+  pre.cod .c{color:#8FA6B8}
+  pre.cod .k{color:#9FC2E8}
+  pre.cod .v{color:#F3B565}
+  .resumo code{background:rgba(255,255,255,.14);color:#fff}
+  :not(pre) > code{font-family:var(--mono);font-size:.85em;background:#E9EFF2;border-radius:4px;padding:1px 6px}
+
+  /* diagrama do fluxo */
+  .fluxo-svg{width:100%;height:auto;display:block;background:var(--branco);border:1px solid var(--traco);border-radius:10px}
+  .fluxo-svg text{font-family:'IBM Plex Mono','Plex Mono Fallback',monospace}
+
+  /* citação */
+  .destaque-q{border-left:3px solid var(--sinal);padding:6px 0 6px 22px;margin:0 0 26px;max-width:34em;font-family:var(--display);font-weight:700;font-size:1.3rem;line-height:1.3;letter-spacing:-.005em}
+  @media (prefers-reduced-motion: reduce){.linha-g .trilho i{animation:none;width:var(--w)}}
+
+  /* ── artigo Observatório ───────────────────────────── */
+  pre.cod .add{color:#8FD6A4;display:inline-block;width:100%}
+  pre.cod .del{color:#F0A29B;display:inline-block;width:100%}
+  pre.cod .ctx{color:#8FA6B8}
+  .quadro.escuro .moldura{background:#0E1210;border-color:#24302A}
+  .quadro.escuro .barra{background:#161B18;border-bottom-color:#24302A}
+  .quadro.escuro .barra i{background:#2C3833}
+  .quadro.escuro .barra span{color:#7C8B84}
+  .tabela-borda td code, .tabela-borda th code{white-space:nowrap}
+  .fontes{list-style:none;margin:0 0 22px!important;padding:0!important}
+  .fontes li{font-size:.9rem!important;padding:8px 0 8px 26px!important}
+  .fontes li::before{top:15px!important}
+  .nota-inline{font-family:var(--mono);font-size:.74rem;color:var(--sutil);line-height:1.7}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://lbptecnologia.com.br/blog/arquitetura-observatorio-de-taxas/#artigo",
+      "headline": "Como construímos um observatório econômico usando Python, Git e dados públicos",
+      "alternativeHeadline": "A arquitetura do Observatório de Taxas",
+      "description": "Como o Observatório de Taxas coleta 15 séries do SGS do Banco Central com Python, versiona cada mudança no Git, gera páginas estáticas no GitHub Actions e permite conferir qualquer número até o commit de origem.",
+      "inLanguage": "pt-BR",
+      "datePublished": "2026-11-11",
+      "dateModified": "2026-11-11",
+      "url": "https://lbptecnologia.com.br/blog/arquitetura-observatorio-de-taxas/",
+      "mainEntityOfPage": { "@id": "https://lbptecnologia.com.br/blog/arquitetura-observatorio-de-taxas/" },
+      "image": "https://lbptecnologia.com.br/blog/arquitetura-observatorio-de-taxas/img/og-observatorio.png",
+      "wordCount": 2944,
+      "articleSection": "Engenharia de dados",
+      "keywords": "Observatório de Taxas, API SGS Banco Central, Python, Git, GitHub Actions, GitHub Pages, IPCA, IGP-M, séries históricas, dados abertos",
+      "author": { "@type": "Organization", "@id": "https://lbptecnologia.com.br/#organization", "name": "LBP Tecnologia" },
+      "contributor": { "@type": "Person", "name": "Leandro Borges Pereira", "jobTitle": "Responsável técnico do Observatório de Taxas", "worksFor": { "@id": "https://lbptecnologia.com.br/#organization" } },
+      "publisher": { "@id": "https://lbptecnologia.com.br/#organization" },
+      "isPartOf": { "@id": "https://lbptecnologia.com.br/blog/#blog" },
+      "about": { "@type": "WebSite", "name": "Observatório de Taxas", "url": "https://observatoriodetaxas.tec.br/" },
+      "mentions": { "@type": "SoftwareSourceCode", "name": "observatorio-taxas", "codeRepository": "https://github.com/iosbilario/observatorio-taxas", "programmingLanguage": "Python", "license": "https://opensource.org/licenses/MIT" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://lbptecnologia.com.br/" },
+        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://lbptecnologia.com.br/blog/" },
+        { "@type": "ListItem", "position": 3, "name": "Como construímos o Observatório de Taxas" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://lbptecnologia.com.br/blog/arquitetura-observatorio-de-taxas/#faq",
+      "mainEntity": [
+        {"@type": "Question", "name": "De onde vêm os números do Observatório de Taxas?", "acceptedAnswer": {"@type": "Answer", "text": "Da API pública do SGS (Sistema Gerenciador de Séries Temporais) do Banco Central do Brasil. O SGS também redistribui séries de outros órgãos: IPCA e INPC são produzidos pelo IBGE, e IGP-M e IGP-DI pela FGV IBRE. Cada página do Observatório informa o produtor do índice e a série do SGS usada."}},
+        {"@type": "Question", "name": "Com que frequência os dados são atualizados?", "acceptedAnswer": {"@type": "Answer", "text": "Um workflow do GitHub Actions consulta o SGS a cada 6 horas. Essa é a frequência de consulta. Os índices mensais só mudam quando o produtor divulga um valor novo ou revisado, e o repositório só recebe um commit quando algum arquivo muda."}},
+        {"@type": "Question", "name": "Posso reutilizar os dados e o código?", "acceptedAnswer": {"@type": "Answer", "text": "O código está sob licença MIT. As séries do Banco Central seguem a ODbL 1.0, com atribuição. IPCA, INPC, IGP-M e IGP-DI não são relicenciados pelo Observatório e seguem os termos de IBGE e FGV IBRE, que devem ser citados. O arquivo LICENSE-DADOS.md do repositório detalha cada caso e não substitui parecer jurídico."}},
+        {"@type": "Question", "name": "O Observatório de Taxas é gratuito?", "acceptedAnswer": {"@type": "Answer", "text": "Sim. O site é estático, gratuito e não exige cadastro. O projeto é independente e mantido pela LBP Tecnologia."}}
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topo">
+  <div class="wrap topo-inner">
+    <a class="marca" href="../../" aria-label="LBP Tecnologia — início">
+      <svg viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+        <path d="M18 10 h12 v56 h56 v12 H18 Z" fill="#122B3F"/>
+        <path d="M38 57 L52 48 L58 52 L72 22" fill="none" stroke="#122B3F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="72" cy="22" r="9" fill="#E08A1E"/>
+      </svg>
+      <span class="nome">LBP<small>TECNOLOGIA</small></span>
+    </a>
+    <nav class="principal" aria-label="Navegação principal">
+      <a class="link" href="../../#servicos">Serviços</a>
+      <a class="link" href="../../#produtos">Produtos</a>
+      <a class="link" href="../">Blog</a>
+      <a class="btn btn-cheio" href="../../#contato">Fale com a LBP</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo">
+
+  <div class="artigo-topo">
+    <div class="wrap">
+      <nav class="migalhas" aria-label="Trilha de navegação">
+        <a href="../../">Início</a> · <a href="../">Blog</a> · <span aria-current="page">Arquitetura do Observatório de Taxas</span>
+      </nav>
+      <h1>Como construímos um observatório econômico usando Python, Git e dados públicos</h1>
+      <p class="subtitulo">A arquitetura do Observatório de Taxas, um projeto independente que organiza indicadores econômicos brasileiros, preserva séries históricas e disponibiliza ferramentas gratuitas de consulta e cálculo.</p>
+      <p class="assinatura">
+        <span>POR <b>LBP TECNOLOGIA</b></span>
+        <span>RESPONSÁVEL TÉCNICO <b>LEANDRO BORGES PEREIRA</b></span>
+        <span><time datetime="2026-11-11">11 DE NOVEMBRO DE 2026</time></span>
+        <span>LEITURA ~12 MIN</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="wrap artigo-grid">
+
+    <article class="prosa">
+
+      <div class="aviso">
+        <p class="rotulo">TRANSPARÊNCIA</p>
+        <p>
+          O Observatório de Taxas é um projeto da própria LBP Tecnologia, que publica este blog. Não há
+          link de indicação neste texto. As afirmações técnicas foram conferidas em 11 de novembro de 2026
+          contra o código da branch <code>main</code> do repositório e contra o site publicado, e o que não
+          deu para verificar está dito no texto. Os números das capturas de tela mudam com cada coleta.
+        </p>
+      </div>
+
+      <div class="resumo">
+        <p class="rotulo">RESUMO EM 5 LINHAS</p>
+        <ul>
+          <li>O Observatório consulta <b>15 séries</b> da API do SGS, do Banco Central, a cada 6 horas e guarda cada uma em JSON. O <b>Git</b> registra toda mudança de valor como um commit.</li>
+          <li>O pipeline é Python rodando no <b>GitHub Actions</b>. O site é HTML estático gerado a partir dos JSONs e publicado pelo <b>GitHub Pages</b>, sem servidor próprio e sem banco de dados.</li>
+          <li>O Banco Central <b>distribui</b> as séries, mas IPCA e INPC são produzidos pelo IBGE, e IGP-M e IGP-DI pela FGV IBRE. Cada página informa o produtor.</li>
+          <li>Qualquer número pode ser conferido: o JSON público, a fórmula de composição e o commit em que o valor entrou ou foi revisado.</li>
+          <li>O código é MIT. Os dados seguem os termos de cada produtor, e IBGE e FGV IBRE <b>não são relicenciados</b>.</li>
+        </ul>
+      </div>
+
+      <div class="placar" role="list" aria-label="Números do projeto em 11/11/2026">
+        <div role="listitem"><b>15</b><span>SÉRIES MONITORADAS<br>NO config.yml</span></div>
+        <div role="listitem"><b>6 h</b><span>ENTRE CONSULTAS AO SGS<br>cron 0 */6 * * *</span></div>
+        <div role="listitem"><b>642</b><span>COMMITS NO REPOSITÓRIO<br>1º EM 15/06/2026</span></div>
+        <div role="listitem"><b>535</b><span>URLs NO SITEMAP<br>EM 11/11/2026</span></div>
+      </div>
+
+      <h2 id="problema">1. O problema: o número do mês existe, o caminho até ele se perde</h2>
+
+      <p class="destaque">
+        Quem reajusta um aluguel de outubro precisa de um número só, o IGP-M acumulado em 12 meses até o mês certo.
+      </p>
+
+      <p>
+        Esse número sai de uma divulgação mensal, vira manchete e planilha, e dali em diante ninguém sabe
+        mais de qual série ele veio, quais meses entraram na conta ou se o valor foi revisado depois.
+        Selic, IPCA, IGP-M e dólar também vêm de instituições diferentes, em calendários diferentes, e
+        costumam ser consultados em períodos específicos: o mês do reajuste, a data do contrato.
+      </p>
+
+      <p>
+        O <a href="https://observatoriodetaxas.tec.br/" target="_blank" rel="noopener">Observatório de Taxas<span class="vh"> (abre em nova aba)</span></a> organiza essas séries num lugar só, guarda cada coleta e
+        oferece ferramentas gratuitas de consulta, de <a href="https://observatoriodetaxas.tec.br/reajuste/" target="_blank" rel="noopener">reajuste de contratos<span class="vh"> (abre em nova aba)</span></a> e de
+        <a href="https://observatoriodetaxas.tec.br/correcao/" target="_blank" rel="noopener">correção monetária<span class="vh"> (abre em nova aba)</span></a>. É um projeto independente da LBP Tecnologia, com
+        responsabilidade técnica de Leandro Borges Pereira, e o primeiro commit é de 15 de junho de 2026.
+        O resto deste texto descreve como ele funciona por dentro, na ordem em que um dado atravessa o sistema.
+      </p>
+
+      <figure class="quadro escuro">
+  <div class="moldura">
+    <div class="barra" aria-hidden="true"><i></i><i></i><i></i><span>observatoriodetaxas.tec.br</span></div>
+    <img src="img/observatorio-painel.png" alt="Página inicial do Observatório de Taxas em 11 de novembro de 2026, fundo escuro, com Meta Selic 13,75%, IPCA 12 meses 4,58%, dólar R$ 5,5840, IGP-M 1,47% e desemprego 5,2%, cada um com minigráfico, e a linha de coleta com o commit cc2e9043." width="1440" height="1000" loading="lazy" decoding="async">
+  </div>
+  <figcaption><b>Painel do Observatório, capturado em 11/11/2026.</b> A linha “coletado às 20:49 · commit cc2e9043 · fonte SGS/BACEN” liga o que está na tela ao commit que gerou a página.</figcaption>
+</figure>
+
+      <h2 id="arquitetura">2. A arquitetura</h2>
+
+      <p>
+        A decisão central foi não ter servidor. O Git faz o papel de banco de dados temporal, o GitHub Actions
+        é o motor e o GitHub Pages entrega os arquivos. O diagrama abaixo mostra o caminho completo, e o
+        trecho tracejado é o que o workflow <code>monitor.yml</code> executa.
+      </p>
+
+      <svg class="fluxo-svg" viewBox="0 0 880 292" role="img" aria-labelledby="ar-t ar-d">
+  <title id="ar-t">Pipeline do Observatório de Taxas</title>
+  <desc id="ar-d">Linha de cima: API SGS do Banco Central, fetch.py, arquivos JSON em data e geradores Python. Linha de baixo: pasta docs, commit e push apenas se algo mudou, GitHub Pages e IndexNow. As etapas até o commit rodam dentro do GitHub Actions, no workflow monitor.yml, a cada 6 horas.</desc>
+  <defs>
+    <marker id="a1" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="#122B3F"/></marker>
+  </defs>
+  <path d="M10 34 H774 V162 H404 V268 H10 Z" fill="#F5F7F8" stroke="#E08A1E" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="24" y="24" font-size="10" letter-spacing="1.4" fill="#9A5E0B">GITHUB ACTIONS · monitor.yml · cron 0 */6 * * *</text>
+  <g font-size="11" fill="#122B3F">
+    <rect x="24" y="56" width="160" height="62" rx="8" fill="#fff" stroke="#122B3F" stroke-width="1.5"/>
+    <text x="104" y="82" text-anchor="middle" font-weight="500">API SGS</text>
+    <text x="104" y="101" text-anchor="middle" fill="#5E7280" font-size="10">Banco Central · pública</text>
+
+    <rect x="214" y="56" width="160" height="62" rx="8" fill="#fff" stroke="#122B3F" stroke-width="1.5"/>
+    <text x="294" y="82" text-anchor="middle" font-weight="500">scripts/fetch.py</text>
+    <text x="294" y="101" text-anchor="middle" fill="#5E7280" font-size="10">15 séries do config.yml</text>
+
+    <rect x="404" y="56" width="160" height="62" rx="8" fill="#fff" stroke="#122B3F" stroke-width="1.5"/>
+    <text x="484" y="82" text-anchor="middle" font-weight="500">data/*.json</text>
+    <text x="484" y="101" text-anchor="middle" fill="#5E7280" font-size="10">uma série por arquivo</text>
+
+    <rect x="594" y="56" width="160" height="62" rx="8" fill="#fff" stroke="#122B3F" stroke-width="1.5"/>
+    <text x="674" y="82" text-anchor="middle" font-weight="500">geradores Python</text>
+    <text x="674" y="101" text-anchor="middle" fill="#5E7280" font-size="10">páginas e sitemap</text>
+
+    <rect x="24" y="190" width="160" height="62" rx="8" fill="#fff" stroke="#122B3F" stroke-width="1.5"/>
+    <text x="104" y="216" text-anchor="middle" font-weight="500">docs/</text>
+    <text x="104" y="235" text-anchor="middle" fill="#5E7280" font-size="10">HTML + JSON + sitemap</text>
+
+    <rect x="214" y="190" width="160" height="62" rx="8" fill="#122B3F"/>
+    <text x="294" y="216" text-anchor="middle" font-weight="500" fill="#fff">commit + push</text>
+    <text x="294" y="235" text-anchor="middle" fill="#9FC2E8" font-size="10">só se algo mudou</text>
+
+    <rect x="444" y="190" width="160" height="62" rx="8" fill="#fff" stroke="#122B3F" stroke-width="1.5"/>
+    <text x="524" y="216" text-anchor="middle" font-weight="500">GitHub Pages</text>
+    <text x="524" y="235" text-anchor="middle" fill="#5E7280" font-size="10">publica /docs da main</text>
+
+    <rect x="634" y="190" width="160" height="62" rx="8" fill="#fff" stroke="#5E7280" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <text x="714" y="216" text-anchor="middle" font-weight="500" fill="#51636F">IndexNow</text>
+    <text x="714" y="235" text-anchor="middle" fill="#5E7280" font-size="10">preparado, sem 1ª execução</text>
+  </g>
+  <g stroke="#122B3F" stroke-width="1.8" fill="none" marker-end="url(#a1)">
+    <path d="M184 87 H212"/><path d="M374 87 H402"/><path d="M564 87 H592"/>
+    <path d="M674 118 V146 H104 V188"/>
+    <path d="M184 221 H212"/><path d="M374 221 H442"/><path d="M604 221 H632"/>
+  </g>
+</svg>
+      <p class="nota-tabela" style="margin-top:12px">
+        fonte: <code>.github/workflows/monitor.yml</code> e <code>README.md</code> do repositório · o Pages publica a pasta <code>/docs</code> da branch <code>main</code>
+      </p>
+
+      <h3 id="coleta">Coleta: Python e a API do SGS</h3>
+
+      <p>
+        O <code>config.yml</code> lista as séries pelo código do SGS e aponta o endereço da API. Cada série
+        é uma entrada pequena:
+      </p>
+
+      <pre class="cod" aria-label="Trecho do config.yml com duas séries"><span class="c"># config.yml (trecho)</span>
+base_url: "https://api.bcb.gov.br/dados/serie/bcdata.sgs.{codigo}/dados"
+
+series:
+  - codigo: 189
+    nome: "IGP-M - variação mensal (%)"
+    grupo: "Inflação"
+  - codigo: 433
+    nome: "IPCA - variação mensal (%)"
+    grupo: "Inflação"</pre>
+
+      <p>
+        O <code>scripts/fetch.py</code> lê esse arquivo e pede ao SGS os últimos 8 pontos de cada série.
+        Pedir mais de um ponto cobre execuções perdidas. Os pontos novos são fundidos por data com o que já
+        existe: uma data que já estava no arquivo recebe o valor mais recente, e é assim que as revisões
+        entram. Por escolha do projeto, uma série que falha não derruba o job, e as outras seguem.
+      </p>
+
+      <p>
+        O resultado fica em <code>data/&lt;codigo&gt;_history.json</code>, uma lista de pares
+        <code>{data, valor}</code> ordenada por data, ao lado de um arquivo com o último ponto e de um
+        manifesto (<code>series.json</code>). Os arquivos têm chaves ordenadas e indentação fixa, para que o
+        <code>git diff</code> mostre só o que mudou. Uma cópia vai para <code>docs/data/</code>, porque o
+        Pages só publica o que está dentro de <code>docs/</code>.
+      </p>
+
+      <h3 id="geracao">Geração: Python de novo, sem framework</h3>
+
+      <p>
+        Depois da coleta, o workflow roda geradores Python na sequência: <code>build_pages.py</code> escreve
+        as páginas de reajuste, <code>build_correcao.py</code> as de correção monetária,
+        <code>render_index.py</code> assa o boletim da página inicial e regenera o sitemap,
+        e outros scripts replicam a navegação, atualizam os hashes da política de segurança de conteúdo e
+        geram o card social com os números do dia. Quem edita o site edita os geradores em
+        <code>scripts/</code>, nunca o HTML em <code>docs/reajuste/</code>, porque ele é reescrito a cada coleta.
+      </p>
+
+      <p>
+        O último passo é o <code>git add data/ docs/</code> seguido de um commit, mas só quando
+        <code>git diff --cached</code> não está vazio. Na maior parte das execuções nada mudou e nenhum
+        commit é criado.
+      </p>
+
+      <h3 id="seis-horas">Seis horas é a frequência de consulta</h3>
+
+      <p>
+        O cron roda a cada 6 horas (em UTC), e isso diz com que frequência o robô pergunta ao Banco Central.
+        Não diz com que frequência saem números novos. O IPCA e o IGP-M são mensais, a Meta Selic muda em
+        datas específicas e o dólar varia todo dia útil. O Observatório também não controla quanto tempo o
+        SGS leva para refletir uma divulgação do produtor, e por isso a página de cada mês informa que a
+        data de divulgação não é registrada e remete ao calendário de quem produz o índice.
+      </p>
+
+      <h3 id="confianca">Duas travas contra regressão</h3>
+
+      <p>
+        Nos pull requests, o <code>validate.yml</code> roda os testes, regenera as páginas e confere que o
+        resultado é igual ao que está commitado. Os testes incluem uma comparação entre o acumulado de 12
+        meses calculado pelo Observatório e a série oficial do IPCA em 12 meses (SGS 13522). Do lado do
+        job que escreve no repositório, as dependências são instaladas com <code>--require-hashes</code> e as
+        actions são fixadas por SHA de commit.
+      </p>
+
+      <h2 id="procedencia">3. De onde vem cada número: produtor e distribuidor</h2>
+
+      <p>
+        O Banco Central distribui um conjunto grande de séries pelo SGS, mas produz só parte delas. A
+        diferença importa na hora de citar. Escrever “IPCA, segundo o Banco Central” atribui ao
+        distribuidor um número que o IBGE calcula.
+      </p>
+
+      <div class="tabela-borda">
+        <table>
+          <caption>PRODUTOR E SÉRIE NO SGS · AS 15 SÉRIES DO config.yml</caption>
+          <thead>
+            <tr><th scope="col">Indicador</th><th scope="col">Produzido por</th><th scope="col">Série no SGS</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>IPCA (mensal e 12 meses), INPC</td><td>IBGE</td><td class="num">433, 13522, 188</td></tr>
+            <tr><td>Taxa de desocupação (PNAD Contínua)</td><td>IBGE</td><td class="num">24369</td></tr>
+            <tr><td>IGP-M, IGP-DI</td><td>FGV IBRE</td><td class="num">189, 190</td></tr>
+            <tr><td>Meta Selic, Selic anualizada, Selic acumulada no mês</td><td>Banco Central</td><td class="num">432, 1178, 4390</td></tr>
+            <tr><td>TR e poupança (depósitos até 03/05/2012)</td><td>Banco Central</td><td class="num">226, 25</td></tr>
+            <tr><td>Câmbio USD/BRL e EUR/BRL, IBC-Br</td><td>Banco Central</td><td class="num">1, 10813, 21619, 24363</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nota-tabela">
+        fonte: <a href="https://github.com/iosbilario/observatorio-taxas/blob/main/README.md" target="_blank" rel="noopener">README do repositório<span class="vh"> (abre em nova aba)</span></a> e <a href="https://github.com/iosbilario/observatorio-taxas/blob/main/LICENSE-DADOS.md" target="_blank" rel="noopener">LICENSE-DADOS.md<span class="vh"> (abre em nova aba)</span></a>
+      </p>
+
+      <p>
+        As referências primárias de cada produtor são a página do
+        <a href="https://www.ibge.gov.br/estatisticas/economicas/precos-e-custos/9256-indice-nacional-de-precos-ao-consumidor-amplo.html" target="_blank" rel="noopener">IPCA no IBGE<span class="vh"> (abre em nova aba)</span></a>,
+        o portal da <a href="https://portalibre.fgv.br/igp" target="_blank" rel="noopener">FGV IBRE para os IGPs<span class="vh"> (abre em nova aba)</span></a> e o
+        <a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">SGS do Banco Central<span class="vh"> (abre em nova aba)</span></a>. Na ficha técnica de cada página de
+        mês, o Observatório informa o indicador, o produtor, a série do SGS onde o valor foi obtido, a
+        competência e o critério de acumulação.
+      </p>
+
+      <h2 id="auditoria">4. Os dados podem ser auditados</h2>
+
+      <p>
+        A promessa do projeto é que um visitante consiga ir do número na tela até o commit em que ele entrou.
+        Vale percorrer o caminho com um caso real, o IGP-M de outubro de 2026.
+      </p>
+
+      <figure class="quadro escuro">
+  <div class="moldura">
+    <div class="barra" aria-hidden="true"><i></i><i></i><i></i><span>observatoriodetaxas.tec.br/reajuste/igpm-outubro-2026/</span></div>
+    <img src="img/observatorio-reajuste-igpm-outubro-2026.png" alt="Página de reajuste do IGP-M de outubro de 2026: acumulado em 12 meses de 5,25%, fator 1,052465 e exemplo de aluguel de R$ 2.000,00 passando a R$ 2.104,93, com calculadora." width="1440" height="1000" loading="lazy" decoding="async">
+  </div>
+  <figcaption><b>Uma das páginas de mês.</b> Resultado, fator e exemplo estão no HTML. A calculadora logo abaixo é o único trecho que depende de JavaScript.</figcaption>
+</figure>
+
+      <h3 id="passo-conta">Passo 1: refazer a conta</h3>
+
+      <p>
+        A página informa 1,47% no mês e 5,25% em 12 meses, com fator 1,052465. O acumulado é composto, o
+        produto de (1 + variação mensal ÷ 100) nos 12 meses, menos 1. Os 12 valores estão no JSON público,
+        e este script refaz a conta sem depender do site:
+      </p>
+
+      <pre class="cod" aria-label="Script em Python para recalcular o acumulado de 12 meses do IGP-M"><span class="c"># recalcula o acumulado de 12 meses a partir do JSON público</span>
+import json, urllib.request
+
+url = "https://observatoriodetaxas.tec.br/data/189_history.json"
+serie = json.load(urllib.request.urlopen(url))
+
+fator = 1.0
+for ponto in serie[-12:]:
+    fator *= 1 + float(ponto["valor"]) / 100
+
+print(serie[-12]["data"], serie[-1]["data"], round(fator, 6), round((fator - 1) * 100, 2))
+
+<span class="c"># em 11/11/2026 a saída foi: 01/11/2025 01/10/2026 1.052465 5.25</span></pre>
+
+      <p>
+        A ficha técnica avisa de um limite desse método: como parte das variações mensais é publicada com duas
+        casas, o resultado pode diferir em centésimos de ponto percentual do acumulado que a FGV IBRE divulga,
+        calculado com números-índice. É uma diferença de arredondamento, e o Observatório escreve isso na própria
+        página.
+      </p>
+
+      <h3 id="passo-commit">Passo 2: achar o commit</h3>
+
+      <p>
+        O valor 1,47 para a competência de outubro entrou no repositório no commit
+        <a href="https://github.com/iosbilario/observatorio-taxas/commit/ad5e5e3690d0b47ef3fe41302b7a9b4c4b578377" target="_blank" rel="noopener">ad5e5e3<span class="vh"> (abre em nova aba)</span></a>, feito pelo robô em 29 de
+        outubro de 2026. Procurando a string do valor no histórico do arquivo, o Git devolve esse commit e mais nenhum:
+      </p>
+
+      <pre class="cod" aria-label="Busca do valor no histórico do Git"><span class="c">$ git log -S'"valor": "1.47"' --oneline -- data/189_history.json</span>
+ad5e5e3 chore: snapshot 2026-10-29</pre>
+
+      <p>O diff do arquivo da série nesse commit é este:</p>
+
+      <pre class="cod" aria-label="Diff do commit ad5e5e3 em data/189_history.json"><span class="c">$ git show ad5e5e3 -- data/189_history.json</span>
+<span class="ctx">commit ad5e5e3690d0b47ef3fe41302b7a9b4c4b578377
+Author: github-actions[bot]
+Date:   Thu Oct 29 11:57:00 2026 +0000
+
+    chore: snapshot 2026-10-29</span>
+
+<span class="ctx">   {
+     "data": "01/09/2026",
+     "valor": "1.57"</span>
+<span class="add">+  },
++  {
++    "data": "01/10/2026",
++    "valor": "1.47"</span>
+<span class="ctx">   }
+ ]</span></pre>
+
+      <h3 id="passo-revisao">Passo 3: ver uma revisão</h3>
+
+      <p>
+        Séries econômicas são revisadas. O IBC-Br (SGS 24363) é um exemplo no próprio histórico do projeto:
+        em 16 de outubro de 2026 o SGS passou a devolver outros valores para meses que já estavam no arquivo,
+        e a coleta sobrescreveu os antigos. O site mostra o valor atual, e o Git guarda o anterior no
+        <a href="https://github.com/iosbilario/observatorio-taxas/commit/9f433465cacebd0f1e88ddf11abcfc70653fffda" target="_blank" rel="noopener">commit 9f43346<span class="vh"> (abre em nova aba)</span></a>:
+      </p>
+
+      <pre class="cod" aria-label="Diff do commit 9f43346 em data/24363_history.json"><span class="c">$ git show 9f43346 -- data/24363_history.json</span>
+<span class="ctx">commit 9f433465cacebd0f1e88ddf11abcfc70653fffda
+Date:   Fri Oct 16 15:45:25 2026 +0000
+
+    chore: snapshot 2026-10-16</span>
+
+<span class="ctx">     "data": "01/01/2026",</span>
+<span class="del">-    "valor": "103.77761"</span>
+<span class="add">+    "valor": "103.91741"</span>
+<span class="ctx">     "data": "01/02/2026",</span>
+<span class="del">-    "valor": "106.76075"</span>
+<span class="add">+    "valor": "106.86101"</span></pre>
+
+      <p>
+        Para uma referência permanente a um dado, o projeto usa tags. O CITATION.cff do repositório sugere,
+        por exemplo, o arquivo <code>data/189_history.json</code> na tag <code>v1.4.0</code>, que não muda
+        mesmo quando a série avança. O recibo emitido pela ferramenta VAR, que descrevo abaixo, também traz o
+        commit dos dados usados na conta.
+      </p>
+
+      <h2 id="ferramentas">5. Ferramentas disponíveis</h2>
+
+      <p>
+        Todas as páginas abaixo respondem publicamente, sem cadastro, e foram abertas em 11/11/2026:
+      </p>
+
+      <ul>
+        <li><b><a href="https://observatoriodetaxas.tec.br/" target="_blank" rel="noopener">Painel de indicadores<span class="vh"> (abre em nova aba)</span></a>.</b> Meta Selic, IPCA em 12 meses, dólar, IGP-M e desemprego do dia, com variação, minigráficos e o commit da última coleta.</li>
+        <li><b><a href="https://observatoriodetaxas.tec.br/reajuste/" target="_blank" rel="noopener">Reajuste de contratos<span class="vh"> (abre em nova aba)</span></a>.</b> Acumulado de 12 meses, fator e calculadora por índice (IPCA, INPC, IGP-M e IGP-DI), com uma página para cada mês desde dezembro de 2015.</li>
+        <li><b><a href="https://observatoriodetaxas.tec.br/correcao/" target="_blank" rel="noopener">Correção monetária<span class="vh"> (abre em nova aba)</span></a>.</b> Atualiza um valor entre dois meses pelo índice escolhido.</li>
+        <li><b><a href="https://observatoriodetaxas.tec.br/var.html" target="_blank" rel="noopener">VAR da Economia<span class="vh"> (abre em nova aba)</span></a>.</b> Compara dois períodos de uma série, mostra a regra de cálculo e emite um recibo com link permanente.</li>
+        <li><b><a href="https://observatoriodetaxas.tec.br/rebobinar.html" target="_blank" rel="noopener">Rebobinar<span class="vh"> (abre em nova aba)</span></a>.</b> A economia mês a mês, apresentada como linha do tempo de commits.</li>
+        <li><b><a href="https://observatoriodetaxas.tec.br/retransmissora.html" target="_blank" rel="noopener">Retransmissora<span class="vh"> (abre em nova aba)</span></a>.</b> Gera o código para incorporar um gráfico que se atualiza com os dados do site.</li>
+        <li><b><a href="https://observatoriodetaxas.tec.br/data/series.json" target="_blank" rel="noopener">Dados abertos em JSON<span class="vh"> (abre em nova aba)</span></a>.</b> O manifesto de séries e um arquivo de histórico por série.</li>
+      </ul>
+
+      <figure class="quadro escuro">
+  <div class="moldura">
+    <div class="barra" aria-hidden="true"><i></i><i></i><i></i><span>observatoriodetaxas.tec.br/correcao/</span></div>
+    <img src="img/observatorio-correcao-monetaria.png" alt="Calculadora de correção monetária do Observatório: índice IPCA, valor de R$ 1.000,00, de setembro de 2025 a setembro de 2026, e atalhos para páginas por índice." width="1440" height="1000" loading="lazy" decoding="async">
+  </div>
+  <figcaption><b>Correção monetária entre duas datas.</b> A regra aparece sob o botão: aplica, de forma composta, a variação mensal dos meses posteriores ao inicial até o final.</figcaption>
+</figure>
+
+      <figure class="quadro escuro">
+  <div class="moldura">
+    <div class="barra" aria-hidden="true"><i></i><i></i><i></i><span>observatoriodetaxas.tec.br/rebobinar.html</span></div>
+    <img src="img/observatorio-rebobinador.png" alt="Rebobinador do Observatório na edição de novembro de 2026, com o diff do mês entre o estado anterior e o novo para Meta Selic, IPCA, dólar, desemprego e IGP-M, e a linha do tempo de commits embaixo." width="1440" height="1000" loading="lazy" decoding="async">
+  </div>
+  <figcaption><b>Rebobinar.</b> A tela mostra o “diff do mês” e o commit de cada edição (741ec48, nesta captura), com a linha do tempo no rodapé.</figcaption>
+</figure>
+
+      <h2 id="pessoas-e-maquinas">6. Publicar para pessoas e para máquinas</h2>
+
+      <p>
+        Um observatório de dados é lido por gente com pressa e por programas. As escolhas abaixo servem aos
+        dois públicos, e cada uma está no código do repositório.
+      </p>
+
+      <ul>
+        <li><b>O resultado está no HTML.</b> Em cada página de mês, o título, o H1, a resposta direta e a ficha técnica já vêm no arquivo. A calculadora usa JavaScript, e o conteúdo principal não depende dele.</li>
+        <li><b>Uma URL por índice e por mês.</b> Por exemplo, <code>/reajuste/igpm-outubro-2026/</code>. São quatro índices com cerca de 130 meses cada, e uma URL publicada não muda de endereço quando a série avança.</li>
+        <li><b>Metadados que descrevem o que está visível.</b> As páginas de mês trazem canonical próprio e dados estruturados de FAQPage e BreadcrumbList, e as perguntas e respostas do marcador são as mesmas que aparecem na página.</li>
+        <li><b>Sitemap com <code>lastmod</code> honesto.</b> A data de uma URL só muda quando a impressão digital do conteúdo muda, e esse estado fica versionado em <code>data/sitemap_lastmod.json</code>.</li>
+        <li><b>JSON como fonte canônica.</b> O <code>llms.txt</code> do site pede que se use os arquivos de <code>/data/</code> em vez de raspar o HTML.</li>
+        <li><b>Política de segurança sem <code>unsafe-inline</code> nos scripts.</b> Os scripts inline são liberados por hash, e o workflow recalcula os hashes a cada coleta.</li>
+        <li><b>Aviso aos buscadores.</b> Existe um workflow de IndexNow que informa só as URLs alteradas. Segundo o README, ele aguarda a primeira execução manual, então não afirmo que esteja em operação.</li>
+      </ul>
+
+      <p>
+        Sobre busca generativa, um registro e um cuidado. O relatório de IA do Bing Webmaster Tools, em cerca
+        de três meses até 11 de novembro de 2026, listava aproximadamente 2,1 mil citações de URLs do
+        Observatório em respostas de IA, e a área <code>/reajuste/</code> concentrava mais de 80% das
+        citações do relatório exportado. Esses números foram exportados pelo responsável do projeto e estão
+        na linha de base do repositório (<code>organic-discovery/BASELINE.md</code>), e eu não os reproduzi.
+        Citação em resposta de IA não é visita nem clique. Este texto também não afirma que as decisões
+        acima causaram esse resultado: o próprio repositório trata a relação como hipótese a testar.
+      </p>
+
+      <h2 id="codigo-aberto">7. Código aberto e reutilização</h2>
+
+      <p>
+        O código está em <a href="https://github.com/iosbilario/observatorio-taxas" target="_blank" rel="noopener">github.com/iosbilario/observatorio-taxas<span class="vh"> (abre em nova aba)</span></a>. O README tem a instrução
+        para rodar tudo localmente (Python 3.12 ou superior, um ambiente virtual e a sequência de scripts), e
+        o guia do desenvolvedor detalha cada arquivo gerado. A licença do código e os direitos sobre os
+        dados são assuntos separados:
+      </p>
+
+      <div class="tabela-borda">
+        <table>
+          <caption>LICENÇAS E TERMOS · RESUMO DO LICENSE-DADOS.md</caption>
+          <thead>
+            <tr><th scope="col">O quê</th><th scope="col">Termos</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Código (scripts, testes, workflows, HTML, CSS e JS das páginas)</td><td>MIT</td></tr>
+            <tr><td>Séries do Banco Central</td><td>ODbL 1.0, com atribuição ao Banco Central do Brasil (SGS)</td></tr>
+            <tr><td>IPCA, INPC e desocupação (IBGE); IGP-M e IGP-DI (FGV IBRE)</td><td>Termos dos produtores. O Observatório não as relicencia</td></tr>
+            <tr><td>Textos explicativos do site</td><td>CC BY 4.0, com atribuição</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nota-tabela">
+        o arquivo do repositório registra que a ODbL foi conferida em 11/11/2026 pela API do portal de dados abertos em 7 séries, e que TR e EUR não foram localizadas na busca e seguem o mesmo tratamento · não é parecer jurídico
+      </p>
+
+      <p>
+        Na prática, quem usa o código pode copiar, adaptar e publicar. Quem reutiliza as séries precisa citar o
+        produtor e o canal, e quem pretende redistribuir IGP-M ou IGP-DI em escala ou com fins comerciais
+        deve falar antes com a FGV IBRE. O repositório também traz um <code>CITATION.cff</code> e um modelo de
+        atribuição pronto: “Fonte: IBGE (IPCA), via SGS/Banco Central do Brasil, série 433. Cálculo do
+        acumulado: Observatório de Taxas”.
+      </p>
+
+      <h2 id="limites">8. O que a arquitetura não resolve</h2>
+
+      <ul>
+        <li><b>A linha do tempo do Git começa em 15 de junho de 2026.</b> As séries vêm desde 2015 por uma carga inicial. Os commits mostram quando o Observatório viu cada valor, e não o dia em que o produtor o divulgou.</li>
+        <li><b>A fonte pode atrasar ou falhar.</b> Se o SGS não responde para uma série, o job segue com as outras e a série fica com o último valor guardado.</li>
+        <li><b>O acumulado pode diferir do oficial em centésimos</b>, pelo motivo de arredondamento explicado na seção 4.</li>
+        <li><b>É conteúdo informativo.</b> O Observatório não é recomendação financeira, e quem reajusta um contrato deve conferir o índice que o contrato prevê.</li>
+      </ul>
+
+      <h2 id="encerramento">9. Para explorar</h2>
+
+      <p>
+        O jeito mais rápido de avaliar o projeto é fazer a conta que descrevi: abra uma
+        <a href="https://observatoriodetaxas.tec.br/reajuste/" target="_blank" rel="noopener">página de reajuste<span class="vh"> (abre em nova aba)</span></a>, rode o script sobre o JSON e procure o commit no
+        <a href="https://github.com/iosbilario/observatorio-taxas" target="_blank" rel="noopener">repositório<span class="vh"> (abre em nova aba)</span></a>. Quem quiser testar a calculadora com um valor próprio pode usar a
+        <a href="https://observatoriodetaxas.tec.br/correcao/" target="_blank" rel="noopener">correção monetária<span class="vh"> (abre em nova aba)</span></a>. Se a conta não fechar ou a fonte estiver errada,
+        o caminho é abrir uma issue com a URL da página, o código da série e a fonte oficial que mostra o
+        valor correto.
+      </p>
+
+      <h2 id="fontes">Fontes e referências</h2>
+
+      <ul class="fontes">
+        <li>Repositório do projeto: <a href="https://github.com/iosbilario/observatorio-taxas" target="_blank" rel="noopener">github.com/iosbilario/observatorio-taxas<span class="vh"> (abre em nova aba)</span></a>, branch <code>main</code>, conferido em 11/11/2026.</li>
+        <li>Workflow de coleta: <a href="https://github.com/iosbilario/observatorio-taxas/blob/main/.github/workflows/monitor.yml" target="_blank" rel="noopener">monitor.yml<span class="vh"> (abre em nova aba)</span></a>. Coletor: <a href="https://github.com/iosbilario/observatorio-taxas/blob/main/scripts/fetch.py" target="_blank" rel="noopener">scripts/fetch.py<span class="vh"> (abre em nova aba)</span></a>.</li>
+        <li>Termos dos dados: <a href="https://github.com/iosbilario/observatorio-taxas/blob/main/LICENSE-DADOS.md" target="_blank" rel="noopener">LICENSE-DADOS.md<span class="vh"> (abre em nova aba)</span></a>. Citação: <a href="https://github.com/iosbilario/observatorio-taxas/blob/main/CITATION.cff" target="_blank" rel="noopener">CITATION.cff<span class="vh"> (abre em nova aba)</span></a>.</li>
+        <li>Banco Central do Brasil: <a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">Sistema Gerenciador de Séries Temporais<span class="vh"> (abre em nova aba)</span></a> e <a href="https://dadosabertos.bcb.gov.br/" target="_blank" rel="noopener">Portal de Dados Abertos<span class="vh"> (abre em nova aba)</span></a>.</li>
+        <li>IBGE: <a href="https://www.ibge.gov.br/estatisticas/economicas/precos-e-custos/9256-indice-nacional-de-precos-ao-consumidor-amplo.html" target="_blank" rel="noopener">Índice Nacional de Preços ao Consumidor Amplo<span class="vh"> (abre em nova aba)</span></a>. Esse domínio bloqueia consultas automatizadas, então o endereço não pôde ser verificado por script.</li>
+        <li>FGV IBRE: <a href="https://portalibre.fgv.br/igp" target="_blank" rel="noopener">Índices Gerais de Preços<span class="vh"> (abre em nova aba)</span></a>.</li>
+        <li>Licença: <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">Open Database License (ODbL) 1.0<span class="vh"> (abre em nova aba)</span></a>.</li>
+        <li>Sobre o projeto: <a href="https://observatoriodetaxas.tec.br/sobre/" target="_blank" rel="noopener">página Sobre do Observatório de Taxas<span class="vh"> (abre em nova aba)</span></a>.</li>
+      </ul>
+
+      <h2 id="perguntas">Perguntas frequentes</h2>
+
+      <div class="faq">
+        <details class="faq-item">
+          <summary>De onde vêm os números do Observatório de Taxas?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>Da API pública do SGS (Sistema Gerenciador de Séries Temporais) do Banco Central do Brasil. O SGS também redistribui séries de outros órgãos: IPCA e INPC são produzidos pelo IBGE, e IGP-M e IGP-DI pela FGV IBRE. Cada página do Observatório informa o produtor do índice e a série do SGS usada.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Com que frequência os dados são atualizados?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>Um workflow do GitHub Actions consulta o SGS a cada 6 horas. Essa é a frequência de consulta. Os índices mensais só mudam quando o produtor divulga um valor novo ou revisado, e o repositório só recebe um commit quando algum arquivo muda.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Posso reutilizar os dados e o código?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>O código está sob licença MIT. As séries do Banco Central seguem a ODbL 1.0, com atribuição. IPCA, INPC, IGP-M e IGP-DI não são relicenciados pelo Observatório e seguem os termos de IBGE e FGV IBRE, que devem ser citados. O arquivo LICENSE-DADOS.md do repositório detalha cada caso e não substitui parecer jurídico.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>O Observatório de Taxas é gratuito?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>Sim. O site é estático, gratuito e não exige cadastro. O projeto é independente e mantido pela LBP Tecnologia.</p></div>
+        </details>
+      </div>
+
+      <div class="autor">
+        <div class="selo-autor">
+          <svg viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+            <path d="M18 10 h12 v56 h56 v12 H18 Z" fill="#FFFFFF"/>
+            <path d="M38 57 L52 48 L58 52 L72 22" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="72" cy="22" r="9" fill="#E08A1E"/>
+          </svg>
+        </div>
+        <div>
+          <p class="rotulo">SOBRE O AUTOR</p>
+          <h2>LBP Tecnologia</h2>
+          <p>
+            Consultoria de São Paulo que constrói plataformas de dados na AWS, painéis auditáveis e sistemas web
+            para empresas. O responsável técnico do Observatório de Taxas é Leandro Borges Pereira, fundador da
+            LBP. A tese da casa é <strong>prova, não promessa</strong>.
+          </p>
+          <p><a href="../../">Conheça a LBP Tecnologia</a> · <a href="https://www.linkedin.com/company/lbptech" target="_blank" rel="noopener">LinkedIn<span class="vh"> (abre em nova aba)</span></a></p>
+        </div>
+      </div>
+
+    </article>
+
+    <aside class="sumario" aria-label="Sumário do artigo">
+      <p class="rotulo">NESTE ARTIGO</p>
+      <ol>
+        <li><a href="#problema">O problema</a></li>
+        <li><a href="#arquitetura">A arquitetura</a></li>
+        <li><a href="#procedencia">De onde vem cada número</a></li>
+        <li><a href="#auditoria">Os dados podem ser auditados</a></li>
+        <li><a href="#ferramentas">Ferramentas disponíveis</a></li>
+        <li><a href="#pessoas-e-maquinas">Pessoas e máquinas</a></li>
+        <li><a href="#codigo-aberto">Código aberto e reutilização</a></li>
+        <li><a href="#limites">O que não resolve</a></li>
+        <li><a href="#perguntas">Perguntas frequentes</a></li>
+      </ol>
+    </aside>
+
+  </div>
+
+  <section class="contato" aria-label="Contato">
+    <div class="wrap contato-grid">
+      <div>
+        <h2>Tem uma série de dados que precisa de histórico?</h2>
+        <p>
+          A LBP Tecnologia atende empresas (PJ) que precisam transformar dados em decisão auditável.
+          Uma conversa de 30 minutos costuma bastar para dizermos se conseguimos ajudar.
+        </p>
+        <a class="btn btn-cheio" href="mailto:contato@lbptecnologia.com.br?subject=Contato%20via%20blog%20da%20LBP">Escrever para a LBP</a>
+      </div>
+      <div class="cartao-contato">
+        <p class="rotulo">E-MAIL</p>
+        <p class="linha"><a href="mailto:contato@lbptecnologia.com.br">contato@lbptecnologia.com.br</a></p>
+        <p class="rotulo">LINKEDIN</p>
+        <p class="linha"><a href="https://www.linkedin.com/company/lbptech" target="_blank" rel="noopener">linkedin.com/company/lbptech<span class="vh"> (abre em nova aba)</span></a></p>
+        <p class="rotulo">PRODUTO PÚBLICO</p>
+        <p class="linha"><a href="https://observatoriodetaxas.tec.br" target="_blank" rel="noopener">observatoriodetaxas.tec.br<span class="vh"> (abre em nova aba)</span></a></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="pe">
+      <span>© 2026 LBP Tecnologia · São Paulo, Brasil · <a href="../">Blog</a></span>
+      <span class="mono">conteúdo informativo · não é recomendação financeira · conferido em 11/11/2026</span>
+      <span class="legal">LEANDRO BORGES PEREIRA TECNOLOGIA DA INFORMAÇÃO LTDA · CNPJ 60.776.636/0001-51</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
