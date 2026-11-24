@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Como usar o Observatório de Taxas no ChatGPT: Selic, dólar e correção</title>
+<meta name="description" content="Guia com telas reais do plugin Observatório de Taxas no ChatGPT: como ativar, que perguntas fazer sobre Selic, dólar e correção monetária, como conferir a fonte no SGS do Banco Central e como criar um alerta diário do dólar com tarefa agendada.">
+<link rel="canonical" href="https://lbptecnologia.com.br/blog/observatorio-de-taxas-no-chatgpt/">
+<meta name="theme-color" content="#F5F7F8">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+<meta name="author" content="LBP Tecnologia">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="LBP Tecnologia">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Como usar o Observatório de Taxas no ChatGPT">
+<meta property="og:description" content="Selic, dólar e correção com a série do Banco Central citada na resposta, e um alerta diário do dólar com tarefa agendada.">
+<meta property="og:url" content="https://lbptecnologia.com.br/blog/observatorio-de-taxas-no-chatgpt/">
+<meta property="og:image" content="https://lbptecnologia.com.br/blog/observatorio-de-taxas-no-chatgpt/img/og-chatgpt.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Página do plugin Observatório de Taxas no ChatGPT com três perguntas de exemplo sobre Selic e dólar.">
+<meta property="article:published_time" content="2026-11-24">
+<meta property="article:modified_time" content="2026-11-24">
+<meta property="article:author" content="LBP Tecnologia">
+<meta property="article:section" content="Guias">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Como usar o Observatório de Taxas no ChatGPT">
+<meta name="twitter:description" content="Selic, dólar e correção com a série do Banco Central citada na resposta, e um alerta diário do dólar com tarefa agendada.">
+<meta name="twitter:image" content="https://lbptecnologia.com.br/blog/observatorio-de-taxas-no-chatgpt/img/og-chatgpt.png">
+<meta name="twitter:image:alt" content="Página do plugin Observatório de Taxas no ChatGPT com três perguntas de exemplo sobre Selic e dólar.">
+<link rel="icon" type="image/png" sizes="96x96" href="../../assets/favicon.png">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"%3E%3Crect width="96" height="96" rx="18" fill="%23122B3F"/%3E%3Cg transform="translate(13.5,13.5) scale(0.72)"%3E%3Cpath d="M18 10 h12 v56 h56 v12 H18 Z" fill="%23FFFFFF"/%3E%3Cpath d="M38 57 L52 48 L58 52 L72 22" fill="none" stroke="%23FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/%3E%3Ccircle cx="72" cy="22" r="9" fill="%23E08A1E"/%3E%3C/g%3E%3C/svg%3E'>
+<link rel="manifest" href="../../manifest.webmanifest">
+
+<link rel="preload" href="../../fonts/archivo-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/plex-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+
+<style>
+  /* ── Fontes reais (WOFF2 latin, self-host) ─────────── */
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:700;font-display:swap;src:url('../../fonts/archivo-700.woff2') format('woff2')}
+  @font-face{font-family:'Archivo';font-style:normal;font-weight:800;font-display:swap;src:url('../../fonts/archivo-800.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url('../../fonts/plex-sans-400.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url('../../fonts/plex-sans-500.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url('../../fonts/plex-sans-600.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url('../../fonts/plex-mono-400.woff2') format('woff2')}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('../../fonts/plex-mono-500.woff2') format('woff2')}
+
+  /* ── Fallbacks metric-matched (CLS zero na troca) ──── */
+  @font-face{font-family:'Archivo Fallback';src:local('Arial');size-adjust:111.84%;ascent-override:78.50%;descent-override:18.78%;line-gap-override:0%}
+  @font-face{font-family:'Plex Sans Fallback';src:local('Arial');size-adjust:101.69%;ascent-override:100.80%;descent-override:27.04%;line-gap-override:0%}
+  @font-face{font-family:'Plex Mono Fallback';src:local('Courier New');size-adjust:99.93%;ascent-override:102.57%;descent-override:27.52%;line-gap-override:0%}
+
+  :root{
+    --papel:#F5F7F8;
+    --nanquim:#122B3F;
+    --meridiano:#1B5FAB;
+    --sinal:#E08A1E;
+    --sinal-texto:#9A5E0B;
+    --grafite:#51636F;
+    --sutil:#5E7280;
+    --traco:#D9E2E8;
+    --branco:#FFFFFF;
+    --display:'Archivo','Archivo Fallback',Arial,sans-serif;
+    --corpo:'IBM Plex Sans','Plex Sans Fallback',Arial,sans-serif;
+    --mono:'IBM Plex Mono','Plex Mono Fallback','Courier New',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    font-family:var(--corpo);color:var(--nanquim);background:var(--papel);
+    font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--meridiano)}
+  a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--nanquim);outline-offset:2px;border-radius:2px}
+  .cartao-contato a:focus-visible{outline-color:var(--sinal)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+  .pular{
+    position:absolute;left:12px;top:-60px;z-index:60;background:var(--nanquim);color:var(--branco);
+    padding:12px 18px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.95rem;
+    transition:top .15s ease;
+  }
+  .pular:focus{top:12px}
+
+  /* ── topo ─────────────────────────── */
+  header.topo{
+    position:sticky;top:0;z-index:20;background:rgba(245,247,248,.92);
+    backdrop-filter:blur(6px);border-bottom:1px solid var(--traco);
+  }
+  @media(max-width:860px){header.topo{backdrop-filter:none;background:rgba(245,247,248,.98)}}
+  .topo-inner{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .marca{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--nanquim)}
+  .marca svg{height:36px;width:auto;display:block}
+  .marca .nome{font-family:var(--display);font-weight:800;font-size:1.15rem;letter-spacing:.01em;line-height:1}
+  .marca .nome small{display:block;font-family:var(--corpo);font-weight:600;font-size:.62rem;letter-spacing:.28em;color:var(--meridiano)}
+  nav.principal{display:flex;align-items:center;gap:28px}
+  nav.principal a.link{font-size:.92rem;font-weight:500;color:var(--nanquim);text-decoration:none}
+  nav.principal a.link:hover{color:var(--meridiano)}
+  nav.principal a.btn-cheio{color:var(--branco)}
+  nav.principal a.btn-cheio:hover{color:var(--branco)}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;min-height:44px;
+    font-family:var(--corpo);font-weight:600;font-size:.95rem;
+    padding:10px 22px;border-radius:6px;text-decoration:none;border:1.5px solid transparent;
+  }
+  .btn-cheio{background:var(--nanquim);color:var(--branco)}
+  .btn-cheio:hover{background:var(--meridiano)}
+  .btn-linha{border-color:var(--nanquim);color:var(--nanquim)}
+  .btn-linha:hover{border-color:var(--meridiano);color:var(--meridiano)}
+  @media(max-width:860px){nav.principal a.link{display:none}}
+
+  /* ── artigo ───────────────────────── */
+  .artigo-topo{padding:56px 0 40px;border-bottom:1px solid var(--traco)}
+  .migalhas{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;color:var(--sutil);margin-bottom:22px}
+  .migalhas a{color:var(--sutil);text-decoration:none}
+  .migalhas a:hover{color:var(--meridiano)}
+  .migalhas span[aria-current]{color:var(--nanquim)}
+  .artigo-topo h1{
+    font-family:var(--display);font-weight:800;font-size:clamp(2rem,4.6vw,3.05rem);
+    letter-spacing:-.02em;line-height:1.08;max-width:16em;
+  }
+  .subtitulo{margin-top:18px;font-size:1.12rem;color:var(--grafite);max-width:38em}
+  .assinatura{
+    margin-top:28px;padding-top:18px;border-top:1px solid var(--traco);
+    display:flex;flex-wrap:wrap;gap:8px 26px;font-family:var(--mono);font-size:.74rem;
+    letter-spacing:.04em;color:var(--sutil);
+  }
+  .assinatura b{color:var(--nanquim);font-weight:500}
+
+  .artigo-grid{display:grid;grid-template-columns:1fr 260px;gap:64px;align-items:start;padding:56px 0 88px}
+  @media(max-width:940px){.artigo-grid{grid-template-columns:1fr;gap:0}}
+
+  /* sumário lateral */
+  .sumario{position:sticky;top:96px;border-left:2px solid var(--traco);padding-left:20px}
+  @media(max-width:940px){
+    .sumario{position:static;border-left:none;border-top:1px solid var(--traco);border-bottom:1px solid var(--traco);
+      padding:24px 0;margin-bottom:40px}
+  }
+  .sumario p.rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--sutil);margin-bottom:14px}
+  .sumario ol{list-style:none;counter-reset:s}
+  .sumario li{counter-increment:s;margin-bottom:10px;font-size:.88rem;line-height:1.4}
+  .sumario li::before{content:counter(s,decimal-leading-zero) " ";font-family:var(--mono);font-size:.72rem;color:var(--sinal-texto)}
+  .sumario a{color:var(--grafite);text-decoration:none}
+  .sumario a:hover{color:var(--meridiano)}
+
+  /* corpo do texto */
+  .prosa{max-width:38em}
+  .prosa h2{
+    font-family:var(--display);font-weight:800;font-size:clamp(1.45rem,2.8vw,1.9rem);
+    letter-spacing:-.01em;line-height:1.18;margin:56px 0 16px;scroll-margin-top:96px;
+  }
+  .prosa h2:first-child{margin-top:0}
+  .prosa h3{font-family:var(--display);font-weight:700;font-size:1.16rem;margin:32px 0 10px;scroll-margin-top:96px}
+  .prosa p{margin-bottom:18px}
+  .prosa p.destaque{font-size:1.1rem;color:var(--nanquim)}
+  .prosa ul,.prosa ol{margin:0 0 22px;padding-left:0;list-style:none}
+  .prosa li{position:relative;padding:9px 0 9px 26px;border-top:1px solid var(--traco);font-size:.98rem}
+  .prosa li:last-child{border-bottom:1px solid var(--traco)}
+  .prosa li::before{content:"";position:absolute;left:4px;top:18px;width:8px;height:8px;border-radius:50%;background:var(--sinal)}
+  .prosa li b{font-weight:600}
+  .prosa strong{font-weight:600}
+  .prosa em{font-style:italic}
+  .prosa a{color:var(--meridiano)}
+  .prosa figure{margin:0 0 22px}
+  .prosa figcaption{font-family:var(--mono);font-size:.72rem;color:var(--sutil);margin-top:10px;line-height:1.6}
+
+  /* aviso de indicação */
+  .aviso{
+    border:1px solid var(--traco);border-left:3px solid var(--sinal);background:var(--branco);
+    border-radius:6px;padding:20px 22px;margin-bottom:36px;
+  }
+  .aviso p.rotulo{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;color:var(--sinal-texto);margin-bottom:8px}
+  .aviso p{font-size:.93rem;color:var(--grafite);margin:0}
+
+  /* resumo executivo */
+  .resumo{
+    background:var(--nanquim);color:var(--branco);border-radius:10px;padding:30px 30px 26px;margin-bottom:40px;
+  }
+  .resumo p.rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:#9FC2E8;margin-bottom:16px}
+  .resumo ul{list-style:none;margin:0}
+  .resumo li{
+    position:relative;padding:11px 0 11px 22px;border-top:1px solid rgba(255,255,255,.14);
+    font-size:.96rem;line-height:1.55;
+  }
+  .resumo li:first-of-type{border-top:none;padding-top:0}
+  .resumo li::before{content:"";position:absolute;left:2px;top:20px;width:7px;height:7px;border-radius:50%;background:var(--sinal)}
+  .resumo li:first-of-type::before{top:9px}
+  .resumo b{font-weight:600}
+  .resumo a{color:#9FC2E8}
+
+  /* tabela de números */
+  .tabela-borda{overflow-x:auto;margin:0 0 12px;border:1px solid var(--traco);border-radius:8px;background:var(--branco)}
+  table{border-collapse:collapse;width:100%;min-width:440px;font-size:.93rem}
+  caption{text-align:left;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--sutil);padding:14px 16px 0}
+  th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--traco);vertical-align:top}
+  thead th{
+    font-family:var(--mono);font-weight:500;font-size:.72rem;letter-spacing:.08em;
+    color:var(--sutil);border-bottom:1px solid var(--traco);
+  }
+  tbody tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.num b{color:var(--nanquim);font-weight:500}
+  .nota-tabela{font-family:var(--mono);font-size:.72rem;color:var(--sutil);line-height:1.7;margin-bottom:22px}
+
+  /* chamada para o link */
+  .chamada{
+    border:1px solid var(--traco);background:var(--branco);border-radius:10px;
+    padding:30px;margin:40px 0;
+  }
+  .chamada p.rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--sinal-texto);margin-bottom:10px}
+  .chamada h3{font-family:var(--display);font-weight:800;font-size:1.35rem;line-height:1.2;margin:0 0 12px}
+  .chamada p{color:var(--grafite);font-size:.97rem;margin-bottom:20px}
+  .chamada .codigo{
+    display:inline-block;font-family:var(--mono);font-size:.9rem;letter-spacing:.16em;
+    background:var(--papel);border:1px dashed var(--traco);border-radius:6px;padding:9px 14px;margin-left:12px;
+    color:var(--nanquim);
+  }
+  @media(max-width:520px){.chamada .codigo{display:block;margin:14px 0 0;text-align:center}}
+  .chamada .rodape{font-family:var(--mono);font-size:.72rem;color:var(--sutil);margin:18px 0 0;line-height:1.7}
+
+  /* faq */
+  .faq{border-top:1px solid var(--traco);margin-top:20px}
+  .faq-item{border-bottom:1px solid var(--traco)}
+  .faq-item summary{
+    list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:24px;
+    padding:20px 0;font-family:var(--display);font-weight:700;font-size:1.05rem;line-height:1.3;color:var(--nanquim);
+  }
+  .faq-item summary::-webkit-details-marker{display:none}
+  .faq-item summary:hover{color:var(--meridiano)}
+  .faq-item .seta{
+    flex:0 0 auto;width:11px;height:11px;margin-right:4px;
+    border-right:2px solid var(--grafite);border-bottom:2px solid var(--grafite);
+    transform:rotate(45deg);transition:transform .2s ease;
+  }
+  .faq-item[open] .seta{transform:rotate(-135deg)}
+  .faq-item summary:hover .seta{border-color:var(--meridiano)}
+  @media (prefers-reduced-motion: reduce){.faq-item .seta{transition:none}}
+  .faq-item .resposta{padding:0 0 22px;max-width:60em}
+  .faq-item .resposta p{color:var(--grafite);font-size:.96rem;margin-bottom:12px}
+  .faq-item .resposta p:last-child{margin-bottom:0}
+
+  /* assinatura do autor */
+  .autor{
+    margin-top:56px;padding-top:32px;border-top:1px solid var(--traco);
+    display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;
+  }
+  @media(max-width:560px){.autor{grid-template-columns:1fr}}
+  .autor .selo-autor{
+    width:56px;height:56px;border-radius:8px;background:var(--nanquim);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .autor .selo-autor svg{width:34px;height:34px;display:block}
+  .autor p.rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--sutil);margin-bottom:8px}
+  .autor h2{font-family:var(--display);font-weight:700;font-size:1.1rem;margin:0 0 8px}
+  .autor p{color:var(--grafite);font-size:.94rem;margin-bottom:10px}
+
+  /* contato */
+  .contato{padding:88px 0;border-top:1px solid var(--traco)}
+  .contato-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:center}
+  @media(max-width:800px){.contato-grid{grid-template-columns:1fr}}
+  .contato h2{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,4vw,2.7rem);letter-spacing:-.015em;line-height:1.1}
+  .contato p{margin:16px 0 28px;color:var(--grafite);max-width:32em}
+  .cartao-contato{background:var(--nanquim);color:var(--branco);border-radius:10px;padding:30px}
+  .cartao-contato .rotulo{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:#9FC2E8;margin-bottom:8px}
+  .cartao-contato .linha{margin-bottom:20px}
+  .cartao-contato .linha:last-child{margin-bottom:0}
+  .cartao-contato a{color:var(--branco);text-decoration:none;font-weight:600;font-size:1.05rem}
+  .cartao-contato a:hover{color:#9FC2E8}
+
+  footer{padding:28px 0 40px;border-top:1px solid var(--traco)}
+  .pe{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;font-size:.85rem;color:var(--grafite)}
+  .pe a{color:var(--grafite);text-decoration:none}
+  .pe a:hover{color:var(--meridiano)}
+  .pe .mono{font-family:var(--mono);font-size:.75rem}
+  .pe .legal{flex:0 0 100%;font-family:var(--mono);font-size:.72rem;color:var(--grafite);letter-spacing:.01em}
+
+  /* ── recursos visuais do artigo Refy ───────────────── */
+  .artigo-grid .prosa{max-width:none;min-width:0}
+  .prosa > p, .prosa > ul, .prosa > ol, .prosa > h2, .prosa > h3, .prosa > .aviso, .prosa > details, .prosa > pre.cod, .prosa > .nota-tabela{max-width:38em}
+  .prosa > .resumo{max-width:38em}
+  .larga{max-width:none}
+  .quadro{margin:0 0 30px}
+  .quadro .moldura{border:1px solid var(--traco);border-radius:10px;overflow:hidden;background:var(--branco);box-shadow:0 18px 40px -26px rgba(18,43,63,.45)}
+  .quadro .barra{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#EAF0F3;border-bottom:1px solid var(--traco)}
+  .quadro .barra i{width:10px;height:10px;border-radius:50%;background:#C5D2DA;display:block}
+  .quadro .barra span{margin-left:10px;font-family:var(--mono);font-size:.7rem;color:var(--sutil);letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .quadro img{display:block;width:100%;height:auto}
+  .quadro figcaption{font-family:var(--mono);font-size:.72rem;color:var(--sutil);margin-top:12px;line-height:1.6}
+  .quadro figcaption b{color:var(--nanquim);font-weight:500}
+  .par{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 0 30px}
+  @media(max-width:760px){.par{grid-template-columns:1fr}}
+  .par .quadro{margin:0}
+  .rotulo-par{display:inline-block;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;padding:4px 9px;border-radius:4px;margin-bottom:10px}
+  .rotulo-par.antes{background:#E1ECE8;color:#1E5A47}
+  .rotulo-par.depois{background:#F7E1D6;color:#8F3216}
+  .tira{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 12px}
+  @media(max-width:700px){.tira{grid-template-columns:1fr}}
+  .tira .quadro{margin:0}
+  .tira .quadro .passo{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--sinal-texto);margin-bottom:8px;display:block}
+
+  /* números em destaque */
+  .placar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 34px}
+  @media(max-width:820px){.placar{grid-template-columns:repeat(2,1fr)}}
+  .placar div{background:var(--branco);border:1px solid var(--traco);border-radius:10px;padding:18px 18px 16px;position:relative;overflow:hidden}
+  .placar div::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--sinal)}
+  .placar b{display:block;font-family:var(--display);font-weight:800;font-size:2.15rem;letter-spacing:-.02em;line-height:1;color:var(--nanquim)}
+  .placar span{display:block;margin-top:8px;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--sutil);line-height:1.5}
+
+  /* gráfico de barras em CSS */
+  .grafico{background:var(--branco);border:1px solid var(--traco);border-radius:10px;padding:22px 22px 16px;margin:0 0 12px}
+  .grafico h3{margin:0 0 4px!important;font-size:1.05rem!important}
+  .grafico .sub{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--sutil);margin-bottom:18px}
+  .linha-g{display:grid;grid-template-columns:118px 1fr 40px;gap:12px;align-items:center;margin-bottom:9px;font-size:.88rem}
+  .linha-g code{font-family:var(--mono);font-size:.78rem;color:var(--nanquim)}
+  .linha-g .trilho{height:14px;background:#EAF0F3;border-radius:3px;overflow:hidden}
+  .linha-g .trilho i{display:block;height:100%;background:var(--meridiano);border-radius:3px;width:0;animation:cresce 1s cubic-bezier(.2,.7,.2,1) forwards}
+  .linha-g .trilho i.sinal{background:var(--sinal)}
+  .linha-g .n{font-family:var(--mono);font-size:.8rem;text-align:right;font-variant-numeric:tabular-nums}
+  @keyframes cresce{from{width:0}to{width:var(--w)}}
+  @media(max-width:520px){.linha-g{grid-template-columns:96px 1fr 32px}}
+
+  /* linha do tempo */
+  .tempo{list-style:none;margin:0 0 30px!important;padding:0!important;position:relative}
+  .tempo::before{content:"";position:absolute;left:78px;top:8px;bottom:8px;width:2px;background:var(--traco)}
+  .tempo li{display:grid!important;grid-template-columns:70px 1fr;gap:26px;padding:10px 0!important;border:none!important;position:relative;font-size:.95rem}
+  .tempo li::before{content:""!important;position:absolute;left:73px!important;top:17px!important;width:12px!important;height:12px!important;border-radius:50%;background:var(--branco)!important;border:3px solid var(--meridiano)}
+  .tempo li.marco::before{border-color:var(--sinal)!important;background:var(--sinal)!important}
+  .tempo time{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;color:var(--sutil);padding-top:6px;text-align:right;line-height:1.35}
+  .tempo li div{padding-left:14px}
+  .tempo li b{display:block;font-weight:600}
+  .tempo li span{color:var(--grafite);font-size:.9rem}
+
+  /* paleta */
+  .paletas{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 12px}
+  @media(max-width:700px){.paletas{grid-template-columns:1fr}}
+  .paleta{border-radius:10px;padding:18px;border:1px solid var(--traco)}
+  .paleta.claro{background:#fbf7f2;color:#2b1912}
+  .paleta.escuro{background:#1d1714;color:#f3e8e0;border-color:#44352e}
+  .paleta p.t{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;margin-bottom:12px;opacity:.8}
+  .paleta .amostras{display:flex;gap:8px;margin-bottom:12px}
+  .paleta .amostras i{flex:1;height:46px;border-radius:6px;border:1px solid rgba(128,128,128,.28);display:block}
+  .paleta .leg{display:flex;gap:8px;font-family:var(--mono);font-size:.64rem;opacity:.85}
+  .paleta .leg span{flex:1}
+  .paleta .exemplo{font-family:'IBM Plex Serif',Georgia,serif;font-size:1.28rem;line-height:1.15;margin-top:14px}
+  .paleta.claro .exemplo em{color:#b9431d;font-style:normal}
+  .paleta.escuro .exemplo em{color:#ed7f58;font-style:normal}
+
+  pre.cod{max-width:none!important;background:var(--nanquim);color:#DCE7F0;border-radius:10px;padding:20px 22px;overflow-x:auto;font-family:var(--mono);font-size:.78rem;line-height:1.7;margin:0 0 12px}
+  pre.cod .c{color:#8FA6B8}
+  pre.cod .k{color:#9FC2E8}
+  pre.cod .v{color:#F3B565}
+  .resumo code{background:rgba(255,255,255,.14);color:#fff}
+  :not(pre) > code{font-family:var(--mono);font-size:.85em;background:#E9EFF2;border-radius:4px;padding:1px 6px}
+
+  /* diagrama do fluxo */
+  .fluxo-svg{width:100%;height:auto;display:block;background:var(--branco);border:1px solid var(--traco);border-radius:10px}
+  .fluxo-svg text{font-family:'IBM Plex Mono','Plex Mono Fallback',monospace}
+
+  /* citação */
+  .destaque-q{border-left:3px solid var(--sinal);padding:6px 0 6px 22px;margin:0 0 26px;max-width:34em;font-family:var(--display);font-weight:700;font-size:1.3rem;line-height:1.3;letter-spacing:-.005em}
+  @media (prefers-reduced-motion: reduce){.linha-g .trilho i{animation:none;width:var(--w)}}
+
+  /* ── artigo Observatório ───────────────────────────── */
+  pre.cod .add{color:#8FD6A4;display:inline-block;width:100%}
+  pre.cod .del{color:#F0A29B;display:inline-block;width:100%}
+  pre.cod .ctx{color:#8FA6B8}
+  .quadro.escuro .moldura{background:#0E1210;border-color:#24302A}
+  .quadro.escuro .barra{background:#161B18;border-bottom-color:#24302A}
+  .quadro.escuro .barra i{background:#2C3833}
+  .quadro.escuro .barra span{color:#7C8B84}
+  .tabela-borda td code, .tabela-borda th code{white-space:nowrap}
+  .fontes{list-style:none;margin:0 0 22px!important;padding:0!important}
+  .fontes li{font-size:.9rem!important;padding:8px 0 8px 26px!important}
+  .fontes li::before{top:15px!important}
+  .nota-inline{font-family:var(--mono);font-size:.74rem;color:var(--sutil);line-height:1.7}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://lbptecnologia.com.br/blog/observatorio-de-taxas-no-chatgpt/#artigo",
+      "headline": "Como usar o Observatório de Taxas no ChatGPT: Selic, dólar e correção com fonte oficial",
+      "alternativeHeadline": "Guia do plugin Observatório de Taxas no ChatGPT",
+      "description": "Guia com telas reais do plugin Observatório de Taxas no ChatGPT: como ativar, que perguntas fazer sobre Selic, dólar e correção monetária, como conferir a fonte no SGS do Banco Central e como criar um alerta diário do dólar com tarefa agendada.",
+      "inLanguage": "pt-BR",
+      "datePublished": "2026-11-24",
+      "dateModified": "2026-11-24",
+      "url": "https://lbptecnologia.com.br/blog/observatorio-de-taxas-no-chatgpt/",
+      "mainEntityOfPage": {
+        "@id": "https://lbptecnologia.com.br/blog/observatorio-de-taxas-no-chatgpt/"
+      },
+      "image": "https://lbptecnologia.com.br/blog/observatorio-de-taxas-no-chatgpt/img/og-chatgpt.png",
+      "articleSection": "Guias",
+      "keywords": "Observatório de Taxas, ChatGPT, plugin, MCP, Meta Selic, dólar PTAX, correção monetária, tarefa agendada, SGS Banco Central",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://lbptecnologia.com.br/#organization",
+        "name": "LBP Tecnologia"
+      },
+      "contributor": {
+        "@type": "Person",
+        "name": "Leandro Borges Pereira",
+        "jobTitle": "Responsável técnico do Observatório de Taxas",
+        "worksFor": {
+          "@id": "https://lbptecnologia.com.br/#organization"
+        }
+      },
+      "publisher": {
+        "@id": "https://lbptecnologia.com.br/#organization"
+      },
+      "isPartOf": {
+        "@id": "https://lbptecnologia.com.br/blog/#blog"
+      },
+      "about": {
+        "@type": "SoftwareApplication",
+        "name": "Observatório de Taxas para ChatGPT",
+        "applicationCategory": "FinanceApplication",
+        "url": "https://chatgpt.com/plugins/plugin_asdk_app_6af615624cb08191ae41993bad0b6279",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "BRL"
+        }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Início",
+          "item": "https://lbptecnologia.com.br/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://lbptecnologia.com.br/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Como usar o Observatório de Taxas no ChatGPT"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://lbptecnologia.com.br/blog/observatorio-de-taxas-no-chatgpt/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "O plugin Observatório de Taxas é pago?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Não. O plugin e o Observatório são gratuitos e não pedem cadastro. O uso do ChatGPT segue o plano da sua conta."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como faço o ChatGPT usar o plugin?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Digite @Observat na caixa de texto, escolha Observatório de Taxas na lista e escreva a pergunta depois da etiqueta. Também dá para começar pela página do plugin, no botão Testar no chat."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Por que o plugin não responde o IPCA ou o IGP-M?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Essas séries são produzidas pelo IBGE e pela FGV IBRE, e a redistribuição automatizada ainda não foi confirmada com os produtores. Por isso estão suspensas no plugin. Elas continuam disponíveis no site do Observatório e nos sites dos produtores."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "De quanto em quanto tempo os dados são atualizados?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "O Observatório consulta o SGS do Banco Central a cada 6 horas, às 3h, 9h, 15h e 21h de Brasília. Um valor só muda quando o Banco Central ou o produtor publica um número novo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como cancelo o alerta diário do dólar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Abra Agendado na barra lateral do ChatGPT, escolha a tarefa Alerta de dólar venda e pause ou apague."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topo">
+  <div class="wrap topo-inner">
+    <a class="marca" href="../../" aria-label="LBP Tecnologia — início">
+      <svg viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+        <path d="M18 10 h12 v56 h56 v12 H18 Z" fill="#122B3F"/>
+        <path d="M38 57 L52 48 L58 52 L72 22" fill="none" stroke="#122B3F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="72" cy="22" r="9" fill="#E08A1E"/>
+      </svg>
+      <span class="nome">LBP<small>TECNOLOGIA</small></span>
+    </a>
+    <nav class="principal" aria-label="Navegação principal">
+      <a class="link" href="../../#servicos">Serviços</a>
+      <a class="link" href="../../#produtos">Produtos</a>
+      <a class="link" href="../">Blog</a>
+      <a class="btn btn-cheio" href="../../#contato">Fale com a LBP</a>
+    </nav>
+  </div>
+</header>
+
+
+<main id="conteudo">
+
+  <div class="artigo-topo">
+    <div class="wrap">
+      <nav class="migalhas" aria-label="Trilha de navegação">
+        <a href="../../">Início</a> · <a href="../">Blog</a> · <span aria-current="page">Observatório de Taxas no ChatGPT</span>
+      </nav>
+      <h1>Como usar o Observatório de Taxas no ChatGPT: Selic, dólar e correção com fonte oficial</h1>
+      <p class="subtitulo">Um guia com telas reais do plugin: como ativar, que perguntas fazer, como conferir de onde veio cada número e como montar um alerta diário do dólar.</p>
+      <p class="assinatura">
+        <span>POR <b>LBP TECNOLOGIA</b></span>
+        <span>RESPONSÁVEL TÉCNICO <b>LEANDRO BORGES PEREIRA</b></span>
+        <span><time datetime="2026-11-24">24 DE NOVEMBRO DE 2026</time></span>
+        <span>LEITURA ~8 MIN</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="wrap artigo-grid">
+
+    <article class="prosa">
+
+      <div class="aviso">
+        <p class="rotulo">TRANSPARÊNCIA</p>
+        <p>
+          O Observatório de Taxas e o plugin são projetos da própria LBP Tecnologia, que publica este blog.
+          Não há link de indicação neste texto. As telas foram capturadas em 24 de novembro de 2026 numa conta
+          real do ChatGPT. Os números mudam a cada coleta e as respostas do ChatGPT podem variar de uma
+          conversa para outra.
+        </p>
+      </div>
+
+      <div class="resumo">
+        <p class="rotulo">RESUMO EM 5 LINHAS</p>
+        <ul>
+          <li>O <b>plugin Observatório de Taxas</b> deixa o ChatGPT consultar indicadores do Banco Central com a fonte citada na resposta.</li>
+          <li>Para usar, abra a <a href="https://chatgpt.com/plugins/plugin_asdk_app_6af615624cb08191ae41993bad0b6279" target="_blank" rel="noopener">página do plugin<span class="vh"> (abre em nova aba)</span></a> e chame-o com <code>@Observatório de Taxas</code> no começo da pergunta.</li>
+          <li>Ele responde <b>último valor, série histórica, correção de valores e comparação</b> entre dois indicadores. Todas as ferramentas são só de leitura.</li>
+          <li>Hoje <b>16 das 25 séries</b> do Observatório estão no plugin. IPCA, IGP-M e outras séries do IBGE e da FGV ficam de fora até a licença de redistribuição ser confirmada.</li>
+          <li>Com uma <b>tarefa agendada</b> do ChatGPT, o plugin pode avisar você todo dia útil quando o dólar mudar.</li>
+        </ul>
+      </div>
+
+      <h2 id="o-que-e">1. O que o plugin faz</h2>
+
+      <p class="destaque">
+        Quando alguém pergunta a Selic para um assistente de IA, a resposta costuma vir sem data e sem fonte.
+      </p>
+
+      <p>
+        O plugin resolve isso ligando o ChatGPT ao
+        <a href="https://observatoriodetaxas.tec.br/" target="_blank" rel="noopener">Observatório de Taxas<span class="vh"> (abre em nova aba)</span></a>,
+        que coleta as séries do SGS, o Sistema Gerenciador de Séries Temporais do Banco Central, a cada 6 horas.
+        Em vez de lembrar um número do treinamento, o ChatGPT consulta os dados guardados no Observatório. A
+        resposta traz o código da série, a data de referência e a data da coleta.
+      </p>
+
+      <p>O plugin tem quatro ferramentas, todas só de leitura:</p>
+
+      <ul>
+        <li><b>Último valor</b> de um indicador, como a Meta Selic ou o dólar do dia.</li>
+        <li><b>Série histórica</b> entre duas datas.</li>
+        <li><b>Correção de um valor</b> por um índice mensal, com a memória de cálculo mês a mês. A fórmula é a mesma da <a href="https://observatoriodetaxas.tec.br/correcao/" target="_blank" rel="noopener">calculadora do site<span class="vh"> (abre em nova aba)</span></a>.</li>
+        <li><b>Comparação</b> entre dois indicadores no mesmo período.</li>
+      </ul>
+
+      <h2 id="ativar">2. Como ativar</h2>
+
+      <p>
+        Abra a <a href="https://chatgpt.com/plugins/plugin_asdk_app_6af615624cb08191ae41993bad0b6279" target="_blank" rel="noopener">página do plugin no ChatGPT<span class="vh"> (abre em nova aba)</span></a>
+        já com a sua conta logada. Você também chega lá pelo menu <b>Plugins</b> da barra lateral,
+        procurando por “Observatório de Taxas”. A página mostra três perguntas de exemplo, e clicar em
+        qualquer uma delas já abre uma conversa usando o plugin. O botão <b>Testar no chat</b> abre uma
+        conversa vazia com o plugin selecionado.
+      </p>
+
+      <figure class="quadro escuro">
+        <div class="moldura">
+          <div class="barra" aria-hidden="true"><i></i><i></i><i></i><span>chatgpt.com · Plugins · Observatório de Taxas</span></div>
+          <img src="img/chatgpt-01-pagina-plugin.png" alt="Página do plugin Observatório de Taxas no ChatGPT, por LBP Tecnologia, com os botões Configurações e Testar no chat, três perguntas de exemplo sobre Meta Selic, correção pela Selic e dólar de compra e venda, e a descrição com as limitações." width="1200" height="955" loading="lazy" decoding="async">
+        </div>
+        <figcaption><b>Página do plugin no diretório do ChatGPT.</b> O último parágrafo lista as limitações: coleta a cada 6 horas, séries do IBGE e da FGV suspensas e nenhuma recomendação financeira.</figcaption>
+      </figure>
+
+      <h2 id="chamar">3. Como chamar o plugin numa conversa</h2>
+
+      <p>
+        Em qualquer conversa, digite <code>@Observat</code> na caixa de texto e escolha
+        <b>Observatório de Taxas · Indicadores do Brasil</b> na lista que aparece. O nome vira uma
+        etiqueta colorida, e o que você escrever depois dela é a pergunta. Sem a menção, o ChatGPT pode
+        responder por conta própria ou buscar na web, e aí a fonte deixa de ser o Observatório.
+      </p>
+
+      <figure class="quadro escuro">
+        <div class="moldura">
+          <div class="barra" aria-hidden="true"><i></i><i></i><i></i><span>chatgpt.com · nova conversa</span></div>
+          <img src="img/chatgpt-02-mencao-composer.png" alt="Caixa de texto do ChatGPT com a etiqueta Observatório de Taxas seguida da pergunta Compare dólar de compra e de venda em outubro de 2026." width="1200" height="568" loading="lazy" decoding="async">
+        </div>
+        <figcaption><b>A menção fica destacada antes da pergunta.</b> É ela que garante que o ChatGPT use o plugin.</figcaption>
+      </figure>
+
+      <h2 id="perguntas-boas">4. Perguntas que funcionam bem</h2>
+
+      <h3>Valor de hoje, com a fonte</h3>
+
+      <p>
+        A pergunta mais simples é também a mais útil para conferir uma notícia: <em>“Qual é a Meta Selic
+        hoje e qual a fonte?”</em>. A resposta traz a taxa, a data e o código da série no SGS, com link
+        para a página do Banco Central.
+      </p>
+
+      <figure class="quadro escuro">
+        <div class="moldura">
+          <div class="barra" aria-hidden="true"><i></i><i></i><i></i><span>chatgpt.com · Consultar Meta Selic</span></div>
+          <img src="img/chatgpt-03-meta-selic.png" alt="Resposta do ChatGPT: em 24 de novembro de 2026 a Meta Selic está em 13,75% ao ano, o Copom manteve a taxa em 4 de novembro, e o Observatório de Taxas usa como fonte a série 432 do SGS do Banco Central." width="1200" height="487" loading="lazy" decoding="async">
+        </div>
+        <figcaption><b>Meta Selic em 24/11/2026: 13,75% ao ano.</b> A resposta cita a série 432 do SGS e leva ao portal do Banco Central.</figcaption>
+      </figure>
+
+      <h3>Correção de um valor, mês a mês</h3>
+
+      <p>
+        Para corrigir um valor, diga o índice, o valor e o período, e peça a tabela:
+        <em>“Corrija R$ 1.000 pela Selic de dezembro de 2024 a dezembro de 2025. Mostre o fator acumulado
+        e uma tabela mês a mês.”</em> O plugin usa a Selic acumulada no mês (série 4390) e devolve o fator
+        de cada mês, o que permite refazer a conta numa planilha.
+      </p>
+
+      <div class="par">
+        <figure class="quadro escuro">
+          <div class="moldura">
+            <div class="barra" aria-hidden="true"><i></i><i></i><i></i><span>início da resposta</span></div>
+            <img src="img/chatgpt-04a-correcao-selic-topo.png" alt="Pergunta de correção de R$ 1.000 pela Selic e início da resposta: R$ 1.153,96, fator acumulado 1,153961, alta de 15,40%, com tabela de dezembro de 2024 a junho de 2025." width="1200" height="859" loading="lazy" decoding="async">
+          </div>
+        </figure>
+        <figure class="quadro escuro">
+          <div class="moldura">
+            <div class="barra" aria-hidden="true"><i></i><i></i><i></i><span>fim da resposta</span></div>
+            <img src="img/chatgpt-04b-correcao-selic-fim.png" alt="Fim da tabela até dezembro de 2025, explicação do método com a série SGS 4390 e a segunda leitura do período: com R$ 1.000 no fechamento de dezembro de 2024, o fator é 1,143328 e o valor corrigido é R$ 1.143,33." width="1200" height="863" loading="lazy" decoding="async">
+          </div>
+        </figure>
+      </div>
+
+      <p>
+        Repare no último parágrafo. A pergunta “de dezembro de 2024 a dezembro de 2025” tem duas leituras,
+        e o ChatGPT mostrou as duas:
+      </p>
+
+      <div class="tabela-borda">
+        <table>
+          <caption>R$ 1.000 corrigidos pela Selic · resposta de 24/11/2026</caption>
+          <thead>
+            <tr><th scope="col">Leitura do período</th><th scope="col">Meses aplicados</th><th scope="col">Fator</th><th scope="col">Valor corrigido</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Dezembro de 2024 incluído</td><td>dez/2024 a dez/2025 (13)</td><td class="num">1,153961</td><td class="num"><b>R$ 1.153,96</b></td></tr>
+            <tr><td>Valor no fechamento de dezembro de 2024 (regra da calculadora do site)</td><td>jan/2025 a dez/2025 (12)</td><td class="num">1,143328</td><td class="num"><b>R$ 1.143,33</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nota-tabela">a diferença de R$ 10,63 é a Selic de dezembro de 2024 (0,93%) aplicada ou não</p>
+
+      <p>
+        Para não depender da interpretação, diga na pergunta se o mês inicial entra. Por exemplo:
+        “o valor era devido no fim de dezembro de 2024” ou “inclua a taxa de dezembro de 2024”.
+      </p>
+
+      <h3>Comparação entre duas séries</h3>
+
+      <p>
+        A comparação serve para ver duas séries lado a lado no mesmo período. Em <em>“Compare dólar de
+        compra e de venda em outubro de 2026”</em>, o plugin buscou as duas cotações PTAX e o ChatGPT
+        montou a tabela com o primeiro dia útil, a mínima, a máxima e o último dia útil.
+      </p>
+
+      <figure class="quadro escuro">
+        <div class="moldura">
+          <div class="barra" aria-hidden="true"><i></i><i></i><i></i><span>chatgpt.com · Comparar dólar compra e venda</span></div>
+          <img src="img/chatgpt-05-dolar-compra-venda.png" alt="Resposta do ChatGPT sobre outubro de 2026: média de R$ 5,1288 na compra e R$ 5,1294 na venda em 21 dias úteis, tabela com primeiro dia útil, mínima em 06/10, máxima em 26/10 e último dia útil, diferença média de R$ 0,62 por US$ 1.000 e alta de 4,10% no mês. Fonte: séries SGS 10813 e 1." width="1200" height="755" loading="lazy" decoding="async">
+        </div>
+        <figcaption><b>Dólar em outubro de 2026.</b> Média de R$ 5,1288 na compra e R$ 5,1294 na venda em 21 dias úteis. As séries são a 10813 (compra) e a 1 (venda) do SGS.</figcaption>
+      </figure>
+
+      <p>Outras perguntas que rendem boas respostas:</p>
+
+      <ul>
+        <li>“Quais indicadores você consegue consultar?” lista as séries disponíveis no plugin.</li>
+        <li>“Como a Meta Selic variou de janeiro a novembro de 2026? Mostre as datas das mudanças.”</li>
+        <li>“Qual foi o dólar PTAX de venda no último dia útil de cada mês de 2026?”</li>
+        <li>“Compare a Selic acumulada no mês com a TR em 2025.”</li>
+      </ul>
+
+      <h2 id="conferir">5. Como conferir de onde veio o número</h2>
+
+      <p>
+        Acima de cada resposta aparece uma linha como “Trabalhou por 9 s”. Clique nela para abrir o
+        registro do que o ChatGPT fez. Ali aparece se ele usou o Observatório de Taxas, se também buscou
+        na web, e em que ordem.
+      </p>
+
+      <figure class="quadro escuro">
+        <div class="moldura">
+          <div class="barra" aria-hidden="true"><i></i><i></i><i></i><span>detalhe da resposta</span></div>
+          <img src="img/chatgpt-06-detalhe-chamada.png" alt="Detalhe aberto da resposta sobre a Meta Selic: o ChatGPT diz que vai consultar o Observatório de Taxas e conferir a fonte oficial, e a linha Searched the web e used Observatório de Taxas mostra que usou as duas fontes." width="1200" height="484" loading="lazy" decoding="async">
+        </div>
+        <figcaption><b>O detalhe mostra as ferramentas usadas.</b> Nessa resposta o ChatGPT consultou o Observatório e também buscou na web para citar a reunião do Copom.</figcaption>
+      </figure>
+
+      <p>
+        Quando a resposta mistura web e plugin, o número que veio do Observatório é o que cita a série do
+        SGS. Para conferir por fora, abra a página do indicador no
+        <a href="https://observatoriodetaxas.tec.br/indicadores/" target="_blank" rel="noopener">Observatório<span class="vh"> (abre em nova aba)</span></a>
+        ou procure o código da série no
+        <a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">SGS do Banco Central<span class="vh"> (abre em nova aba)</span></a>.
+      </p>
+
+      <h2 id="automacao">6. Dica de automação: alerta diário do dólar</h2>
+
+      <p>
+        As tarefas agendadas do ChatGPT executam um pedido sozinhas num horário fixo e notificam você com o
+        resultado. Combinadas com o plugin, elas viram um alerta de câmbio sem planilha e sem robô
+        próprio. Abra uma conversa, mencione o plugin e escreva:
+      </p>
+
+      <pre class="cod"><span class="k">@Observatório de Taxas</span> Crie uma tarefa agendada: todo dia útil às 18h, use o
+Observatório de Taxas para consultar o dólar (venda). Se o valor mudou em relação ao
+dia útil anterior, me avise com o valor novo, a variação em R$ e em % e a data de
+referência. Se não mudou, não precisa avisar.</pre>
+      <p class="nota-tabela">copie e cole no ChatGPT · ajuste o horário ou troque “dólar (venda)” por outro indicador</p>
+
+      <figure class="quadro escuro">
+        <div class="moldura">
+          <div class="barra" aria-hidden="true"><i></i><i></i><i></i><span>chatgpt.com · Agendar consulta do dólar</span></div>
+          <img src="img/chatgpt-07-tarefa-agendada.png" alt="ChatGPT confirmando a tarefa: alerta de dólar venda às 18h, horário de Brasília, de segunda a sexta, com aviso só quando a cotação mudar. O cartão Alerta de dólar venda mostra Semanal, seg. a sex. às 6pm, e o painel Agendamentos lista a tarefa como Dias de semana." width="1200" height="572" loading="lazy" decoding="async">
+        </div>
+        <figcaption><b>Tarefa criada.</b> O cartão “Alerta de dólar venda” confirma segunda a sexta às 18h. A tarefa aparece em <b>Agendado</b>, na barra lateral, onde dá para pausar, editar ou apagar.</figcaption>
+      </figure>
+
+      <p>Três detalhes explicam o formato do pedido:</p>
+
+      <ul>
+        <li><b>Por que 18h.</b> O dólar do Observatório é a PTAX, que o Banco Central publica uma vez por dia útil, no início da tarde. O Observatório coleta às 3h, 9h, 15h e 21h de Brasília, então às 18h a cotação do dia já está lá. Consultar de hora em hora só repetiria o mesmo valor.</li>
+        <li><b>Por que “se não mudou, não avise”.</b> Sem essa condição você recebe uma notificação todo dia, mesmo quando nada mudou, e o alerta perde o valor.</li>
+        <li><b>Feriados.</b> O ChatGPT agenda por dia da semana e não conhece o calendário bancário, então a tarefa roda também em feriado. Nesses dias o Banco Central não publica cotação nova e a tarefa fica em silêncio.</li>
+      </ul>
+
+      <p>
+        O mesmo modelo serve para outros indicadores. Um exemplo é avisar quando a Meta Selic mudar,
+        consultando no dia seguinte a cada reunião do Copom. Tarefas agendadas dependem do plano da sua conta
+        no ChatGPT.
+      </p>
+
+      <h2 id="limites">7. Limites</h2>
+
+      <ul>
+        <li><b>Não é tempo real.</b> Os dados são coletados a cada 6 horas. Para cotação intradiária, o plugin não serve.</li>
+        <li><b>Nem toda série está no plugin.</b> IPCA, IPCA-15, INPC, IGP-M, IGP-DI, taxa de desocupação e as duas séries de CDI ficam suspensas até a confirmação dos termos de redistribuição com IBGE, FGV IBRE e B3. Elas continuam no <a href="https://observatoriodetaxas.tec.br/" target="_blank" rel="noopener">site do Observatório<span class="vh"> (abre em nova aba)</span></a>.</li>
+        <li><b>A data de divulgação oficial não é registrada.</b> O plugin informa a data de referência e a data da coleta.</li>
+        <li><b>O ChatGPT ainda pode errar ao explicar.</b> O número vem do plugin, mas o texto em volta é do modelo. Confira a série citada quando o valor for usado num contrato.</li>
+        <li><b>Não é recomendação financeira nem orientação jurídica.</b> Quem reajusta um contrato deve usar o índice e o período que o contrato prevê.</li>
+      </ul>
+
+      <h2 id="fontes">Fontes e referências</h2>
+
+      <ul class="fontes">
+        <li>Plugin: <a href="https://chatgpt.com/plugins/plugin_asdk_app_6af615624cb08191ae41993bad0b6279" target="_blank" rel="noopener">Observatório de Taxas no diretório de plugins do ChatGPT<span class="vh"> (abre em nova aba)</span></a>, conferido em 24/11/2026.</li>
+        <li>Servidor do plugin: <a href="https://github.com/iosbilario/observatorio-taxas/tree/main/servidor_mcp" target="_blank" rel="noopener">pasta servidor_mcp do repositório<span class="vh"> (abre em nova aba)</span></a>, com o catálogo das séries expostas e suspensas.</li>
+        <li>Página do Observatório sobre a integração: <a href="https://observatoriodetaxas.tec.br/mcp/" target="_blank" rel="noopener">observatoriodetaxas.tec.br/mcp<span class="vh"> (abre em nova aba)</span></a>.</li>
+        <li>Banco Central do Brasil: <a href="https://www3.bcb.gov.br/sgspub/" target="_blank" rel="noopener">Sistema Gerenciador de Séries Temporais<span class="vh"> (abre em nova aba)</span></a>. Séries citadas: 432 (Meta Selic), 4390 (Selic acumulada no mês), 1 (dólar venda) e 10813 (dólar compra).</li>
+        <li>Como o Observatório é construído: <a href="../arquitetura-observatorio-de-taxas/">arquitetura em Python, Git e dados públicos</a>, neste blog.</li>
+      </ul>
+
+      <h2 id="perguntas">Perguntas frequentes</h2>
+
+      <div class="faq">
+        <details class="faq-item">
+          <summary>O plugin Observatório de Taxas é pago?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>Não. O plugin e o Observatório são gratuitos e não pedem cadastro. O uso do ChatGPT segue o plano da sua conta.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Como faço o ChatGPT usar o plugin?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>Digite @Observat na caixa de texto, escolha Observatório de Taxas na lista e escreva a pergunta depois da etiqueta. Também dá para começar pela página do plugin, no botão Testar no chat.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Por que o plugin não responde o IPCA ou o IGP-M?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>Essas séries são produzidas pelo IBGE e pela FGV IBRE, e a redistribuição automatizada ainda não foi confirmada com os produtores. Por isso estão suspensas no plugin. Elas continuam disponíveis no site do Observatório e nos sites dos produtores.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>De quanto em quanto tempo os dados são atualizados?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>O Observatório consulta o SGS do Banco Central a cada 6 horas, às 3h, 9h, 15h e 21h de Brasília. Um valor só muda quando o Banco Central ou o produtor publica um número novo.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Como cancelo o alerta diário do dólar?<span class="seta" aria-hidden="true"></span></summary>
+          <div class="resposta"><p>Abra Agendado na barra lateral do ChatGPT, escolha a tarefa Alerta de dólar venda e pause ou apague.</p></div>
+        </details>
+      </div>
+
+      <div class="autor">
+        <div class="selo-autor">
+          <svg viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+            <path d="M18 10 h12 v56 h56 v12 H18 Z" fill="#FFFFFF"/>
+            <path d="M38 57 L52 48 L58 52 L72 22" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="72" cy="22" r="9" fill="#E08A1E"/>
+          </svg>
+        </div>
+        <div>
+          <p class="rotulo">SOBRE O AUTOR</p>
+          <h2>LBP Tecnologia</h2>
+          <p>
+            Consultoria de São Paulo que constrói plataformas de dados na AWS, painéis auditáveis e sistemas web
+            para empresas. O responsável técnico do Observatório de Taxas e do plugin é Leandro Borges Pereira,
+            fundador da LBP. A tese da casa é <strong>prova, não promessa</strong>.
+          </p>
+          <p><a href="../../">Conheça a LBP Tecnologia</a> · <a href="https://www.linkedin.com/company/lbptech" target="_blank" rel="noopener">LinkedIn<span class="vh"> (abre em nova aba)</span></a></p>
+        </div>
+      </div>
+
+    </article>
+
+    <aside class="sumario" aria-label="Sumário do artigo">
+      <p class="rotulo">NESTE ARTIGO</p>
+      <ol>
+        <li><a href="#o-que-e">O que o plugin faz</a></li>
+        <li><a href="#ativar">Como ativar</a></li>
+        <li><a href="#chamar">Como chamar o plugin</a></li>
+        <li><a href="#perguntas-boas">Perguntas que funcionam bem</a></li>
+        <li><a href="#conferir">Como conferir a fonte</a></li>
+        <li><a href="#automacao">Alerta diário do dólar</a></li>
+        <li><a href="#limites">Limites</a></li>
+        <li><a href="#perguntas">Perguntas frequentes</a></li>
+      </ol>
+    </aside>
+
+  </div>
+
+  <section class="contato" aria-label="Contato">
+    <div class="wrap contato-grid">
+      <div>
+        <h2>Tem uma série de dados que precisa de histórico?</h2>
+        <p>
+          A LBP Tecnologia atende empresas (PJ) que precisam transformar dados em decisão auditável.
+          Uma conversa de 30 minutos costuma bastar para dizermos se conseguimos ajudar.
+        </p>
+        <a class="btn btn-cheio" href="mailto:contato@lbptecnologia.com.br?subject=Contato%20via%20blog%20da%20LBP">Escrever para a LBP</a>
+      </div>
+      <div class="cartao-contato">
+        <p class="rotulo">E-MAIL</p>
+        <p class="linha"><a href="mailto:contato@lbptecnologia.com.br">contato@lbptecnologia.com.br</a></p>
+        <p class="rotulo">LINKEDIN</p>
+        <p class="linha"><a href="https://www.linkedin.com/company/lbptech" target="_blank" rel="noopener">linkedin.com/company/lbptech<span class="vh"> (abre em nova aba)</span></a></p>
+        <p class="rotulo">PRODUTO PÚBLICO</p>
+        <p class="linha"><a href="https://observatoriodetaxas.tec.br" target="_blank" rel="noopener">observatoriodetaxas.tec.br<span class="vh"> (abre em nova aba)</span></a></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="pe">
+      <span>© 2026 LBP Tecnologia · São Paulo, Brasil · <a href="../">Blog</a></span>
+      <span class="mono">conteúdo informativo · não é recomendação financeira · conferido em 24/11/2026</span>
+      <span class="legal">LEANDRO BORGES PEREIRA TECNOLOGIA DA INFORMAÇÃO LTDA · CNPJ 60.776.636/0001-51</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
